@@ -1,26 +1,51 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SiteLayout } from "@/components/layout/SiteLayout";
+import { HeroCarousel } from "@/components/home/HeroCarousel";
+import { Specialties } from "@/components/home/Specialties";
+import { Stats } from "@/components/home/Stats";
+import { FeaturedProducts } from "@/components/home/FeaturedProducts";
+import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "PaparaShop — Appareils photo, caméras & studio à Abomey-Calavi" },
+      {
+        name: "description",
+        content:
+          "Découvrez PaparaShop : appareils photo Canon, Nikon, Sony, caméras 4K, éclairage studio et accessoires pros à Abomey-Calavi, Bénin.",
+      },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: SITE.fullName,
+    image: "/og.jpg",
+    telephone: SITE.phone,
+    email: SITE.email,
+    url: SITE.catalogUrl,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: SITE.city,
+      addressCountry: "BJ",
+    },
+    sameAs: [SITE.socials.facebook, SITE.socials.instagram, SITE.socials.tiktok],
+  };
+  return (
+    <SiteLayout>
+      <HeroCarousel />
+      <Specialties />
+      <Stats />
+      <FeaturedProducts />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+    </SiteLayout>
+  );
 }
