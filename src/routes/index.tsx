@@ -4,6 +4,8 @@ import { HeroCarousel } from "@/components/home/HeroCarousel";
 import { Specialties } from "@/components/home/Specialties";
 import { Stats } from "@/components/home/Stats";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
+import { Accessories } from "@/components/home/Accessories";
+import { TrustedBy } from "@/components/home/TrustedBy";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
