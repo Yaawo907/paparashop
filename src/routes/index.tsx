@@ -6,6 +6,7 @@ import { Stats } from "@/components/home/Stats";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
 import { Accessories } from "@/components/home/Accessories";
 import { TrustedBy } from "@/components/home/TrustedBy";
+import { Testimonials } from "@/components/home/Testimonials";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
@@ -45,6 +46,7 @@ function Index() {
       <Stats />
       <FeaturedProducts />
       <Accessories />
+      <Testimonials />
       <TrustedBy />
       <script
         type="application/ld+json"
