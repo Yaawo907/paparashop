@@ -44,6 +44,8 @@ function Index() {
       <Specialties />
       <Stats />
       <FeaturedProducts />
+      <Accessories />
+      <TrustedBy />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
