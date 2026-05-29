@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "PaparaShop, votre spécialiste à Abomey-Calavi (Bénin) en appareils photo Canon, Nikon, Sony, caméras vidéo 4K, accessoires et matériel studio.",
       },
       { name: "author", content: "Papara SHOP" },
-      { property: "og:title", content: "PaparaShop — Équipement photographique professionnel" },
+      { property: "og:title", content: "PaparaShop — Équipement photographique professionnel à Abomey-Calavi" },
       {
         property: "og:description",
         content:
@@ -91,6 +91,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "fr_FR" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "PaparaShop — Équipement photographique professionnel à Abomey-Calavi" },
+      { name: "description", content: "PaparaShop is a professional photography and audiovisual equipment showcase website." },
+      { property: "og:description", content: "PaparaShop is a professional photography and audiovisual equipment showcase website." },
+      { name: "twitter:description", content: "PaparaShop is a professional photography and audiovisual equipment showcase website." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3b7ba6a4-983c-4966-90a8-7496eb21d7ff/id-preview-63365d57--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1779787713978.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3b7ba6a4-983c-4966-90a8-7496eb21d7ff/id-preview-63365d57--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1779787713978.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
