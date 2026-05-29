@@ -95,8 +95,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "PaparaShop is a professional photography and audiovisual equipment showcase website." },
       { property: "og:description", content: "PaparaShop is a professional photography and audiovisual equipment showcase website." },
       { name: "twitter:description", content: "PaparaShop is a professional photography and audiovisual equipment showcase website." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3b7ba6a4-983c-4966-90a8-7496eb21d7ff/id-preview-63365d57--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1779787713978.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3b7ba6a4-983c-4966-90a8-7496eb21d7ff/id-preview-63365d57--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1779787713978.png" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/972c7840-4466-4157-961b-992dcd55fd9c/id-preview-7d90117e--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1780051119509.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/972c7840-4466-4157-961b-992dcd55fd9c/id-preview-7d90117e--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1780051119509.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
