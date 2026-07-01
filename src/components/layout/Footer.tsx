@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Phone, Mail, MapPin, Camera, Globe2 } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Camera, Globe2 } from "lucide-react";
 import { SITE, LOCATIONS } from "@/lib/site";
 
 // Lucide doesn't ship TikTok yet — small inline glyph
