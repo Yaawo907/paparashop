@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { LOCATIONS } from "@/lib/site";
 
@@ -45,12 +44,8 @@ export function Timeline() {
 
           <ol className="space-y-10">
             {STORY.map((s, i) => (
-              <motion.li
+              <li
                 key={s.year}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
                 className={`relative pl-14 md:grid md:grid-cols-2 md:gap-12 md:pl-0 ${
                   i % 2 === 1 ? "md:[&>*:first-child]:col-start-2" : ""
                 }`}
