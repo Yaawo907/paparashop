@@ -1,15 +1,19 @@
-import { Users, Camera, Award } from "lucide-react";
+import { Users, Globe2, Award, Calendar } from "lucide-react";
+import { SITE } from "@/lib/site";
+
+const years = new Date().getFullYear() - SITE.foundedYear;
 
 const stats = [
-  { icon: Users, value: "5 105+", label: "Clients satisfaits" },
-  { icon: Camera, value: "Studio", label: "Photo équipé" },
-  { icon: Award, value: "Pro", label: "Matériel haut de gamme" },
+  { icon: Calendar, value: `${years}+`, label: "Années d'expertise" },
+  { icon: Globe2, value: "3 pays", label: "Bénin • Burkina • Togo" },
+  { icon: Users, value: "5 000+", label: "Clients accompagnés" },
+  { icon: Award, value: "2 ans", label: "Garantie maximale" },
 ];
 
 export function Stats() {
   return (
     <section className="bg-primary py-16">
-      <div className="mx-auto grid max-w-5xl gap-8 px-4 sm:grid-cols-3 sm:px-6 lg:px-8">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:grid-cols-2 lg:grid-cols-4 sm:px-6 lg:px-8">
         {stats.map(({ icon: Icon, value, label }) => (
           <div key={label} className="flex flex-col items-center text-center text-white">
             <Icon className="mb-3 h-8 w-8 text-accent" strokeWidth={1.75} />
