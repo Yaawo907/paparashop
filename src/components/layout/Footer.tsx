@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Phone, Mail, MapPin, Camera } from "lucide-react";
-import { SITE } from "@/lib/site";
+import { Facebook, Instagram, Mail, MapPin, Camera, Globe2 } from "lucide-react";
+import { SITE, LOCATIONS } from "@/lib/site";
 
 // Lucide doesn't ship TikTok yet — small inline glyph
 function TikTokIcon({ className }: { className?: string }) {
@@ -22,8 +22,11 @@ export function Footer() {
               PAPARA<span className="text-accent">.SHOP</span>
             </span>
           </div>
-          <p className="mb-6 max-w-xs text-sm leading-relaxed text-white/75">
-            Votre spécialiste en appareils photo, caméras et matériel audiovisuel à {SITE.city}.
+          <p className="mb-4 max-w-xs text-sm leading-relaxed text-white/75">
+            Depuis {SITE.foundedYear} : votre spécialiste photo & audiovisuel professionnel en Afrique de l'Ouest francophone.
+          </p>
+          <p className="mb-6 flex items-center gap-2 text-xs text-white/60">
+            <Globe2 className="h-3.5 w-3.5 text-accent" /> Bénin • Burkina Faso • Togo
           </p>
           <div className="flex gap-3">
             <a
@@ -82,15 +85,18 @@ export function Footer() {
             Contact
           </h3>
           <ul className="space-y-3 text-sm text-white/85">
-            <li className="flex items-start gap-3">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              <span>{SITE.city}, {SITE.country}</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <Phone className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              <a href={SITE.phoneHref} className="hover:text-accent">{SITE.phone}</a>
-            </li>
-            <li className="flex items-start gap-3">
+            {LOCATIONS.map((l) => (
+              <li key={l.slug} className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                <span>
+                  <span className="font-semibold text-white">{l.country}</span>
+                  {l.isHQ && <span className="ml-1 text-[10px] uppercase tracking-widest text-accent">Siège</span>}
+                  <br />
+                  <a href={l.phoneHref} className="text-white/70 hover:text-accent">{l.phone}</a>
+                </span>
+              </li>
+            ))}
+            <li className="flex items-start gap-3 pt-2 border-t border-white/10">
               <Mail className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
               <a href={SITE.emailHref} className="hover:text-accent">{SITE.email}</a>
             </li>

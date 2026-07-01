@@ -1,108 +1,109 @@
-# Plan — PaparaShop site vitrine
+# Plan d'alignement du site sur le document client
 
-Site vitrine React pour Papara SHOP (Abomey-Calavi, Benin) — vente de matériel photo/vidéo. Le catalogue détaillé / paiements restent gérés sur `https://www.lesagecom.net/paparashop` (lien externe).
+## Objectif
+Restructurer le site vitrine PapaRashop pour refléter fidèlement le plan catalogue fourni par le client : 8 catégories produits, présence tri-pays (Bénin/Burkina/Togo), histoire depuis 2017, engagements qualité et partenaires institutionnels.
 
-## Stack
-- React + TypeScript + Vite (déjà en place)
-- TailwindCSS + design tokens HSL dans `index.css` / `tailwind.config.ts`
-- React Router (BrowserRouter) — routes : `/`, `/catalogue`, `/a-propos`, `/services`, `/contact`
-- Framer Motion pour animations légères (scroll reveal, hero)
-- Lucide icons
-- SEO : `<title>`, meta description, H1 unique, JSON-LD `LocalBusiness` par page
+---
 
-## Design system
-Palette retenue (variante du HTML fourni — teal + jaune, sobre et moderne) :
-- `--primary` teal `#1B8A8A` (HSL `180 67% 32%`)
-- `--primary-dark` `#0F6F6F`
-- `--accent` jaune `#FFD700`
-- `--background` `#F5F5F5` clair / sections sombres en gradient teal→noir
-- Typo : Poppins (titres) + Inter (corps) via Google Fonts
-- Effets signature : glassmorphism sur cards du hero, gradient animé, hover lift, transitions 300–500ms, border-radius 8px
+## 1. Mise à jour des données centrales
 
-Tous les tokens définis en HSL dans `src/index.css` puis exposés via `tailwind.config.ts` (`primary`, `accent`, etc.) — pas de couleurs hardcodées dans les composants.
+**`src/lib/site.ts`** — enrichissement de la source unique de vérité :
+- Ajouter `foundedYear: 2017` et calcul d'ancienneté.
+- Passer `locations` d'un objet unique à un tableau `[Bénin (siège), Burkina Faso, Togo]` avec ville, adresse, téléphone, année d'implantation.
+- Ajouter `commitments` (6 engagements : authenticité, garantie 2 ans, commande spéciale 10j, standards européens, SAV, conseil expert).
+- Ajouter `institutionalClients` (PORTEO BTP, CONCENTRIX, MSFP, ABMS, AFRICAN PARKS…).
 
-## Structure des fichiers
+**Nouveau : `src/lib/catalog.ts`** — structure typée des 8 catégories tirée du docx :
+```ts
+type Brand = { name: string; models: string[]; highlights: string[] };
+type Category = { slug; icon; title; tagline; description; brands: Brand[] };
 ```
-src/
-  components/
-    layout/Header.tsx          # nav sticky, logo PAPARA.SHOP, menu, CTA "Explorer"
-    layout/Footer.tsx          # contact, liens, socials
-    home/HeroCarousel.tsx      # 5 slides auto-play + prev/next + indicators + pause
-    home/Specialties.tsx       # 4 cards (Photo, Vidéo, Accessoires, Studio)
-    home/FeaturedProducts.tsx  # 4 produits phares, lien externe
-    home/Stats.tsx             # 5105 clients, studio, matériel pro
-    shared/SectionTitle.tsx
-    shared/ExternalCatalogCTA.tsx  # bouton vers lesagecom.net/paparashop
-  pages/
-    Index.tsx
-    Catalogue.tsx
-    About.tsx
-    Services.tsx
-    Contact.tsx
-    NotFound.tsx
-  assets/  # images générées (hero + cards)
-  App.tsx  # routes
-  index.css, main.tsx
-```
+Contenu : Appareils photo/vidéo, Audio/Micros, Éclairage studio, Tournage (stabilisateurs/gimbals/drones), Moniteurs, Casques/Enceintes, Câbles/Batteries/Accessoires, Streaming/Broadcast.
 
-## Pages
+---
 
-**Home (`/`)**
-- Hero carousel 5 slides (Appareils Photo, Caméras 4K, Accessoires Studio, Objectifs, Équipement complet) — autoplay 5s, controls prev/next, indicators, pause, compteur "1/5"
-- Section "Nos spécialités" : 4 cards (Photo, Vidéo, Accessoires, Studio)
-- Stats : 5 105 clients satisfaits, studio équipé, matériel pro
-- Produits phares : 4 cards (Canon EOS R5, Sony A6700, Nikon Z9, Kit LED) — chaque CTA → catalogue externe
-- CTA final "Voir le catalogue complet" → `https://www.lesagecom.net/paparashop`
+## 2. Refonte de la page Catalogue (`src/routes/catalogue.tsx`)
 
-**Catalogue (`/catalogue`)**
-- Grille responsive par catégorie (Appareils, Caméras, Accessoires, Studio)
-- Cards image + titre + catégorie, hover zoom léger
-- Bandeau explicatif + gros bouton "Consulter les prix et commander" → lien externe (nouvelle fenêtre)
+Remplace la page actuelle (4 catégories génériques → 8 catégories fidèles au brief).
 
-**À propos (`/a-propos`)**
-- Notre histoire, passion photographie, engagement qualité
-- 3 valeurs (Professionnalisme, Expertise, Service client)
-- Liens Facebook / Instagram / TikTok
+Structure :
+1. **Hero catalogue** : titre + phrase de positionnement ("Seule boutique spécialisée d'Afrique de l'Ouest francophone") + CTA vers `lesagecom.net/catalogue/paparashop/`.
+2. **Grille des 8 catégories** en cartes avec icône Lucide, nombre de marques, description courte.
+3. **Section par catégorie** (ancres scroll) : titre + tagline + grille de marques. Chaque marque = carte cliquable ouvrant une modale `Dialog` shadcn avec la liste des modèles et points clés du docx.
+4. **Bandeau "Engagements"** : 6 piliers en icônes.
+5. **Section "Produits vedettes"** avec Tabs shadcn : Nouveautés / Best-sellers / Offres spéciales.
+6. **CTA final** vers plateforme externe.
 
-**Services (`/services`)**
-- 6 services en cards : vente appareils photo, vente caméras pro, accessoires studio, conseil achat, location (si applicable), SAV
-- Chaque card : icon + titre + description
+---
 
-**Contact (`/contact`)**
-- Coordonnées : +229 62447474, Abomey-Calavi (Benin), email à définir, horaires placeholder
-- Réseaux : Facebook Papara SHOP, Instagram @paparashop, TikTok @paparashop
-- Carte ou bloc statique (pas d'intégration Google Maps, juste adresse)
-- Formulaire contact simple (front-only, mailto: pour cette V1)
+## 3. Refonte page À propos (`src/routes/about.tsx`)
 
-## Images
-Génération via `imagegen` (fast) et stockage `src/assets/` :
-- 5 visuels hero (DSLR studio, caméra 4K, setup éclairage, objectifs, équipement complet)
-- 4 produits phares
-- Toutes en JPG, 1920×1080 hero, 800×600 produits
-- Pas d'images externes Unsplash (assets locaux pour performance + indépendance)
+- **Timeline verticale** : 2017 Bénin → 2021 Burkina Faso → 2025 Togo, avec le "pourquoi" (marché du reconditionné nigérian, besoin de crédibilité pro).
+- **Section mission/vision** reformulée depuis le docx.
+- **Grille "Ils nous font confiance"** avec les 5 clients institutionnels nommés (logos ou blocs texte) — complémentaire à la section `TrustedBy` (marques fournisseurs) de la home.
+- **Chiffres clés** mis à jour : 8 ans, 3 pays, 5000+ références, garantie 2 ans.
 
-## Données contact (à confirmer par l'utilisateur après build si besoin)
-- Téléphone : `+229 62447474`
-- Adresse : Abomey-Calavi, Benin (le HTML fourni mentionnait Cotonou Gbégamey — j'utiliserai **Abomey-Calavi** comme dans le brief principal)
-- Email : placeholder `contact@paparashop.bj`
-- Socials : Facebook "Papara SHOP", Instagram `paparashop`, TikTok `@paparashop`
+---
 
-## Routing
-- BrowserRouter avec route catch-all `*` → NotFound
-- Header avec NavLink (état actif souligné en jaune)
-- Lien "Catalogue" dans la nav pointe vers `/catalogue` (page interne) ; le bouton "Explorer" / "Voir le catalogue complet" pointe vers l'URL externe
+## 4. Refonte page Contact (`src/routes/contact.tsx`)
 
-## SEO & a11y
-- Title spécifique par page (`PaparaShop — Accueil`, etc.) via composant `<SEO>` simple manipulant document.head
-- Meta description française par page
-- H1 unique, alt sur toutes les images, `aria-label` sur boutons icônes du carousel
-- JSON-LD LocalBusiness sur la home
-- Lang `fr` sur `<html>`
+- **3 cartes pays** (Bénin siège / Burkina / Togo) avec adresse, tel, WhatsApp, horaires.
+- Formulaire contact conservé.
+- Carte / plans à défaut d'intégration Google Maps réelle.
+- Footer mis à jour pour lister les 3 pays.
 
-## Hors scope V1
-- Pas de backend, pas d'auth, pas de panier (catalogue externe gère tout)
-- Pas de CMS — contenu en dur dans les composants
-- Pas d'i18n
-- Google Analytics : à brancher plus tard (un placeholder commenté dans `index.html`)
+---
 
-Une fois validé, je passe en build et je livre l'ensemble en une itération.
+## 5. Impacts Home
+
+- **Header/Footer** : ajouter mention "Bénin • Burkina Faso • Togo".
+- **Hero** : sous-titre inclut "Depuis 2017" et "3 pays".
+- **Nouvelle section `Commitments`** (6 engagements) placée entre `Specialties` et `FeaturedProducts`.
+- **`Specialties`** : passer de 4 à 8 items pour rester cohérent avec les 8 catégories catalogue (version condensée, "Voir plus" → `/catalogue#slug`).
+- SEO : JSON-LD `LocalBusiness` étendu à 3 adresses (`branch`), `foundingDate: 2017-01-01`.
+
+---
+
+## 6. Composants nouveaux à créer
+
+- `src/components/catalog/CategorySection.tsx`
+- `src/components/catalog/BrandCard.tsx` + `BrandDetailsDialog.tsx`
+- `src/components/home/Commitments.tsx`
+- `src/components/about/Timeline.tsx`
+- `src/components/about/InstitutionalClients.tsx`
+- `src/components/contact/CountryCard.tsx`
+
+---
+
+## 7. Détails techniques
+
+- Toutes les données catalogue vivent dans `src/lib/catalog.ts` (pas d'appel réseau), typées, importées par la page.
+- Les modales utilisent `Dialog` shadcn déjà installé.
+- Animations Framer Motion : stagger sur les grilles de marques, fade sur la timeline.
+- Aucune modification du thème (teal/jaune conservé).
+- Aucun backend requis (contenu statique). Lovable Cloud non nécessaire à ce stade.
+- Les liens "Commander" continuent de pointer vers `https://www.lesagecom.net/catalogue/paparashop/`.
+
+---
+
+## 8. Hors périmètre (à valider séparément avec le client)
+
+- Colonne "Points clés" vide dans le docx pour DJI, Hollyland, Ulanzi, Aputure, Sutefoto → je mets des descriptions génériques crédibles, à faire relire.
+- Vraies photos des boutiques Bénin/Burkina/Togo → placeholders illustratifs pour l'instant.
+- Logos officiels des clients institutionnels (PORTEO, CONCENTRIX…) → blocs texte stylisés en attendant les fichiers.
+- Back-office pour éditer Nouveautés/Best-sellers/Promos → contenu figé pour l'instant, migrable vers Lovable Cloud si besoin.
+
+---
+
+## Livrables (ordre d'exécution)
+
+1. `site.ts` + création `catalog.ts`
+2. Page Catalogue refondue + composants catalog
+3. Composant Commitments + intégration home
+4. Page À propos refondue (Timeline + InstitutionalClients)
+5. Page Contact refondue (3 pays)
+6. Header/Footer + SEO JSON-LD
+
+**Estimation** : ~10-12 fichiers créés/modifiés en une passe.
+
+Confirmez ce plan (ou dites-moi ce qu'il faut ajuster) et je lance l'implémentation.

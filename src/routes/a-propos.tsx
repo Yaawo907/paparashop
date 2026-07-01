@@ -1,43 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Award, Heart, Users, Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
-import { SectionTitle } from "@/components/shared/SectionTitle";
-import { SITE } from "@/lib/site";
-import heroGear from "@/assets/hero-gear.jpg";
+import { Timeline } from "@/components/about/Timeline";
+import { InstitutionalClients } from "@/components/about/InstitutionalClients";
+import { Commitments } from "@/components/home/Commitments";
+import { Stats } from "@/components/home/Stats";
+import { SITE, LOCATIONS } from "@/lib/site";
 
 export const Route = createFileRoute("/a-propos")({
   component: AboutPage,
   head: () => ({
     meta: [
-      { title: "À propos — PaparaShop" },
+      { title: "À propos — PaparaShop | Depuis 2017 au Bénin, Burkina & Togo" },
       {
         name: "description",
         content:
-          "Découvrez PaparaShop, votre spécialiste de la photographie et de l'audiovisuel à Abomey-Calavi, Bénin. Notre histoire, nos valeurs et notre engagement.",
+          "Depuis 2017, PaparaShop est la seule boutique spécialisée d'Afrique de l'Ouest francophone dédiée au matériel photo & audiovisuel professionnel. Bénin, Burkina Faso et Togo.",
+      },
+      { property: "og:title", content: "À propos — PaparaShop" },
+      {
+        property: "og:description",
+        content:
+          "Notre histoire : de la fondation à Abomey-Calavi en 2017 à l'expansion Togo 2025.",
       },
     ],
   }),
 });
 
-const values = [
-  {
-    icon: Award,
-    title: "Professionnalisme",
-    text: "Une exigence de qualité sur chaque produit et chaque conseil prodigué à nos clients.",
-  },
-  {
-    icon: Heart,
-    title: "Passion",
-    text: "L'amour de l'image guide chacune de nos sélections, du capteur à l'éclairage studio.",
-  },
-  {
-    icon: Users,
-    title: "Service client",
-    text: "Un accompagnement humain, avant, pendant et après votre achat, pour vous aider à progresser.",
-  },
-];
-
 function AboutPage() {
+  const years = new Date().getFullYear() - SITE.foundedYear;
   return (
     <SiteLayout>
       <section className="bg-primary py-20 text-white sm:py-24">
@@ -46,67 +37,56 @@ function AboutPage() {
             Qui sommes-nous
           </p>
           <h1 className="font-display text-4xl font-bold sm:text-5xl md:text-6xl text-balance">
-            La passion de l'image, <span className="text-accent">au cœur du Bénin</span>
+            {years}+ ans au service de{" "}
+            <span className="text-accent">l'image professionnelle</span> en Afrique de l'Ouest
           </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg">
+            Fondé en {SITE.foundedYear} au Bénin, PaparaShop est aujourd'hui présent dans
+            {" "}{LOCATIONS.length} pays : Bénin, Burkina Faso et Togo.
+          </p>
         </div>
       </section>
 
+      {/* Mission */}
       <section className="bg-background py-20 sm:py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 md:grid-cols-2 md:items-center lg:px-8">
-          <div className="overflow-hidden rounded-xl">
-            <img
-              src={heroGear}
-              alt="Équipement photographique professionnel chez PaparaShop"
-              loading="lazy"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div>
-            <SectionTitle eyebrow="Notre histoire" title="Une référence de la photo à Abomey-Calavi" align="left" />
-            <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
-              <p>
-                Né d'une passion pour la photographie et l'audiovisuel, <strong>{SITE.fullName}</strong> est
-                devenu une référence pour les photographes, vidéastes et créateurs à {SITE.city}.
-              </p>
-              <p>
-                Nous sélectionnons rigoureusement chaque appareil, chaque objectif et chaque accessoire
-                pour vous garantir un matériel à la hauteur de vos ambitions — du débutant au studio
-                professionnel.
-              </p>
-              <p>
-                Plus de 5 000 clients nous ont déjà fait confiance. Vous êtes au bon endroit.
-              </p>
-            </div>
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+            Notre mission
+          </p>
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">
+            Rendre accessible du matériel <span className="text-primary">authentique et garanti</span>
+          </h2>
+          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-primary" />
+          <div className="mt-8 space-y-4 text-base leading-relaxed text-muted-foreground">
+            <p>
+              Le marché ouest-africain a longtemps été inondé de matériel reconditionné importé
+              du Nigeria, revendu au prix du neuf, sans garantie ni service après-vente.
+              PaparaShop est né du refus de cette réalité.
+            </p>
+            <p>
+              Nous sélectionnons chaque produit en circuit officiel, appliquons les standards
+              qualité européens et offrons une garantie pouvant aller jusqu'à 2 ans.
+              Notre équipe conseille aussi bien un particulier qu'une agence, une chaîne
+              de télévision ou une ONG internationale.
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="bg-secondary/40 py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionTitle eyebrow="Nos engagements" title="Nos valeurs" />
-          <div className="grid gap-6 sm:grid-cols-3">
-            {values.map(({ icon: Icon, title, text }) => (
-              <article
-                key={title}
-                className="rounded-xl border border-border bg-card p-8 text-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Icon className="h-7 w-7" strokeWidth={1.75} />
-                </div>
-                <h3 className="font-display text-lg font-bold">{title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Timeline />
+
+      <Stats />
+
+      <Commitments />
+
+      <InstitutionalClients />
 
       <section className="bg-primary py-16 text-center text-white">
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="font-display text-2xl font-bold sm:text-3xl">Suivez-nous</h2>
           <p className="mt-3 text-white/75">
-            Rejoignez la communauté PaparaShop sur les réseaux sociaux pour découvrir nos nouveautés
-            et inspirations photo.
+            Rejoignez la communauté PaparaShop pour découvrir nos nouveautés, tutos et
+            inspirations photo/vidéo.
           </p>
           <div className="mt-6 flex justify-center gap-4">
             <a
