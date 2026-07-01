@@ -71,7 +71,7 @@ export function Timeline() {
                     {s.text}
                   </p>
                 </div>
-              </motion.li>
+              </li>
             ))}
           </ol>
         </div>
