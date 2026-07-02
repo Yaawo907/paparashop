@@ -28,6 +28,7 @@ type FeaturedItem = {
   category: string;
   note: string;
   image: string;
+  url?: string;
 };
 
 const NEW_ARRIVALS: FeaturedItem[] = [
