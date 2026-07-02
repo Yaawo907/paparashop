@@ -45,13 +45,23 @@ import elgatoImg from "@/assets/streaming/elgato.jpg";
 import yoloboxImg from "@/assets/streaming/yolobox.jpg";
 import rodeStreamImg from "@/assets/streaming/rode.jpg";
 
+export type Model = string | { name: string; url?: string };
+
 export type Brand = {
   name: string;
-  models: string[];
+  models: Model[];
   highlights: string[];
   image?: string;
   url?: string;
 };
+
+export function getModelName(m: Model): string {
+  return typeof m === "string" ? m : m.name;
+}
+
+export function getModelUrl(m: Model): string | undefined {
+  return typeof m === "string" ? undefined : m.url;
+}
 
 
 export type Category = {
