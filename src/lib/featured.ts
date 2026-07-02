@@ -1,0 +1,58 @@
+import { SITE } from "@/lib/site";
+import canonR5m2 from "@/assets/featured/canon-r5m2.jpg";
+import sonyA7iv from "@/assets/featured/sony-a7iv.jpg";
+import djiRs4Pro from "@/assets/featured/dji-rs4pro.jpg";
+import aputure200xs from "@/assets/featured/aputure-200xs.jpg";
+import rodeWirelessPro from "@/assets/featured/rode-wireless-pro.jpg";
+import djiMic2 from "@/assets/featured/dji-mic2.jpg";
+import canon250d from "@/assets/featured/canon-250d.jpg";
+import sonyZv1 from "@/assets/featured/sony-zv1.jpg";
+import godoxSl60w from "@/assets/featured/godox-sl60w.jpg";
+import rodeVideomicGoii from "@/assets/featured/rode-videomic-goii.jpg";
+import zhiyunCraneM3 from "@/assets/featured/zhiyun-crane-m3.jpg";
+import hollylandLarkM2 from "@/assets/featured/hollyland-lark-m2.jpg";
+import packStudio from "@/assets/featured/pack-studio.jpg";
+import canonM50Kit from "@/assets/featured/canon-m50-kit.jpg";
+import rodePodcastBundle from "@/assets/featured/rode-podcast-bundle.jpg";
+import godoxAd200 from "@/assets/featured/godox-ad200.jpg";
+
+export type FeaturedItem = {
+  name: string;
+  category: string;
+  note: string;
+  image: string;
+  url?: string;
+};
+
+export type FeaturedGroup = "new" | "best" | "offers";
+
+export const NEW_ARRIVALS: FeaturedItem[] = [
+  { name: "Canon EOS R5 Mark II", category: "Hybride plein format", note: "45 MP, vidéo 8K RAW — flagship photo + vidéo", image: canonR5m2, url: SITE.catalogUrl },
+  { name: "Sony A7 IV", category: "Hybride plein format", note: "33 MP, 4K 60p — polyvalence pro", image: sonyA7iv, url: SITE.catalogUrl },
+  { name: "DJI RS 4 Pro", category: "Stabilisation", note: "Gimbal cinéma jusqu'à 4,5 kg", image: djiRs4Pro, url: SITE.catalogUrl },
+  { name: "Aputure Amaran 200x S", category: "Éclairage LED", note: "Bicolore 200W, silencieux", image: aputure200xs, url: SITE.catalogUrl },
+  { name: "RØDE Wireless PRO", category: "Micro sans-fil", note: "Dual channel + timecode", image: rodeWirelessPro, url: SITE.catalogUrl },
+  { name: "DJI Mic 2", category: "Micro sans-fil", note: "Enregistrement interne 32-bit float", image: djiMic2, url: SITE.catalogUrl },
+];
+
+export const BESTSELLERS: FeaturedItem[] = [
+  { name: "Canon EOS 250D", category: "Reflex débutant", note: "Le meilleur premier reflex pour créateurs", image: canon250d, url: SITE.catalogUrl },
+  { name: "Sony ZV-1", category: "Compact vlog", note: "Best-seller créateurs de contenu", image: sonyZv1, url: SITE.catalogUrl },
+  { name: "Godox SL-60W", category: "LED studio", note: "L'entrée de gamme incontournable", image: godoxSl60w, url: SITE.catalogUrl },
+  { name: "RØDE VideoMic Go II", category: "Micro shotgun", note: "Le micro caméra le plus vendu", image: rodeVideomicGoii, url: SITE.catalogUrl },
+  { name: "Zhiyun Crane M3", category: "Gimbal", note: "Ultra compact et polyvalent", image: zhiyunCraneM3, url: SITE.catalogUrl },
+  { name: "Hollyland Lark M2", category: "Micro sans-fil", note: "Discret, portée 300 m", image: hollylandLarkM2, url: SITE.catalogUrl },
+];
+
+export const OFFERS: FeaturedItem[] = [
+  { name: "Pack studio créateur", category: "Bundle", note: "Éclairage + fond + micro — offre limitée", image: packStudio, url: SITE.catalogUrl },
+  { name: "Canon EOS M50 Mark II + 15-45mm", category: "Kit hybride", note: "Prix promo -15%", image: canonM50Kit, url: SITE.catalogUrl },
+  { name: "Bundle podcast RØDECaster Duo + 2 PodMic", category: "Bundle audio", note: "Économisez sur le pack complet", image: rodePodcastBundle, url: SITE.catalogUrl },
+  { name: "Godox AD200 Pro", category: "Flash portable", note: "Offre déstockage", image: godoxAd200, url: SITE.catalogUrl },
+];
+
+export const ALL_FEATURED: { group: FeaturedGroup; item: FeaturedItem }[] = [
+  ...NEW_ARRIVALS.map((item) => ({ group: "new" as const, item })),
+  ...BESTSELLERS.map((item) => ({ group: "best" as const, item })),
+  ...OFFERS.map((item) => ({ group: "offers" as const, item })),
+];

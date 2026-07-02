@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Menu, X, Camera } from "lucide-react";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { GlobalSearch } from "./GlobalSearch";
 
 const nav = [
   { to: "/", label: "Accueil" },
@@ -59,23 +60,26 @@ export function Header() {
           ))}
         </ul>
 
-        <a
-          href={SITE.catalogUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden rounded-md border-2 border-accent px-5 py-2 font-display text-xs font-semibold text-accent transition-all hover:-translate-y-0.5 hover:bg-accent hover:text-primary hover:shadow-lg hover:shadow-accent/30 lg:inline-flex"
-        >
-          EXPLORER
-        </a>
+        <div className="flex items-center gap-1 lg:gap-3">
+          <GlobalSearch compact />
+          <a
+            href={SITE.catalogUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden rounded-md border-2 border-accent px-5 py-2 font-display text-xs font-semibold text-accent transition-all hover:-translate-y-0.5 hover:bg-accent hover:text-primary hover:shadow-lg hover:shadow-accent/30 lg:inline-flex"
+          >
+            EXPLORER
+          </a>
 
-        <button
-          type="button"
-          onClick={() => setOpen((s) => !s)}
-          aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-          className="rounded-md p-2 text-white lg:hidden"
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+          <button
+            type="button"
+            onClick={() => setOpen((s) => !s)}
+            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+            className="rounded-md p-2 text-white lg:hidden"
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </nav>
 
       {open && (
