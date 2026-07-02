@@ -14,6 +14,36 @@ import shureImg from "@/assets/audio/shure.jpg";
 import sennheiserImg from "@/assets/audio/sennheiser.jpg";
 import hollylandImg from "@/assets/audio/hollyland.jpg";
 import boyaImg from "@/assets/audio/boya.jpg";
+import canonImg from "@/assets/photo/canon.jpg";
+import nikonImg from "@/assets/photo/nikon.jpg";
+import sonyPhotoImg from "@/assets/photo/sony.jpg";
+import fujifilmImg from "@/assets/photo/fujifilm.jpg";
+import panasonicImg from "@/assets/photo/panasonic.jpg";
+import djiPhotoImg from "@/assets/photo/dji.jpg";
+import godoxImg from "@/assets/lighting/godox.jpg";
+import aputureImg from "@/assets/lighting/aputure.jpg";
+import ulanziImg from "@/assets/lighting/ulanzi.jpg";
+import vijimImg from "@/assets/lighting/vijim.jpg";
+import sutefotoImg from "@/assets/lighting/sutefoto.jpg";
+import djiProdImg from "@/assets/production/dji.jpg";
+import zhiyunImg from "@/assets/production/zhiyun.jpg";
+import manfrottoImg from "@/assets/production/manfrotto.jpg";
+import smallrigImg from "@/assets/production/smallrig.jpg";
+import atomosImg from "@/assets/monitors/atomos.jpg";
+import feelworldImg from "@/assets/monitors/feelworld.jpg";
+import blackmagicMonImg from "@/assets/monitors/blackmagic.jpg";
+import sonyHpImg from "@/assets/headphones/sony.jpg";
+import audiotechnicaImg from "@/assets/headphones/audiotechnica.jpg";
+import jblImg from "@/assets/headphones/jbl.jpg";
+import boseImg from "@/assets/headphones/bose.jpg";
+import sandiskImg from "@/assets/accessories/sandisk.jpg";
+import lexarImg from "@/assets/accessories/lexar.jpg";
+import newellImg from "@/assets/accessories/newell.jpg";
+import miscAccImg from "@/assets/accessories/misc.jpg";
+import blackmagicStreamImg from "@/assets/streaming/blackmagic.jpg";
+import elgatoImg from "@/assets/streaming/elgato.jpg";
+import yoloboxImg from "@/assets/streaming/yolobox.jpg";
+import rodeStreamImg from "@/assets/streaming/rode.jpg";
 
 export type Brand = {
   name: string;
@@ -43,6 +73,7 @@ export const CATEGORIES: Category[] = [
     brands: [
       {
         name: "Canon",
+        image: canonImg,
         models: ["EOS R5", "EOS R6 Mark II", "EOS 5D Mark IV", "EOS 250D"],
         highlights: [
           "Leader mondial des reflex et hybrides plein format",
@@ -52,6 +83,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Nikon",
+        image: nikonImg,
         models: ["Z9", "Z6 III", "Z5", "D850"],
         highlights: [
           "Robustesse légendaire des boîtiers pro",
@@ -61,6 +93,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Sony",
+        image: sonyPhotoImg,
         models: ["A7 IV", "A7S III", "A6700", "FX3"],
         highlights: [
           "Autofocus temps réel de référence sur le marché",
@@ -70,6 +103,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Fujifilm",
+        image: fujifilmImg,
         models: ["X-T5", "X-S20", "X100VI", "GFX 100S"],
         highlights: [
           "Simulations de films uniques (Classic Chrome, Velvia…)",
@@ -79,6 +113,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Panasonic Lumix",
+        image: panasonicImg,
         models: ["S5 II", "GH6", "GH7"],
         highlights: [
           "Références vidéo hybrides 4K/6K sans limite",
@@ -88,6 +123,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "DJI",
+        image: djiPhotoImg,
         models: ["Ronin 4D", "Osmo Pocket 3", "Mavic 3 Pro", "Air 3"],
         highlights: [
           "Leader mondial des drones et gimbals professionnels",
@@ -167,6 +203,7 @@ export const CATEGORIES: Category[] = [
     brands: [
       {
         name: "Godox",
+        image: godoxImg,
         models: ["SL-60W", "AD200 Pro", "VL150", "LC500R"],
         highlights: [
           "Leader du flash de studio abordable",
@@ -176,6 +213,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Aputure",
+        image: aputureImg,
         models: ["Amaran 200x", "LS 300x", "MC RGB", "Nova P300c"],
         highlights: [
           "Références cinéma en éclairage LED",
@@ -185,6 +223,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Ulanzi",
+        image: ulanziImg,
         models: ["VL200", "LT24 Softbox", "VL49 Mini"],
         highlights: [
           "Éclairage compact pour créateurs de contenu",
@@ -193,6 +232,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "VIJIM",
+        image: vijimImg,
         models: ["VL120", "K10", "LED Video Light"],
         highlights: [
           "Panneaux LED portables idéaux pour vlog et interview",
@@ -201,6 +241,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Sutefoto",
+        image: sutefotoImg,
         models: ["Softbox Octogonale", "Beauty Dish", "Kit fond studio"],
         highlights: [
           "Modificateurs de lumière et accessoires studio complets",
@@ -219,6 +260,7 @@ export const CATEGORIES: Category[] = [
     brands: [
       {
         name: "DJI",
+        image: djiProdImg,
         models: ["RS 4 Pro", "RS 3 Mini", "Mavic 3 Pro", "Inspire 3"],
         highlights: [
           "Standard mondial du gimbal et du drone",
@@ -227,6 +269,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Zhiyun",
+        image: zhiyunImg,
         models: ["Crane 4", "Weebill 3S", "Smooth 5S"],
         highlights: [
           "Alternative sérieuse à DJI en stabilisation",
@@ -235,6 +278,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Manfrotto",
+        image: manfrottoImg,
         models: ["MVK502 Trépied vidéo", "Rig cage", "Sliders"],
         highlights: [
           "Trépieds et supports de référence en broadcast",
@@ -243,6 +287,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "SmallRig",
+        image: smallrigImg,
         models: ["Cages Sony/Canon/Nikon", "Accessoires rig", "Poignées"],
         highlights: [
           "Cages et accessoires vidéo dédiés par boîtier",
@@ -261,6 +306,7 @@ export const CATEGORIES: Category[] = [
     brands: [
       {
         name: "Atomos",
+        image: atomosImg,
         models: ["Ninja V", "Ninja V+", "Shogun Connect"],
         highlights: [
           "Enregistreurs-moniteurs ProRes RAW de référence",
@@ -269,6 +315,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Feelworld",
+        image: feelworldImg,
         models: ["F6 Plus", "LUT7S", "Master MA7"],
         highlights: [
           "Moniteurs on-camera abordables et fiables",
@@ -277,6 +324,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Blackmagic",
+        image: blackmagicMonImg,
         models: ["Video Assist 5\" 12G", "Video Assist 7\" 12G HDR"],
         highlights: [
           "Enregistreurs 12G-SDI pour production broadcast",
@@ -295,6 +343,7 @@ export const CATEGORIES: Category[] = [
     brands: [
       {
         name: "Sony",
+        image: sonyHpImg,
         models: ["MDR-7506", "WH-1000XM5", "MDR-M1ST"],
         highlights: [
           "MDR-7506 : casque de référence broadcast depuis 30 ans",
@@ -303,6 +352,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Audio-Technica",
+        image: audiotechnicaImg,
         models: ["ATH-M50x", "ATH-M40x", "ATH-R70x"],
         highlights: [
           "Casques monitoring plébiscités en home studio",
@@ -311,6 +361,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "JBL",
+        image: jblImg,
         models: ["305P MkII", "Tune 770NC", "Charge 5"],
         highlights: [
           "Enceintes de monitoring nearfield",
@@ -319,6 +370,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Bose",
+        image: boseImg,
         models: ["QC Ultra", "700", "SoundLink"],
         highlights: [
           "Référence en réduction de bruit et écoute nomade",
@@ -336,6 +388,7 @@ export const CATEGORIES: Category[] = [
     brands: [
       {
         name: "SanDisk",
+        image: sandiskImg,
         models: ["Extreme Pro SD 128 Go", "CFexpress Type B", "Extreme Portable SSD"],
         highlights: [
           "Cartes mémoire de référence pour photo et 4K/8K",
@@ -344,6 +397,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Lexar",
+        image: lexarImg,
         models: ["Professional SDXC", "CFexpress Diamond", "microSD 1 To"],
         highlights: [
           "Alternative fiable et rapide à SanDisk",
@@ -351,6 +405,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Newell / Patona",
+        image: newellImg,
         models: ["Batteries LP-E6NH", "NP-FZ100", "EN-EL15c", "Chargeurs double"],
         highlights: [
           "Batteries compatibles à prix maîtrisé",
@@ -359,6 +414,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Accessoires",
+        image: miscAccImg,
         models: [
           "Câbles HDMI 2.1 & SDI",
           "Filtres ND variables, UV, polarisants",
@@ -381,6 +437,7 @@ export const CATEGORIES: Category[] = [
     brands: [
       {
         name: "Blackmagic Design",
+        image: blackmagicStreamImg,
         models: ["ATEM Mini Pro ISO", "ATEM Mini Extreme", "Web Presenter HD"],
         highlights: [
           "Régies de mélange vidéo abordables et pro",
@@ -389,6 +446,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Elgato",
+        image: elgatoImg,
         models: ["Stream Deck +", "Cam Link 4K", "Wave XLR"],
         highlights: [
           "Écosystème complet pour streamers et créateurs",
@@ -397,6 +455,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Yolobox",
+        image: yoloboxImg,
         models: ["Yolobox Pro", "Yolobox Ultra", "Yolobox Mini"],
         highlights: [
           "Régie tout-en-un multi-cam avec streaming direct",
@@ -405,6 +464,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "RØDE",
+        image: rodeStreamImg,
         models: ["RØDECaster Pro II", "RØDECaster Duo", "Streamer X"],
         highlights: [
           "Consoles audio pour podcast et streaming",
