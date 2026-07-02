@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
 import { CategorySection } from "@/components/catalog/CategorySection";
+import { FeaturedProductsTabs } from "@/components/catalog/FeaturedProductsTabs";
 import { Commitments } from "@/components/home/Commitments";
+
 import { CATEGORIES } from "@/lib/catalog";
 
 export const Route = createFileRoute("/catalogue")({
@@ -83,7 +85,10 @@ function CataloguePage() {
         <CategorySection key={cat.slug} category={cat} index={idx} />
       ))}
 
+      <FeaturedProductsTabs />
+
       <Commitments />
+
 
       <section className="gradient-hero py-20 text-center text-white">
         <div className="mx-auto max-w-2xl px-4">

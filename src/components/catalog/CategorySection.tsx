@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronRight, MessageCircle } from "lucide-react";
 import type { Brand, Category } from "@/lib/catalog";
+import { SITE } from "@/lib/site";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +10,7 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
 
 export function CategorySection({
   category,
@@ -118,8 +120,31 @@ export function CategorySection({
                       ))}
                     </ul>
                   </div>
+                  <div className="flex flex-col gap-2 border-t border-border pt-4 sm:flex-row">
+                    <a
+                      href={SITE.catalogUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 font-display text-sm font-semibold text-primary shadow-md transition-all hover:-translate-y-0.5"
+                    >
+                      Commander sur la plateforme
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                    <a
+                      href={`https://wa.me/22962447474?text=${encodeURIComponent(
+                        `Bonjour PaparaShop, je souhaite un devis pour ${brand.name} (${category.title}).`,
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 rounded-md border-2 border-primary px-4 py-2.5 font-display text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-white"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      WhatsApp
+                    </a>
+                  </div>
                 </div>
               </DialogContent>
+
             </Dialog>
           ))}
         </div>
