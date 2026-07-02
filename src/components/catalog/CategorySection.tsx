@@ -104,6 +104,17 @@ export function CategorySection({
                   </DialogDescription>
                 </DialogHeader>
                 <div className="mt-2 space-y-5">
+                  {brand.image ? (
+                    <div className="-mx-6 aspect-[16/9] overflow-hidden bg-secondary/50 sm:mx-0 sm:rounded-lg">
+                      <img
+                        src={brand.image}
+                        alt={brand.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ) : null}
+
                   <div>
                     <p className="mb-2 font-display text-xs font-semibold uppercase tracking-widest text-primary">
                       Modèles référencés
