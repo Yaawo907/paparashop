@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowUpRight, ChevronRight, MessageCircle } from "lucide-react";
-import type { Brand, Category } from "@/lib/catalog";
+import { type Brand, type Category, getModelName, getModelUrl } from "@/lib/catalog";
 import { SITE } from "@/lib/site";
 import {
   Dialog,
@@ -83,7 +83,7 @@ export function CategorySection({
                       {brand.name}
                     </p>
                     <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                      {brand.models.slice(0, 3).join(" • ")}
+                      {brand.models.slice(0, 3).map(getModelName).join(" • ")}
                       {brand.models.length > 3 && "…"}
                     </p>
                     <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary transition-colors group-hover:text-accent-foreground">
