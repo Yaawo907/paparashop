@@ -50,6 +50,7 @@ export type Brand = {
   models: string[];
   highlights: string[];
   image?: string;
+  url?: string;
 };
 
 
