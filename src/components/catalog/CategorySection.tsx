@@ -120,14 +120,30 @@ export function CategorySection({
                       Modèles référencés
                     </p>
                     <ul className="grid gap-1.5 sm:grid-cols-2">
-                      {brand.models.map((m) => (
-                        <li
-                          key={m}
-                          className="rounded-md bg-secondary/60 px-3 py-1.5 text-sm text-foreground"
-                        >
-                          {m}
-                        </li>
-                      ))}
+                      {brand.models.map((m) => {
+                        const name = getModelName(m);
+                        const url = getModelUrl(m);
+                        return (
+                          <li
+                            key={name}
+                            className="rounded-md bg-secondary/60 px-3 py-1.5 text-sm text-foreground"
+                          >
+                            {url ? (
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-foreground hover:text-primary hover:underline"
+                              >
+                                {name}
+                                <ArrowUpRight className="h-3 w-3 opacity-60" />
+                              </a>
+                            ) : (
+                              name
+                            )}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                   <div>
