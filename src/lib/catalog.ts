@@ -9,12 +9,19 @@ import {
   Radio,
   type LucideIcon,
 } from "lucide-react";
+import rodeImg from "@/assets/audio/rode.jpg";
+import shureImg from "@/assets/audio/shure.jpg";
+import sennheiserImg from "@/assets/audio/sennheiser.jpg";
+import hollylandImg from "@/assets/audio/hollyland.jpg";
+import boyaImg from "@/assets/audio/boya.jpg";
 
 export type Brand = {
   name: string;
   models: string[];
   highlights: string[];
+  image?: string;
 };
+
 
 export type Category = {
   slug: string;
@@ -100,6 +107,7 @@ export const CATEGORIES: Category[] = [
     brands: [
       {
         name: "Rode",
+        image: rodeImg,
         models: ["NTG5", "VideoMic Pro+", "Wireless GO II", "PodMic"],
         highlights: [
           "Standard mondial du micro caméra et podcast",
@@ -109,6 +117,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Shure",
+        image: shureImg,
         models: ["SM7B", "SM58", "MV7", "BLX Wireless"],
         highlights: [
           "Référence radio, scène et studio depuis 90 ans",
@@ -118,6 +127,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Sennheiser",
+        image: sennheiserImg,
         models: ["MKE 600", "EW 100 G4", "MD 46", "Profile USB"],
         highlights: [
           "Fabrication allemande, qualité audio broadcast",
@@ -127,6 +137,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "Hollyland",
+        image: hollylandImg,
         models: ["Lark M2", "Lark Max", "Mars 400S Pro"],
         highlights: [
           "Rapport qualité/prix imbattable en HF",
@@ -136,6 +147,7 @@ export const CATEGORIES: Category[] = [
       },
       {
         name: "BOYA",
+        image: boyaImg,
         models: ["BY-M1", "BY-WM4 Pro", "BY-BM3030"],
         highlights: [
           "Accessoires audio abordables pour smartphone et DSLR",
@@ -143,6 +155,7 @@ export const CATEGORIES: Category[] = [
         ],
       },
     ],
+
   },
   {
     slug: "eclairage-studio",

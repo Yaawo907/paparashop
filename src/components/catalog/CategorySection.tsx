@@ -64,21 +64,36 @@ export function CategorySection({
               <DialogTrigger asChild>
                 <button
                   type="button"
-                  className="group flex flex-col rounded-xl border-2 border-primary/15 bg-white p-6 text-left transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg"
+                  className="group flex flex-col overflow-hidden rounded-xl border-2 border-primary/15 bg-white text-left transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg"
                 >
-                  <p className="font-display text-lg font-bold text-primary">
-                    {brand.name}
-                  </p>
-                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                    {brand.models.slice(0, 3).join(" • ")}
-                    {brand.models.length > 3 && "…"}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary transition-colors group-hover:text-accent-foreground">
-                    Voir les modèles
-                    <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </span>
+                  {brand.image ? (
+                    <div className="aspect-[4/3] w-full overflow-hidden bg-secondary/50">
+                      <img
+                        src={brand.image}
+                        alt={`${brand.name} — ${category.title}`}
+                        loading="lazy"
+                        width={1024}
+                        height={768}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  ) : null}
+                  <div className="flex flex-1 flex-col p-6">
+                    <p className="font-display text-lg font-bold text-primary">
+                      {brand.name}
+                    </p>
+                    <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                      {brand.models.slice(0, 3).join(" • ")}
+                      {brand.models.length > 3 && "…"}
+                    </p>
+                    <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary transition-colors group-hover:text-accent-foreground">
+                      Voir les modèles
+                      <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
                 </button>
               </DialogTrigger>
+
               <DialogContent className="max-w-lg">
                 <DialogHeader>
                   <DialogTitle className="font-display text-2xl text-primary">
@@ -89,6 +104,17 @@ export function CategorySection({
                   </DialogDescription>
                 </DialogHeader>
                 <div className="mt-2 space-y-5">
+                  {brand.image ? (
+                    <div className="-mx-6 aspect-[16/9] overflow-hidden bg-secondary/50 sm:mx-0 sm:rounded-lg">
+                      <img
+                        src={brand.image}
+                        alt={brand.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ) : null}
+
                   <div>
                     <p className="mb-2 font-display text-xs font-semibold uppercase tracking-widest text-primary">
                       Modèles référencés
