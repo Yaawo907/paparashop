@@ -148,7 +148,7 @@ export function CategorySection({
                   </div>
                   <div className="flex flex-col gap-2 border-t border-border pt-4 sm:flex-row">
                     <a
-                      href={SITE.catalogUrl}
+                      href={brand.url || SITE.catalogUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 font-display text-sm font-semibold text-primary shadow-md transition-all hover:-translate-y-0.5"

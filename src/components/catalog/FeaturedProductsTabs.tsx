@@ -32,28 +32,28 @@ type FeaturedItem = {
 };
 
 const NEW_ARRIVALS: FeaturedItem[] = [
-  { name: "Canon EOS R5 Mark II", category: "Hybride plein format", note: "45 MP, vidéo 8K RAW — flagship photo + vidéo", image: canonR5m2 },
-  { name: "Sony A7 IV", category: "Hybride plein format", note: "33 MP, 4K 60p — polyvalence pro", image: sonyA7iv },
-  { name: "DJI RS 4 Pro", category: "Stabilisation", note: "Gimbal cinéma jusqu'à 4,5 kg", image: djiRs4Pro },
-  { name: "Aputure Amaran 200x S", category: "Éclairage LED", note: "Bicolore 200W, silencieux", image: aputure200xs },
-  { name: "RØDE Wireless PRO", category: "Micro sans-fil", note: "Dual channel + timecode", image: rodeWirelessPro },
-  { name: "DJI Mic 2", category: "Micro sans-fil", note: "Enregistrement interne 32-bit float", image: djiMic2 },
+  { name: "Canon EOS R5 Mark II", category: "Hybride plein format", note: "45 MP, vidéo 8K RAW — flagship photo + vidéo", image: canonR5m2, url: SITE.catalogUrl },
+  { name: "Sony A7 IV", category: "Hybride plein format", note: "33 MP, 4K 60p — polyvalence pro", image: sonyA7iv, url: SITE.catalogUrl },
+  { name: "DJI RS 4 Pro", category: "Stabilisation", note: "Gimbal cinéma jusqu'à 4,5 kg", image: djiRs4Pro, url: SITE.catalogUrl },
+  { name: "Aputure Amaran 200x S", category: "Éclairage LED", note: "Bicolore 200W, silencieux", image: aputure200xs, url: SITE.catalogUrl },
+  { name: "RØDE Wireless PRO", category: "Micro sans-fil", note: "Dual channel + timecode", image: rodeWirelessPro, url: SITE.catalogUrl },
+  { name: "DJI Mic 2", category: "Micro sans-fil", note: "Enregistrement interne 32-bit float", image: djiMic2, url: SITE.catalogUrl },
 ];
 
 const BESTSELLERS: FeaturedItem[] = [
-  { name: "Canon EOS 250D", category: "Reflex débutant", note: "Le meilleur premier reflex pour créateurs", image: canon250d },
-  { name: "Sony ZV-1", category: "Compact vlog", note: "Best-seller créateurs de contenu", image: sonyZv1 },
-  { name: "Godox SL-60W", category: "LED studio", note: "L'entrée de gamme incontournable", image: godoxSl60w },
-  { name: "RØDE VideoMic Go II", category: "Micro shotgun", note: "Le micro caméra le plus vendu", image: rodeVideomicGoii },
-  { name: "Zhiyun Crane M3", category: "Gimbal", note: "Ultra compact et polyvalent", image: zhiyunCraneM3 },
-  { name: "Hollyland Lark M2", category: "Micro sans-fil", note: "Discret, portée 300 m", image: hollylandLarkM2 },
+  { name: "Canon EOS 250D", category: "Reflex débutant", note: "Le meilleur premier reflex pour créateurs", image: canon250d, url: SITE.catalogUrl },
+  { name: "Sony ZV-1", category: "Compact vlog", note: "Best-seller créateurs de contenu", image: sonyZv1, url: SITE.catalogUrl },
+  { name: "Godox SL-60W", category: "LED studio", note: "L'entrée de gamme incontournable", image: godoxSl60w, url: SITE.catalogUrl },
+  { name: "RØDE VideoMic Go II", category: "Micro shotgun", note: "Le micro caméra le plus vendu", image: rodeVideomicGoii, url: SITE.catalogUrl },
+  { name: "Zhiyun Crane M3", category: "Gimbal", note: "Ultra compact et polyvalent", image: zhiyunCraneM3, url: SITE.catalogUrl },
+  { name: "Hollyland Lark M2", category: "Micro sans-fil", note: "Discret, portée 300 m", image: hollylandLarkM2, url: SITE.catalogUrl },
 ];
 
 const OFFERS: FeaturedItem[] = [
-  { name: "Pack studio créateur", category: "Bundle", note: "Éclairage + fond + micro — offre limitée", image: packStudio },
-  { name: "Canon EOS M50 Mark II + 15-45mm", category: "Kit hybride", note: "Prix promo -15%", image: canonM50Kit },
-  { name: "Bundle podcast RØDECaster Duo + 2 PodMic", category: "Bundle audio", note: "Économisez sur le pack complet", image: rodePodcastBundle },
-  { name: "Godox AD200 Pro", category: "Flash portable", note: "Offre déstockage", image: godoxAd200 },
+  { name: "Pack studio créateur", category: "Bundle", note: "Éclairage + fond + micro — offre limitée", image: packStudio, url: SITE.catalogUrl },
+  { name: "Canon EOS M50 Mark II + 15-45mm", category: "Kit hybride", note: "Prix promo -15%", image: canonM50Kit, url: SITE.catalogUrl },
+  { name: "Bundle podcast RØDECaster Duo + 2 PodMic", category: "Bundle audio", note: "Économisez sur le pack complet", image: rodePodcastBundle, url: SITE.catalogUrl },
+  { name: "Godox AD200 Pro", category: "Flash portable", note: "Offre déstockage", image: godoxAd200, url: SITE.catalogUrl },
 ];
 
 function Grid({ items }: { items: FeaturedItem[] }) {
@@ -81,7 +81,7 @@ function Grid({ items }: { items: FeaturedItem[] }) {
             <h3 className="mt-1 font-display text-lg font-bold text-primary">{it.name}</h3>
             <p className="mt-2 flex-1 text-sm text-muted-foreground">{it.note}</p>
             <a
-              href={SITE.catalogUrl}
+              href={it.url || SITE.catalogUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary hover:text-accent-foreground"
