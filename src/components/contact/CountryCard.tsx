@@ -5,6 +5,11 @@ export function CountryCard({ loc }: { loc: Location }) {
   return (
     <article className="relative flex h-full flex-col overflow-hidden rounded-xl border-2 border-primary/15 bg-card p-7 shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl">
       <div className="absolute inset-x-0 top-0 h-1.5 gradient-teal-gold" />
+      {loc.image && (
+        <div className="-mx-7 -mt-7 mb-5 h-40 overflow-hidden">
+          <img src={loc.image} alt={loc.imageAlt ?? loc.country} className="h-full w-full object-cover" loading="lazy" />
+        </div>
+      )}
       <div className="mb-4 flex items-start justify-between">
         <div>
           <p className="font-display text-xs font-semibold uppercase tracking-widest text-accent-foreground/70">
@@ -43,6 +48,19 @@ export function CountryCard({ loc }: { loc: Location }) {
               className="text-muted-foreground hover:text-primary"
             >
               WhatsApp : {loc.whatsapp}
+            </a>
+          </li>
+        )}
+        {loc.whatsapp2Href && (
+          <li className="flex items-start gap-3">
+            <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <a
+              href={loc.whatsapp2Href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-primary"
+            >
+              WhatsApp : {loc.whatsapp2}
             </a>
           </li>
         )}
