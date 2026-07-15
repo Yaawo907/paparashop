@@ -4,17 +4,17 @@ export const SITE = {
   tagline: "Photo • Audiovisuel",
   foundedYear: 2017,
   // Legacy fields (siège Bénin) — conservés pour compatibilité
-  city: "Abomey-Calavi",
+  city: "Godomey",
   country: "Bénin",
-  phone: "+229 62 44 74 74",
-  phoneHref: "tel:+22962447474",
+  phone: "+229 01 62 44 74 74",
+  phoneHref: "tel:+2290162447474",
   email: "contact@paparashop.bj",
   emailHref: "mailto:contact@paparashop.bj",
   catalogUrl: "https://www.lesagecom.net/catalogue/paparashop/",
   socials: {
-    facebook: "https://www.facebook.com/paparashop",
-    instagram: "https://www.instagram.com/paparashop",
-    tiktok: "https://www.tiktok.com/@paparashop",
+    facebook: "https://www.facebook.com/share/1DqnXkij9t/",
+    instagram: "https://www.instagram.com/paparashop_bj?igsh=dTR3YjQycjExcGFk",
+    tiktok: "https://www.tiktok.com/@paparashop?_r=1&_t=ZS-981xPrrW9ES",
   },
   hours: "Lun – Sam : 9h00 – 19h00",
 };
@@ -29,6 +29,8 @@ export type Location = {
   phoneHref: string;
   whatsapp?: string;
   whatsappHref?: string;
+  whatsapp2?: string;
+  whatsapp2Href?: string;
   since: number;
   isHQ?: boolean;
   hours: string;
@@ -39,12 +41,14 @@ export const LOCATIONS: Location[] = [
     slug: "benin",
     country: "Bénin",
     countryCode: "BJ",
-    city: "Abomey-Calavi",
-    address: "Abomey-Calavi, Bénin",
-    phone: "+229 62 44 74 74",
-    phoneHref: "tel:+22962447474",
-    whatsapp: "+229 62 44 74 74",
-    whatsappHref: "https://wa.me/22962447474",
+    city: "Godomey",
+    address: "Godomey Gare, en face de la pharmacie Houenoussou Gare",
+    phone: "+229 01 62 44 74 74",
+    phoneHref: "tel:+2290162447474",
+    whatsapp: "+229 01 62 44 74 74",
+    whatsappHref: "https://wa.me/2290162447474",
+    whatsapp2: "+229 01 61 81 48 28",
+    whatsapp2Href: "https://wa.me/2290161814828",
     since: 2017,
     isHQ: true,
     hours: "Lun – Sam : 9h00 – 19h00",
@@ -55,8 +59,10 @@ export const LOCATIONS: Location[] = [
     countryCode: "BF",
     city: "Ouagadougou",
     address: "Ouagadougou, Burkina Faso",
-    phone: "+226 00 00 00 00",
-    phoneHref: "tel:+22600000000",
+    phone: "+226 71 75 41 02",
+    phoneHref: "tel:+22671754102",
+    whatsapp: "+226 71 75 41 02",
+    whatsappHref: "https://wa.me/22671754102",
     since: 2021,
     hours: "Lun – Sam : 9h00 – 18h00",
   },
@@ -65,9 +71,11 @@ export const LOCATIONS: Location[] = [
     country: "Togo",
     countryCode: "TG",
     city: "Lomé",
-    address: "Lomé, Togo",
-    phone: "+228 00 00 00 00",
-    phoneHref: "tel:+22800000000",
+    address: "Bè Aveto, à 50 m de la pharmacie Cristal, Lomé",
+    phone: "+228 92 27 12 20",
+    phoneHref: "tel:+22892271220",
+    whatsapp: "+228 92 27 12 20",
+    whatsappHref: "https://wa.me/22892271220",
     since: 2025,
     hours: "Lun – Sam : 9h00 – 18h00",
   },
