@@ -114,10 +114,32 @@ export const COMMITMENTS = [
   },
 ];
 
-export const INSTITUTIONAL_CLIENTS = [
-  { name: "PORTEO BTP", sector: "BTP & Infrastructures" },
-  { name: "CONCENTRIX", sector: "Services numériques" },
-  { name: "MSFP", sector: "Institutionnel" },
-  { name: "ABMS", sector: "Santé publique" },
-  { name: "AFRICAN PARKS", sector: "Conservation & ONG" },
+import porteoLogo from "@/assets/clients/porteo-btp.png.asset.json";
+import concentrixLogo from "@/assets/clients/concentrix.png.asset.json";
+import msfpLogo from "@/assets/clients/msfp.png.asset.json";
+import abmsLogo from "@/assets/clients/abms.png.asset.json";
+import africanParksLogo from "@/assets/clients/african-parks.png.asset.json";
+import beninExcellenceLogo from "@/assets/clients/benin-excellence.png.asset.json";
+import iucnLogo from "@/assets/clients/iucn.jpeg.asset.json";
+import sensBeninLogo from "@/assets/clients/sens-benin.png.asset.json";
+import siabLogo from "@/assets/clients/siab.jpeg.asset.json";
+import lafargeLogo from "@/assets/clients/scb-lafarge.jpeg.asset.json";
+
+export type InstitutionalClient = {
+  name: string;
+  sector: string;
+  logo: string;
+};
+
+export const INSTITUTIONAL_CLIENTS: InstitutionalClient[] = [
+  { name: "PORTEO BTP", sector: "BTP & Infrastructures", logo: porteoLogo.url },
+  { name: "CONCENTRIX", sector: "Services numériques", logo: concentrixLogo.url },
+  { name: "MSFP", sector: "Institutionnel", logo: msfpLogo.url },
+  { name: "ABMS", sector: "Santé publique", logo: abmsLogo.url },
+  { name: "AFRICAN PARKS", sector: "Conservation & ONG", logo: africanParksLogo.url },
+  { name: "Bénin Excellence", sector: "Institutionnel", logo: beninExcellenceLogo.url },
+  { name: "IUCN", sector: "Conservation & ONG", logo: iucnLogo.url },
+  { name: "SENS Bénin", sector: "Solidarités Entreprises", logo: sensBeninLogo.url },
+  { name: "SIAB", sector: "Industrie", logo: siabLogo.url },
+  { name: "SCB Lafarge", sector: "BTP & Matériaux", logo: lafargeLogo.url },
 ];
