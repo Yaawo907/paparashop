@@ -1,3 +1,5 @@
+import shopBeninImg from "@/assets/papara-shop-benin.jpeg.asset.json";
+
 export const SITE = {
   name: "PaparaShop",
   fullName: "Papara SHOP",
