@@ -173,7 +173,7 @@ export function CategorySection({
                       <ArrowUpRight className="h-4 w-4" />
                     </a>
                     <a
-                      href={`https://wa.me/22962447474?text=${encodeURIComponent(
+                      href={`https://wa.me/2290162447474?text=${encodeURIComponent(
                         `Bonjour PaparaShop, je souhaite un devis pour ${brand.name} (${category.title}).`,
                       )}`}
                       target="_blank"
