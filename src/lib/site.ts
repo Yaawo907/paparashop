@@ -34,6 +34,8 @@ export type Location = {
   since: number;
   isHQ?: boolean;
   hours: string;
+  image?: string;
+  imageAlt?: string;
 };
 
 export const LOCATIONS: Location[] = [
