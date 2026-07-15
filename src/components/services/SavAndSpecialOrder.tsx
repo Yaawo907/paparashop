@@ -35,7 +35,7 @@ Détails : ${form.message}`;
   };
 
   const openWhatsApp = () => {
-    const url = `https://wa.me/22962447474?text=${encodeURIComponent(buildMessage())}`;
+    const url = `https://wa.me/2290162447474?text=${encodeURIComponent(buildMessage())}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
