@@ -46,6 +46,19 @@ export function CountryCard({ loc }: { loc: Location }) {
             </a>
           </li>
         )}
+        {loc.whatsapp2Href && (
+          <li className="flex items-start gap-3">
+            <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <a
+              href={loc.whatsapp2Href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-primary"
+            >
+              WhatsApp : {loc.whatsapp2}
+            </a>
+          </li>
+        )}
         <li className="flex items-start gap-3">
           <Clock className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
           <span className="text-muted-foreground">{loc.hours}</span>
