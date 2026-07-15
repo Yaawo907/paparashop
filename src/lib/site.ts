@@ -54,6 +54,8 @@ export const LOCATIONS: Location[] = [
     since: 2017,
     isHQ: true,
     hours: "Lun – Sam : 9h00 – 19h00",
+    image: shopBeninImg.url,
+    imageAlt: "Boutique PaparaShop — Abomey-Calavi / Godomey, Bénin",
   },
   {
     slug: "burkina",
