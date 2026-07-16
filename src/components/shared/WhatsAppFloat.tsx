@@ -1,8 +1,15 @@
 // ============================================================
-// FICHIER : src/components/shared/WhatsAppFloat.tsx  (NOUVEAU)
+// FICHIER : src/components/shared/WhatsAppFloat.tsx
 // Bouton WhatsApp flottant, visible sur toutes les pages.
+// Au clic, affiche un sélecteur des 3 boutiques (Bénin, Burkina, Togo).
 // ============================================================
+import { useState } from "react";
 import { LOCATIONS } from "@/lib/site";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 // Message pré-rempli quand le client clique (modifiable librement)
 const PREFILLED_MESSAGE =
@@ -17,31 +24,122 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
+// Emoji drapeau à partir du code pays ISO (BJ, BF, TG…)
+function flagEmoji(code: string) {
+  return code
+    .toUpperCase()
+    .replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
+}
+
+function waLink(number: string) {
+  const digits = number.replace(/[^0-9]/g, "");
+  return `https://wa.me/${digits}?text=${encodeURIComponent(PREFILLED_MESSAGE)}`;
+}
+
+type ShopOption = {
+  key: string;
+  country: string;
+  countryCode: string;
+  city: string;
+  label: string;
+  href: string;
+};
+
 export function WhatsAppFloat() {
-  // On utilise le numéro du siège (Bénin) défini dans src/lib/site.ts
-  const hq = LOCATIONS.find((l) => l.isHQ) ?? LOCATIONS[0];
-  const number = (hq.whatsapp ?? hq.phone).replace(/[^0-9]/g, "");
-  const href = `https://wa.me/${number}?text=${encodeURIComponent(PREFILLED_MESSAGE)}`;
+  const [open, setOpen] = useState(false);
+
+  // Une entrée par numéro WhatsApp disponible (Bénin en a deux)
+  const options: ShopOption[] = LOCATIONS.flatMap((loc) => {
+    const list: ShopOption[] = [];
+    if (loc.whatsapp) {
+      list.push({
+        key: `${loc.slug}-1`,
+        country: loc.country,
+        countryCode: loc.countryCode,
+        city: loc.city,
+        label: loc.whatsapp,
+        href: waLink(loc.whatsapp),
+      });
+    }
+    if (loc.whatsapp2) {
+      list.push({
+        key: `${loc.slug}-2`,
+        country: loc.country,
+        countryCode: loc.countryCode,
+        city: loc.city,
+        label: loc.whatsapp2,
+        href: waLink(loc.whatsapp2),
+      });
+    }
+    return list;
+  });
 
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Discuter avec PaparaShop sur WhatsApp"
-      className="group fixed bottom-5 right-5 z-50 flex items-center gap-0 sm:bottom-6 sm:right-6"
-    >
-      {/* Étiquette (visible au survol sur grand écran) */}
-      <span className="pointer-events-none mr-3 hidden max-w-0 overflow-hidden whitespace-nowrap rounded-full bg-white px-0 py-2 text-sm font-semibold text-[#1B8A8A] opacity-0 shadow-lg transition-all duration-300 group-hover:max-w-xs group-hover:px-4 group-hover:opacity-100 lg:block">
-        Commander sur WhatsApp
-      </span>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          aria-label="Discuter avec PaparaShop sur WhatsApp"
+          className="group fixed bottom-5 right-5 z-50 flex items-center gap-0 sm:bottom-6 sm:right-6"
+        >
+          {/* Étiquette (visible au survol sur grand écran) */}
+          <span className="pointer-events-none mr-3 hidden max-w-0 overflow-hidden whitespace-nowrap rounded-full bg-white px-0 py-2 text-sm font-semibold text-[#1B8A8A] opacity-0 shadow-lg transition-all duration-300 group-hover:max-w-xs group-hover:px-4 group-hover:opacity-100 lg:block">
+            Commander sur WhatsApp
+          </span>
 
-      {/* Bouton rond */}
-      <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl shadow-[#25D366]/40 transition-transform duration-300 group-hover:scale-110 motion-safe:animate-none">
-        {/* Halo pulsant (désactivé si l'utilisateur préfère moins d'animations) */}
-        <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-40 motion-safe:animate-ping motion-reduce:hidden" />
-        <WhatsAppIcon className="relative h-7 w-7" />
-      </span>
-    </a>
+          {/* Bouton rond */}
+          <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl shadow-[#25D366]/40 transition-transform duration-300 group-hover:scale-110">
+            {!open && (
+              <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-40 motion-safe:animate-ping motion-reduce:hidden" />
+            )}
+            <WhatsAppIcon className="relative h-7 w-7" />
+          </span>
+        </button>
+      </PopoverTrigger>
+
+      <PopoverContent
+        align="end"
+        side="top"
+        sideOffset={12}
+        className="z-50 w-[19rem] rounded-2xl p-0 shadow-2xl"
+      >
+        <div className="rounded-t-2xl bg-[#25D366] px-4 py-3 text-white">
+          <div className="flex items-center gap-2">
+            <WhatsAppIcon className="h-5 w-5" />
+            <div className="text-sm font-semibold">Choisissez une boutique</div>
+          </div>
+          <p className="mt-1 text-xs text-white/85">
+            Nous vous répondons sur WhatsApp du lundi au samedi.
+          </p>
+        </div>
+
+        <ul className="divide-y divide-border">
+          {options.map((opt) => (
+            <li key={opt.key}>
+              <a
+                href={opt.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted"
+              >
+                <span className="text-2xl leading-none" aria-hidden="true">
+                  {flagEmoji(opt.countryCode)}
+                </span>
+                <span className="flex-1">
+                  <span className="block text-sm font-semibold text-foreground">
+                    PaparaShop {opt.country}
+                  </span>
+                  <span className="block text-xs text-muted-foreground">
+                    {opt.city} • {opt.label}
+                  </span>
+                </span>
+                <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </PopoverContent>
+    </Popover>
   );
 }
