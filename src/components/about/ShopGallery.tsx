@@ -27,8 +27,11 @@ const modules = import.meta.glob(
 
 // Légendes facultatives, par nom de fichier exact
 const CAPTIONS: Record<string, string> = {
-  // "01-exposition.jpeg": "L'espace d'exposition — boîtiers et objectifs",
-  // "02-comptoir.png": "Le comptoir conseil, au service des clients",
+  "01-interieur.jpg": "L'intérieur de la boutique — espace démonstration et tournage",
+  "02-comptoir.jpg": "Le comptoir d'exposition — flashs, micros et accessoires",
+  "03-rayon.jpg": "Kits créateurs Ulanzi & VIJIM disponibles en boutique",
+  "04-lumiere.jpg": "Démonstration d'un kit éclairage LED pour smartphone",
+  "05-pose.jpg": "Test du matériel en conditions réelles avant achat",
 };
 
 type Photo = { src: string; name: string; caption?: string };
