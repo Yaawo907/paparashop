@@ -8,6 +8,7 @@ import { GlobalSearch } from "./GlobalSearch";
 const nav = [
   { to: "/", label: "Accueil" },
   { to: "/catalogue", label: "Catalogue" },
+  { to: "/promotions", label: "Promotions" },
   { to: "/a-propos", label: "À propos" },
   { to: "/services", label: "Services" },
   { to: "/contact", label: "Contact" },

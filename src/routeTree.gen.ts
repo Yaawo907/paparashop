@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as PromotionsRouteImport } from './routes/promotions'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CatalogueRouteImport } from './routes/catalogue'
 import { Route as AProposRouteImport } from './routes/a-propos'
@@ -18,6 +19,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromotionsRoute = PromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/a-propos': typeof AProposRoute
   '/catalogue': typeof CatalogueRoute
   '/contact': typeof ContactRoute
+  '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/a-propos': typeof AProposRoute
   '/catalogue': typeof CatalogueRoute
   '/contact': typeof ContactRoute
+  '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,24 @@ export interface FileRoutesById {
   '/a-propos': typeof AProposRoute
   '/catalogue': typeof CatalogueRoute
   '/contact': typeof ContactRoute
+  '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/a-propos' | '/catalogue' | '/contact' | '/services'
+  fullPaths:
+    '/' | '/a-propos' | '/catalogue' | '/contact' | '/promotions' | '/services'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/a-propos' | '/catalogue' | '/contact' | '/services'
-  id: '__root__' | '/' | '/a-propos' | '/catalogue' | '/contact' | '/services'
+  to:
+    '/' | '/a-propos' | '/catalogue' | '/contact' | '/promotions' | '/services'
+  id:
+    | '__root__'
+    | '/'
+    | '/a-propos'
+    | '/catalogue'
+    | '/contact'
+    | '/promotions'
+    | '/services'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +94,7 @@ export interface RootRouteChildren {
   AProposRoute: typeof AProposRoute
   CatalogueRoute: typeof CatalogueRoute
   ContactRoute: typeof ContactRoute
+  PromotionsRoute: typeof PromotionsRoute
   ServicesRoute: typeof ServicesRoute
 }
 
@@ -86,6 +105,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/promotions': {
+      id: '/promotions'
+      path: '/promotions'
+      fullPath: '/promotions'
+      preLoaderRoute: typeof PromotionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -124,6 +150,7 @@ const rootRouteChildren: RootRouteChildren = {
   AProposRoute: AProposRoute,
   CatalogueRoute: CatalogueRoute,
   ContactRoute: ContactRoute,
+  PromotionsRoute: PromotionsRoute,
   ServicesRoute: ServicesRoute,
 }
 export const routeTree = rootRouteImport
