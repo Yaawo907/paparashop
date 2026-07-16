@@ -1,237 +1,107 @@
-import { useEffect, useMemo, useState } from "react";
-import { Quote, Star, Plus, Send } from "lucide-react";
+// ============================================================
+// FICHIER : src/components/home/Testimonials.tsx  (REMPLACE l'existant)
+//
+// Pourquoi ce remplacement :
+// - L'ancienne version affichait des avis INVENTÉS (données "SEED")
+//   et le formulaire enregistrait dans le localStorage : un avis
+//   publié n'était visible que par son propre auteur, sur son
+//   propre navigateur. Trompeur et inutile.
+// - Cette version affiche de VRAIS avis (issus des captures
+//   WhatsApp de satisfaction fournies par le client) + un bouton
+//   pour laisser un avis directement sur WhatsApp.
+//
+// AVANT DE COLLER :
+// Remplacer le contenu de TESTIMONIALS ci-dessous par les vrais
+// avis. Recopier fidèlement le message (corriger juste
+// l'orthographe), avec l'ACCORD du client concerné, et utiliser
+// prénom + initiale ("Aïcha K.") pour protéger sa vie privée.
+// ============================================================
+import { Quote, Star } from "lucide-react";
 import { SectionTitle } from "@/components/shared/SectionTitle";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { toast } from "sonner";
+import { LOCATIONS } from "@/lib/site";
 
 type Testimonial = {
-  id: string;
-  name: string;
-  role?: string;
-  rating: number;
-  message: string;
-  createdAt: number;
+  name: string; // Prénom + initiale du nom : "Aïcha K."
+  role?: string; // Métier ou contexte : "Photographe mariage", "Vidéaste, Cotonou"
+  rating: number; // Note sur 5
+  message: string; // Le texte de l'avis (issu de la capture WhatsApp)
 };
 
-const STORAGE_KEY = "paparashop:testimonials";
-
-const SEED: Testimonial[] = [
+// ⬇️⬇️ REMPLACER PAR LES VRAIS AVIS CLIENTS ⬇️⬇️
+const TESTIMONIALS: Testimonial[] = [
   {
-    id: "seed-1",
-    name: "Aïcha K.",
-    role: "Photographe mariage",
+    name: "Prénom N.",
+    role: "Photographe, Cotonou",
     rating: 5,
     message:
-      "Un service au top ! Mon Canon EOS R6 a été livré le jour même à Cotonou. L'équipe connaît vraiment le matériel.",
-    createdAt: Date.now() - 86400000 * 12,
+      "[Coller ici le texte du 1er avis WhatsApp, avec l'accord du client]",
   },
   {
-    id: "seed-2",
-    name: "Marc D.",
-    role: "Vidéaste freelance",
+    name: "Prénom N.",
+    role: "Vidéaste",
     rating: 5,
     message:
-      "Pack studio Godox + softbox VIJIM parfait pour mes shoots produits. Conseils précis et tarifs honnêtes.",
-    createdAt: Date.now() - 86400000 * 30,
+      "[Coller ici le texte du 2e avis WhatsApp]",
   },
   {
-    id: "seed-3",
-    name: "Fatou S.",
-    role: "Créatrice de contenu",
-    rating: 4,
+    name: "Prénom N.",
+    role: "Créateur de contenu",
+    rating: 5,
     message:
-      "J'ai acheté mon micro Ulanzi et une carte SanDisk. Tout fonctionne nickel, je recommande PaparaShop !",
-    createdAt: Date.now() - 86400000 * 45,
+      "[Coller ici le texte du 3e avis WhatsApp]",
   },
 ];
+// ⬆️⬆️ FIN DE LA ZONE À REMPLACER ⬆️⬆️
 
-function loadStored(): Testimonial[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
+const REVIEW_MESSAGE =
+  "Bonjour PaparaShop 👋, voici mon avis sur mon achat : ";
 
-function initials(name: string) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((s) => s[0]?.toUpperCase() ?? "")
-    .join("");
-}
-
-function Stars({ value, onChange }: { value: number; onChange?: (n: number) => void }) {
+function Stars({ value }: { value: number }) {
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex gap-0.5" aria-label={`Note : ${value} sur 5`}>
       {[1, 2, 3, 4, 5].map((n) => (
-        <button
+        <Star
           key={n}
-          type={onChange ? "button" : undefined}
-          onClick={() => onChange?.(n)}
-          className={onChange ? "cursor-pointer transition-transform hover:scale-110" : "cursor-default"}
-          aria-label={`${n} étoile${n > 1 ? "s" : ""}`}
-          disabled={!onChange}
-        >
-          <Star
-            className={
-              n <= value
-                ? "h-4 w-4 fill-accent text-accent"
-                : "h-4 w-4 text-muted-foreground/40"
-            }
-          />
-        </button>
+          className={`h-4 w-4 ${
+            n <= value ? "fill-accent text-accent" : "text-muted-foreground/30"
+          }`}
+          aria-hidden
+        />
       ))}
     </div>
   );
 }
 
+function initials(name: string) {
+  return name
+    .split(" ")
+    .map((p) => p[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
 export function Testimonials() {
-  const [custom, setCustom] = useState<Testimonial[]>([]);
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [role, setRole] = useState("");
-  const [rating, setRating] = useState(5);
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    setCustom(loadStored());
-  }, []);
-
-  const all = useMemo(
-    () => [...custom, ...SEED].sort((a, b) => b.createdAt - a.createdAt),
-    [custom],
-  );
-
-  function submit(e: React.FormEvent) {
-    e.preventDefault();
-    const trimmedName = name.trim().slice(0, 60);
-    const trimmedMsg = message.trim().slice(0, 400);
-    if (trimmedName.length < 2) {
-      toast.error("Merci d'indiquer votre nom.");
-      return;
-    }
-    if (trimmedMsg.length < 10) {
-      toast.error("Votre témoignage doit contenir au moins 10 caractères.");
-      return;
-    }
-    const next: Testimonial = {
-      id: `local-${Date.now()}`,
-      name: trimmedName,
-      role: role.trim().slice(0, 60) || undefined,
-      rating,
-      message: trimmedMsg,
-      createdAt: Date.now(),
-    };
-    const updated = [next, ...custom];
-    setCustom(updated);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    } catch {
-      // ignore
-    }
-    toast.success("Merci pour votre témoignage !");
-    setName("");
-    setRole("");
-    setRating(5);
-    setMessage("");
-    setOpen(false);
-  }
+  const hq = LOCATIONS.find((l) => l.isHQ) ?? LOCATIONS[0];
+  const number = (hq.whatsapp ?? hq.phone).replace(/[^0-9]/g, "");
+  const reviewHref = `https://wa.me/${number}?text=${encodeURIComponent(REVIEW_MESSAGE)}`;
 
   return (
-    <section id="temoignages" className="bg-muted/30 py-20">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center">
-          <SectionTitle
-            eyebrow="Ils nous font confiance"
-            title="Témoignages clients"
-            subtitle="Photographes, vidéastes et créateurs partagent leur expérience PaparaShop."
-          />
-
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button size="lg" className="mb-12 gap-2">
-                <Plus className="h-4 w-4" />
-                Laisser un témoignage
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Partagez votre expérience</DialogTitle>
-                <DialogDescription>
-                  Votre avis aide d'autres clients à choisir PaparaShop.
-                </DialogDescription>
-              </DialogHeader>
-              <form onSubmit={submit} className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Nom *</label>
-                  <Input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    maxLength={60}
-                    placeholder="Votre nom"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Métier / Rôle</label>
-                  <Input
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    maxLength={60}
-                    placeholder="Ex. Photographe, Vidéaste…"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Note</label>
-                  <Stars value={rating} onChange={setRating} />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Votre message *</label>
-                  <Textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    maxLength={400}
-                    rows={4}
-                    placeholder="Racontez votre expérience…"
-                  />
-                  <p className="text-right text-xs text-muted-foreground">
-                    {message.length}/400
-                  </p>
-                </div>
-                <DialogFooter>
-                  <Button type="submit" className="gap-2">
-                    <Send className="h-4 w-4" />
-                    Publier
-                  </Button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+    <section className="bg-background py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <SectionTitle
+          eyebrow="Ils nous font confiance"
+          title="Ce que disent nos clients"
+          subtitle="Des avis authentiques, reçus de photographes, vidéastes et créateurs que nous équipons au quotidien."
+        />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {all.map((t) => (
+          {TESTIMONIALS.map((t) => (
             <article
-              key={t.id}
+              key={t.name + t.message.slice(0, 12)}
               className="group relative flex flex-col rounded-2xl border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
             >
-              <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/10" />
+              <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/10" aria-hidden />
               <Stars value={t.rating} />
               <p className="mt-4 flex-1 text-sm leading-relaxed text-foreground/85">
                 "{t.message}"
@@ -242,13 +112,26 @@ export function Testimonials() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold leading-tight">{t.name}</p>
-                  {t.role && (
-                    <p className="text-xs text-muted-foreground">{t.role}</p>
-                  )}
+                  {t.role && <p className="text-xs text-muted-foreground">{t.role}</p>}
                 </div>
               </div>
             </article>
           ))}
+        </div>
+
+        {/* Invitation à laisser un avis — via WhatsApp, le canal réel des clients */}
+        <div className="mt-12 text-center">
+          <p className="text-sm text-muted-foreground">
+            Vous avez acheté chez PaparaShop ? Partagez votre expérience :
+          </p>
+          <a
+            href={reviewHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-display text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30"
+          >
+            Laisser un avis sur WhatsApp
+          </a>
         </div>
       </div>
     </section>

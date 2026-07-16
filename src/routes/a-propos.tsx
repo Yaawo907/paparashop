@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Facebook, Instagram } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { Timeline } from "@/components/about/Timeline";
-import { OriginStory } from "@/components/about/OriginStory";
+import { Founder } from "@/components/about/Founder";
+import { ShopGallery } from "@/components/about/ShopGallery";
 import { InstitutionalClients } from "@/components/about/InstitutionalClients";
 
 import { Commitments } from "@/components/home/Commitments";
@@ -75,7 +76,9 @@ function AboutPage() {
         </div>
       </section>
 
-      <OriginStory />
+      <Founder />
+
+      <ShopGallery />
 
       <Timeline />
 
