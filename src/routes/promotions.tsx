@@ -19,8 +19,8 @@ import { SITE } from "@/lib/site";
 // Tant que ces valeurs sont vides, la page affiche les images
 // du dossier src/assets/promotions comme avant.
 // ============================================================
-const DRIVE_FOLDER_ID = ""; // ⬅️ ID du dossier Drive partagé
-const DRIVE_API_KEY = "";   // ⬅️ Clé API Google (Drive API)
+const DRIVE_FOLDER_ID = "1emF4yoyXnoQbZnT-IjhFIdUJ7CGKd7ZQ"; // ⬅️ ID du dossier Drive partagé
+const DRIVE_API_KEY = "AIzaSyDDmtg14-A8nZrhCsIEn7c5aOQ9DjkcgcA";   // ⬅️ Clé API Google (Drive API)
 
 // --- Ancien système (images du dépôt), conservé en secours ---
 const modules = import.meta.glob(
