@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { X, ArrowUpRight, Sparkles } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
-import { SectionTitle } from "@/components/shared/SectionTitle";
 import { SITE } from "@/lib/site";
 
 // Auto-load all images from src/assets/promotions
