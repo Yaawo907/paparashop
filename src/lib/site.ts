@@ -132,6 +132,7 @@ import fedapayLogo from "@/assets/clients/fedapay.jpeg.asset.json";
 import netisLogo from "@/assets/clients/netis.png.asset.json";
 import ordreStJeanLogo from "@/assets/clients/ordre-st-jean-de-dieu.png.asset.json";
 import esgisLogo from "@/assets/clients/esgis.png.asset.json";
+import magicPartnersLogo from "@/assets/clients/magic-partners.png.asset.json";
 
 export type InstitutionalClient = {
   name: string;
@@ -155,5 +156,6 @@ export const INSTITUTIONAL_CLIENTS: InstitutionalClient[] = [
   { name: "NETIS", sector: "Télécoms & Énergie", logo: netisLogo.url },
   { name: "Ordre Hospitalier St Jean de Dieu", sector: "Santé & Hospitalier", logo: ordreStJeanLogo.url },
   { name: "ESGIS", sector: "Éducation supérieure", logo: esgisLogo.url },
+  { name: "Magic Partner", sector: "Partenaire technique", logo: magicPartnersLogo.url },
 ];
 
