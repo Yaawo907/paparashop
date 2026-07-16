@@ -1,16 +1,33 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X, ArrowUpRight, Sparkles } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { SITE } from "@/lib/site";
 
-// Auto-load all images from src/assets/promotions
+// ============================================================
+// PROMOTIONS VIA GOOGLE DRIVE (mode simple, sans republier)
+//
+// 1. Créez un dossier Google Drive et partagez-le :
+//    clic droit → Partager → "Tous les utilisateurs disposant du lien" → Lecteur
+// 2. Copiez l'ID du dossier (la partie après /folders/ dans l'URL)
+// 3. Créez une clé API sur console.cloud.google.com
+//    (API Google Drive activée, clé restreinte au domaine du site)
+// 4. Renseignez les deux valeurs ci-dessous.
+//
+// Ensuite : déposez/supprimez simplement vos images dans le
+// dossier Drive → la page se met à jour toute seule.
+// Tant que ces valeurs sont vides, la page affiche les images
+// du dossier src/assets/promotions comme avant.
+// ============================================================
+const DRIVE_FOLDER_ID = ""; // ⬅️ ID du dossier Drive partagé
+const DRIVE_API_KEY = "";   // ⬅️ Clé API Google (Drive API)
+
+// --- Ancien système (images du dépôt), conservé en secours ---
 const modules = import.meta.glob(
   "/src/assets/promotions/*.{png,jpg,jpeg,webp,gif,PNG,JPG,JPEG,WEBP,GIF}",
   { eager: true, query: "?url", import: "default" },
 ) as Record<string, string>;
 
-// Also support .asset.json pointers (CDN-hosted)
 const assetJsons = import.meta.glob(
   "/src/assets/promotions/*.asset.json",
   { eager: true },
@@ -18,7 +35,7 @@ const assetJsons = import.meta.glob(
 
 type Promo = { src: string; name: string };
 
-const promos: Promo[] = [
+const localPromos: Promo[] = [
   ...Object.entries(modules).map(([path, src]) => ({
     src,
     name: path.split("/").pop() || "promotion",
@@ -28,6 +45,11 @@ const promos: Promo[] = [
     name: mod.default.original_filename || path.split("/").pop() || "promotion",
   })),
 ].sort((a, b) => a.name.localeCompare(b.name));
+
+// URL d'affichage d'une image Drive (fiable pour les balises <img>)
+function driveImageUrl(fileId: string) {
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`;
+}
 
 export const Route = createFileRoute("/promotions")({
   head: () => ({
@@ -52,6 +74,38 @@ export const Route = createFileRoute("/promotions")({
 
 function PromotionsPage() {
   const [active, setActive] = useState<Promo | null>(null);
+  const [promos, setPromos] = useState<Promo[]>(localPromos);
+  const [loading, setLoading] = useState(Boolean(DRIVE_FOLDER_ID && DRIVE_API_KEY));
+
+  // Charge la liste des images du dossier Drive à chaque visite de la page
+  useEffect(() => {
+    if (!DRIVE_FOLDER_ID || !DRIVE_API_KEY) return;
+
+    const query = encodeURIComponent(
+      `'${DRIVE_FOLDER_ID}' in parents and mimeType contains 'image/' and trashed = false`,
+    );
+    const url =
+      `https://www.googleapis.com/drive/v3/files?q=${query}` +
+      `&fields=files(id,name)&orderBy=createdTime desc&pageSize=100&key=${DRIVE_API_KEY}`;
+
+    fetch(url)
+      .then((r) => {
+        if (!r.ok) throw new Error(`Drive API: ${r.status}`);
+        return r.json();
+      })
+      .then((data: { files?: { id: string; name: string }[] }) => {
+        const files = data.files ?? [];
+        if (files.length > 0) {
+          // Les images Drive remplacent celles du dépôt
+          setPromos(files.map((f) => ({ src: driveImageUrl(f.id), name: f.name })));
+        }
+      })
+      .catch((err) => {
+        // En cas d'erreur (quota, clé invalide…), on garde les images du dépôt
+        console.error("Chargement des promotions Drive impossible :", err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <SiteLayout>
@@ -71,7 +125,16 @@ function PromotionsPage() {
             </p>
           </div>
 
-          {promos.length === 0 ? (
+          {loading ? (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="aspect-square animate-pulse rounded-xl border border-white/10 bg-white/5"
+                />
+              ))}
+            </div>
+          ) : promos.length === 0 ? (
             <div className="mx-auto max-w-xl rounded-xl border border-white/10 bg-white/5 p-10 text-center">
               <p className="text-sm text-white/80">
                 Aucune promotion n'est publiée pour le moment. Revenez très
