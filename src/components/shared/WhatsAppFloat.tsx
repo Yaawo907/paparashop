@@ -13,7 +13,7 @@ import {
 
 // Message pré-rempli quand le client clique (modifiable librement)
 const PREFILLED_MESSAGE =
-  "Bonjour PaparaShop 👋, je vous contacte depuis votre site web. J'aimerais avoir des informations sur un produit.";
+  "Bonjour PaparaShop, je vous contacte depuis votre site web. J'aimerais avoir des informations sur un produit.";
 
 // Icône officielle WhatsApp (lucide-react ne fournit pas les logos de marques)
 function WhatsAppIcon({ className }: { className?: string }) {
