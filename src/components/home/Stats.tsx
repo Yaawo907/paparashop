@@ -7,7 +7,7 @@ const FALLBACK_YEARS = 9; // 2026 - 2017
 const stats = [
   { icon: Calendar, label: "Années d'expertise" },
   { icon: Globe2, value: "3 pays", label: "Bénin • Burkina • Togo" },
-  { icon: Users, value: "5 000+", label: "Clients accompagnés" },
+  { icon: Users, value: "200+", label: "Clients accompagnés" },
   { icon: Award, value: "2 ans", label: "Garantie maximale" },
 ];
 
