@@ -1,4 +1,5 @@
 import shopBeninImg from "@/assets/papara-shop-benin.jpeg.asset.json";
+import shopTogoImg from "@/assets/papara-shop-togo.jpeg.asset.json";
 
 export const SITE = {
   name: "PaparaShop",
@@ -84,6 +85,8 @@ export const LOCATIONS: Location[] = [
     whatsappHref: "https://wa.me/22892271220",
     since: 2025,
     hours: "Lun – Sam : 9h00 – 18h00",
+    image: shopTogoImg.url,
+    imageAlt: "Boutique PaparaShop — Lomé, Togo",
   },
 ];
 
