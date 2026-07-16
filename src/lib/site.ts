@@ -124,6 +124,11 @@ import iucnLogo from "@/assets/clients/iucn.jpeg.asset.json";
 import sensBeninLogo from "@/assets/clients/sens-benin.png.asset.json";
 import siabLogo from "@/assets/clients/siab.jpeg.asset.json";
 import lafargeLogo from "@/assets/clients/scb-lafarge.jpeg.asset.json";
+import goldenTulipLogo from "@/assets/clients/golden-tulip.jpeg.asset.json";
+import fedapayLogo from "@/assets/clients/fedapay.jpeg.asset.json";
+import netisLogo from "@/assets/clients/netis.png.asset.json";
+import ordreStJeanLogo from "@/assets/clients/ordre-st-jean-de-dieu.png.asset.json";
+import esgisLogo from "@/assets/clients/esgis.png.asset.json";
 
 export type InstitutionalClient = {
   name: string;
@@ -142,4 +147,10 @@ export const INSTITUTIONAL_CLIENTS: InstitutionalClient[] = [
   { name: "SENS Bénin", sector: "Solidarités Entreprises", logo: sensBeninLogo.url },
   { name: "SIAB", sector: "Industrie", logo: siabLogo.url },
   { name: "SCB Lafarge", sector: "BTP & Matériaux", logo: lafargeLogo.url },
+  { name: "Golden Tulip", sector: "Hôtellerie", logo: goldenTulipLogo.url },
+  { name: "FedaPay", sector: "Fintech & Paiement", logo: fedapayLogo.url },
+  { name: "NETIS", sector: "Télécoms & Énergie", logo: netisLogo.url },
+  { name: "Ordre Hospitalier St Jean de Dieu", sector: "Santé & Hospitalier", logo: ordreStJeanLogo.url },
+  { name: "ESGIS", sector: "Éducation supérieure", logo: esgisLogo.url },
 ];
+
