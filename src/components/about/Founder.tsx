@@ -12,8 +12,8 @@ import founderImg from "@/assets/fondateur.jpg";
 import { SITE } from "@/lib/site";
 
 // ⬇️ À REMPLACER par les vraies informations du client
-const FOUNDER_NAME = "Prénom NOM";
-const FOUNDER_TITLE = "Fondateur & Directeur de PaparaShop";
+const FOUNDER_NAME = "Rama A. DANDJINOU";
+const FOUNDER_TITLE = "CEO & Fondateur de PaparaShop";
 
 export function Founder() {
   return (
