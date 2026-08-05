@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, Camera } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import logoAsset from "@/assets/papara-logo.png.asset.json";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { GlobalSearch } from "./GlobalSearch";
