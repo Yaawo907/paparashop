@@ -18,7 +18,7 @@ export const Route = createFileRoute("/a-propos")({
       {
         name: "description",
         content:
-          "Depuis 2017, PaparaShop est la seule boutique spécialisée d'Afrique de l'Ouest francophone dédiée au matériel photo & audiovisuel professionnel. Bénin, Burkina Faso et Togo.",
+          "Depuis 2017, PaparaShop est la seule boutique spécialisée d'Afrique de l'Ouest francophone en équipements & audiovisuel professionnels. Bénin, Burkina Faso et Togo.",
       },
       { property: "og:title", content: "À propos — PaparaShop" },
       {

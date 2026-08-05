@@ -14,13 +14,13 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "PaparaShop — Photo, vidéo & audiovisuel pro | Bénin, Burkina, Togo" },
+      { title: "PaparaShop — Équipements & audiovisuel pro | Bénin, Burkina, Togo" },
       {
         name: "description",
         content:
-          "Depuis 2017 : la seule boutique spécialisée d'Afrique de l'Ouest francophone dédiée au matériel photo & audiovisuel professionnel. Canon, Sony, Nikon, DJI, Rode, Godox, Aputure…",
+          "Depuis 2017 : la seule boutique spécialisée d'Afrique de l'Ouest francophone en équipements & audiovisuel professionnels. Canon, Sony, Nikon, DJI, Rode, Godox, Aputure…",
       },
-      { property: "og:title", content: "PaparaShop — Photo & audiovisuel pro" },
+      { property: "og:title", content: "PaparaShop — Équipements & audiovisuel pro" },
       {
         property: "og:description",
         content:

@@ -58,13 +58,13 @@ export const Route = createFileRoute("/promotions")({
       {
         name: "description",
         content:
-          "Découvrez les promotions en cours chez PaparaShop : offres spéciales, packs et prix cassés sur le matériel photo et audiovisuel.",
+          "Découvrez les promotions en cours chez PaparaShop : offres spéciales, packs et prix cassés sur les équipements & audiovisuel professionnels.",
       },
       { property: "og:title", content: "Promotions — PaparaShop" },
       {
         property: "og:description",
         content:
-          "Offres spéciales et promotions PaparaShop sur le matériel photo et audiovisuel.",
+          "Offres spéciales et promotions PaparaShop sur les équipements & audiovisuel professionnels.",
       },
       { property: "og:type", content: "website" },
     ],

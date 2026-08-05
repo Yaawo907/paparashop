@@ -76,18 +76,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "PaparaShop — Équipement photographique professionnel à Abomey-Calavi" },
+      { title: "PaparaShop — Équipements & audiovisuel professionnels" },
       {
         name: "description",
         content:
-          "PaparaShop, votre spécialiste à Abomey-Calavi (Bénin) en appareils photo Canon, Nikon, Sony, caméras vidéo 4K, accessoires et matériel studio.",
+          "PaparaShop, spécialiste équipements & audiovisuel professionnels au Bénin, Burkina Faso et Togo. Canon, Nikon, Sony, caméras 4K, accessoires et matériel studio.",
       },
       { name: "author", content: "Papara SHOP" },
-      { property: "og:title", content: "PaparaShop — Équipement photographique professionnel à Abomey-Calavi" },
+      { property: "og:title", content: "PaparaShop — Équipements & audiovisuel professionnels" },
       {
         property: "og:description",
         content:
-          "Appareils photo, caméras, accessoires et matériel studio à Abomey-Calavi, Bénin.",
+          "Spécialiste équipements & audiovisuel professionnels au Bénin, Burkina Faso et Togo.",
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "fr_FR" },
@@ -96,10 +96,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "Papara Shop" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "PaparaShop — Équipement photographique professionnel à Abomey-Calavi" },
-      { name: "description", content: "PaparaShop is a professional photography and audiovisual equipment showcase website." },
-      { property: "og:description", content: "PaparaShop is a professional photography and audiovisual equipment showcase website." },
-      { name: "twitter:description", content: "PaparaShop is a professional photography and audiovisual equipment showcase website." },
+      { name: "twitter:title", content: "PaparaShop — Équipements & audiovisuel professionnels" },
+      { name: "twitter:description", content: "Spécialiste équipements & audiovisuel professionnels au Bénin, Burkina Faso et Togo." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/972c7840-4466-4157-961b-992dcd55fd9c/id-preview-7d90117e--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1780051119509.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/972c7840-4466-4157-961b-992dcd55fd9c/id-preview-7d90117e--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1780051119509.png" },
     ],

@@ -21,12 +21,17 @@ export function Footer() {
             <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-white p-1">
               <img src={logoAsset.url} alt="Logo Papara Shop" className="h-full w-full object-contain" />
             </span>
-            <span className="font-display text-xl font-bold">
-              PAPARA<span className="text-accent">.SHOP</span>
-            </span>
+            <div className="flex flex-col leading-none">
+              <span className="font-display text-xl font-bold">
+                PAPARA<span className="text-accent">.SHOP</span>
+              </span>
+              <span className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-white/70">
+                {SITE.tagline.toUpperCase()}
+              </span>
+            </div>
           </div>
           <p className="mb-4 max-w-xs text-sm leading-relaxed text-white/75">
-            Depuis {SITE.foundedYear} : votre spécialiste photo & audiovisuel professionnel en Afrique de l'Ouest francophone.
+            Depuis {SITE.foundedYear} : {SITE.tagline.toUpperCase()} professionnels en Afrique de l'Ouest francophone.
           </p>
           <p className="mb-6 flex items-center gap-2 text-xs text-white/60">
             <Globe2 className="h-3.5 w-3.5 text-accent" /> Bénin • Burkina Faso • Togo
@@ -109,7 +114,7 @@ export function Footer() {
 
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-white/60 sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} {SITE.fullName} — Équipement photographique professionnel.
+          © {new Date().getFullYear()} {SITE.fullName} — {SITE.tagline.toUpperCase()} professionnels.
         </div>
       </div>
     </footer>
