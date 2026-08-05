@@ -18,7 +18,7 @@ const STORY = [
     year: 2025,
     country: "Togo",
     title: "Nouvelle antenne à Lomé",
-    text: "PaparaShop s'implante au Togo, consolidant sa position de seule boutique spécialisée et crédible d'Afrique de l'Ouest francophone dédiée au matériel photo et audiovisuel professionnel.",
+    text: "PaparaShop s'implante au Togo, consolidant sa position de seule boutique spécialisée et crédible d'Afrique de l'Ouest francophone en équipements & audiovisuel professionnels.",
   },
 ];
 
