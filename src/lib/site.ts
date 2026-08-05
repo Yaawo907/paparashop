@@ -4,7 +4,7 @@ import shopTogoImg from "@/assets/papara-shop-togo.jpeg.asset.json";
 export const SITE = {
   name: "PaparaShop",
   fullName: "Papara SHOP",
-  tagline: "Photo • Audiovisuel",
+  tagline: "Equipements & Audiovisuel",
   foundedYear: 2017,
   // Legacy fields (siège Bénin) — conservés pour compatibilité
   city: "Godomey",
