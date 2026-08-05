@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Mail, MapPin, Camera, Globe2 } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Globe2 } from "lucide-react";
+import logoAsset from "@/assets/papara-logo.png.asset.json";
 import { SITE, LOCATIONS } from "@/lib/site";
 
 // Lucide doesn't ship TikTok yet — small inline glyph
@@ -17,7 +18,9 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
         <div>
           <div className="mb-4 flex items-center gap-2">
-            <Camera className="h-6 w-6 text-accent" />
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-white p-1">
+              <img src={logoAsset.url} alt="Logo Papara Shop" className="h-full w-full object-contain" />
+            </span>
             <span className="font-display text-xl font-bold">
               PAPARA<span className="text-accent">.SHOP</span>
             </span>
