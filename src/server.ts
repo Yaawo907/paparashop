@@ -66,9 +66,21 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
+// Domaines perso : tout le trafic est redirigé vers le catalogue externe.
+const REDIRECT_HOSTS = new Set(["paparashop.net", "www.paparashop.net"]);
+const CATALOG_URL = "https://www.lesagecom.net/catalogue/paparashop/";
+
+function catalogRedirect(request: Request): Response | undefined {
+  const host = new URL(request.url).hostname.toLowerCase();
+  if (!REDIRECT_HOSTS.has(host)) return undefined;
+  return Response.redirect(CATALOG_URL, 302);
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const redirect = catalogRedirect(request);
+      if (redirect) return redirect;
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
@@ -78,3 +90,4 @@ export default {
     }
   },
 };
+
