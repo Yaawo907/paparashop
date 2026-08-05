@@ -39,8 +39,7 @@ function CataloguePage() {
             8 catégories, <span className="text-accent">40+ marques référencées</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg">
-            Seule boutique spécialisée d'Afrique de l'Ouest francophone dédiée au matériel photo
-            et audiovisuel professionnel — sourcé en circuit officiel, garanti jusqu'à 2 ans.
+            Seule boutique spécialisée d'Afrique de l'Ouest francophone en équipements & audiovisuel professionnels — sourcé en circuit officiel, garanti jusqu'à 2 ans.
           </p>
           <div className="mt-8">
             <ExternalCatalogCTA label="Consulter les prix et commander" />
