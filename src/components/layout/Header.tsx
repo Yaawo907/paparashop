@@ -35,8 +35,10 @@ export function Header() {
       )}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2 text-white" onClick={() => setOpen(false)}>
-          <Camera className="h-6 w-6 text-accent" strokeWidth={2} />
+        <Link to="/" className="flex items-center gap-2.5 text-white" onClick={() => setOpen(false)}>
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white p-1">
+            <img src={logoAsset.url} alt="Logo Papara Shop" className="h-full w-full object-contain" />
+          </span>
           <div className="flex flex-col leading-none">
             <span className="font-display text-lg font-bold tracking-tight">
               PAPARA<span className="text-accent">.SHOP</span>
