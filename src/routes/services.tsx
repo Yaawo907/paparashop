@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Camera, Video, Lightbulb, Headphones, Compass, Wrench } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
+import { Specialties } from "@/components/home/Specialties";
+import { Commitments } from "@/components/home/Commitments";
 import { SavAndSpecialOrder } from "@/components/services/SavAndSpecialOrder";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
 
@@ -89,6 +91,8 @@ function ServicesPage() {
         </div>
       </section>
 
+      <Specialties />
+      <Commitments />
       <SavAndSpecialOrder />
 
 
