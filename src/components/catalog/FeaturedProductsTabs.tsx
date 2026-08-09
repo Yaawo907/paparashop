@@ -1,4 +1,5 @@
 import { Sparkles, Flame, Tag, ArrowUpRight } from "lucide-react";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   Tabs,
   TabsContent,
@@ -6,12 +7,9 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { SITE } from "@/lib/site";
-import {
-  NEW_ARRIVALS,
-  BESTSELLERS,
-  OFFERS,
-  type FeaturedItem,
-} from "@/lib/featured";
+import { type FeaturedItem } from "@/lib/featured";
+import { productsQuery } from "@/lib/cms.queries";
+import { toFeatured } from "@/lib/cms-adapters";
 
 function Grid({ items }: { items: FeaturedItem[] }) {
   return (
@@ -54,6 +52,11 @@ function Grid({ items }: { items: FeaturedItem[] }) {
 }
 
 export function FeaturedProductsTabs() {
+  const { data: products } = useSuspenseQuery(productsQuery);
+  const NEW_ARRIVALS = toFeatured(products, "new");
+  const BESTSELLERS = toFeatured(products, "bestseller");
+  const OFFERS = toFeatured(products, "offer");
+
   return (
     <section className="bg-background py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

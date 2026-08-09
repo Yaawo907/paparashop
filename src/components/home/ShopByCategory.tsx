@@ -1,7 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { CATEGORIES } from "@/lib/catalog";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { categoriesQuery } from "@/lib/cms.queries";
+import { toCategories } from "@/lib/cms-adapters";
 
 export function ShopByCategory() {
+  const { data } = useSuspenseQuery(categoriesQuery);
+  const categories = toCategories(data);
+
   return (
     <section className="bg-background py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -16,7 +21,7 @@ export function ShopByCategory() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {CATEGORIES.map((c) => {
+          {categories.map((c) => {
             const Icon = c.icon;
             const cover = c.brands.find((b) => b.image)?.image;
             return (

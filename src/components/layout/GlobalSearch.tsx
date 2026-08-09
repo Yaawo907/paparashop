@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Search, ArrowUpRight, X, Package, Tag, Layers, Sparkles } from "lucide-react";
-import { searchAll, type SearchResult } from "@/lib/search";
+import { useQuery } from "@tanstack/react-query";
+import { buildIndex, searchAll, type SearchResult } from "@/lib/search";
+import { categoriesQuery, productsQuery } from "@/lib/cms.queries";
+import { toCategories, toFeatured } from "@/lib/cms-adapters";
 import { cn } from "@/lib/utils";
 
 const KIND_META: Record<
@@ -26,7 +29,15 @@ export function GlobalSearch({ className, compact = false }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const results = useMemo(() => searchAll(query, 40), [query]);
+  const { data: cmsCategories } = useQuery(categoriesQuery);
+  const { data: cmsProducts } = useQuery(productsQuery);
+  const index = useMemo(() => {
+    const featured = ["new", "bestseller", "offer", "accessory"].flatMap((g) =>
+      toFeatured(cmsProducts ?? [], g).map((item) => ({ item })),
+    );
+    return buildIndex(toCategories(cmsCategories ?? []), featured);
+  }, [cmsCategories, cmsProducts]);
+  const results = useMemo(() => searchAll(index, query, 40), [index, query]);
   const open = focused && query.trim().length > 0;
 
   useEffect(() => {

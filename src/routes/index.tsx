@@ -10,9 +10,23 @@ import { TrustedBy } from "@/components/home/TrustedBy";
 import { Testimonials } from "@/components/home/Testimonials";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
 import { SITE, LOCATIONS } from "@/lib/site";
+import { categoriesQuery, productsQuery, testimonialsQuery } from "@/lib/cms.queries";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  loader: async ({ context }) => {
+    await Promise.all([
+      context.queryClient.ensureQueryData(categoriesQuery),
+      context.queryClient.ensureQueryData(productsQuery),
+      context.queryClient.ensureQueryData(testimonialsQuery),
+    ]);
+  },
+  errorComponent: ({ error }) => (
+    <div role="alert" className="p-10 text-center text-sm text-muted-foreground">
+      Impossible de charger la page : {error.message}
+    </div>
+  ),
+  notFoundComponent: () => <div className="p-10 text-center">Page introuvable.</div>,
   head: () => ({
     meta: [
       { title: "PaparaShop — Équipements & audiovisuel pro | Bénin, Burkina, Togo" },
