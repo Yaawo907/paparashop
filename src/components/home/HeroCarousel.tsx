@@ -37,7 +37,7 @@ export function HeroCarousel() {
   }, [playing, next]);
 
   return (
-    <section className="relative h-[88vh] min-h-[560px] w-full overflow-hidden bg-primary-dark">
+    <section className="relative h-[42vh] min-h-[300px] max-h-[420px] w-full overflow-hidden bg-primary-dark">
       {slides.map((slide, i) => (
         <div
           key={slide.title}
@@ -65,17 +65,17 @@ export function HeroCarousel() {
       {/* Content (positioned by current slide) */}
       <div className="relative z-10 flex h-full items-center justify-center px-6">
         <div key={index} className="max-w-3xl text-center text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h1 className="font-display text-5xl font-bold leading-tight text-accent sm:text-6xl md:text-7xl text-balance">
+          <h1 className="font-display text-2xl font-bold leading-tight text-accent sm:text-3xl md:text-4xl text-balance">
             {slides[index].title}
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-base text-white/85 sm:text-lg md:text-xl">
+          <p className="mx-auto mt-3 max-w-xl text-sm text-white/85 sm:text-base">
             {slides[index].subtitle}
           </p>
           <a
             href={SITE.catalogUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-10 inline-flex items-center gap-2 rounded-md bg-accent px-8 py-4 font-display text-sm font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50"
+            className="mt-5 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50"
           >
             Découvrir le catalogue
             <ArrowRight className="h-4 w-4" />
@@ -87,25 +87,25 @@ export function HeroCarousel() {
       <button
         onClick={prev}
         aria-label="Slide précédente"
-        className="absolute left-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-white/20 sm:flex md:left-8 md:h-14 md:w-14"
+        className="absolute left-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-white/20 sm:flex md:left-8"
       >
         <ChevronLeft className="h-5 w-5" />
       </button>
       <button
         onClick={next}
         aria-label="Slide suivante"
-        className="absolute right-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-white/20 sm:flex md:right-8 md:h-14 md:w-14"
+        className="absolute right-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-white/20 sm:flex md:right-8"
       >
         <ChevronRight className="h-5 w-5" />
       </button>
 
       {/* Counter */}
-      <div className="absolute right-4 top-24 z-20 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-md md:right-8">
+      <div className="absolute right-4 top-4 z-20 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-md md:right-8">
         {String(index + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
       </div>
 
       {/* Indicators */}
-      <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-3">
+      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-3">
         {slides.map((s, i) => (
           <button
             key={s.title}
@@ -122,7 +122,7 @@ export function HeroCarousel() {
       <button
         onClick={() => setPlaying((p) => !p)}
         aria-label={playing ? "Mettre en pause" : "Lecture"}
-        className="absolute bottom-8 right-4 z-20 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20 md:right-8"
+        className="absolute bottom-3 right-4 z-20 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20 md:right-8"
       >
         {playing ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
         {playing ? "PAUSE" : "LECTURE"}
