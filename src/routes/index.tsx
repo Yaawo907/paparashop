@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { HeroCarousel } from "@/components/home/HeroCarousel";
-import { Specialties } from "@/components/home/Specialties";
-import { Commitments } from "@/components/home/Commitments";
-import { Stats } from "@/components/home/Stats";
+import { ShopByCategory } from "@/components/home/ShopByCategory";
+import { FeaturedProductsTabs } from "@/components/catalog/FeaturedProductsTabs";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
 import { Accessories } from "@/components/home/Accessories";
+import { Stats } from "@/components/home/Stats";
 import { TrustedBy } from "@/components/home/TrustedBy";
 import { Testimonials } from "@/components/home/Testimonials";
+import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
 import { SITE, LOCATIONS } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
@@ -51,13 +52,29 @@ function Index() {
   return (
     <SiteLayout>
       <HeroCarousel />
-      <Specialties />
-      <Commitments />
-      <Stats />
+      <ShopByCategory />
+      <FeaturedProductsTabs />
       <FeaturedProducts />
       <Accessories />
+
+      <section className="gradient-hero py-16 text-center text-white">
+        <div className="mx-auto max-w-2xl px-4">
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">
+            Prix, stock et commande sur notre{" "}
+            <span className="text-accent">plateforme</span>
+          </h2>
+          <p className="mt-4 text-white/75">
+            Consultez les prix actualisés et commandez en ligne — livraison Bénin, Burkina Faso et Togo.
+          </p>
+          <div className="mt-8">
+            <ExternalCatalogCTA />
+          </div>
+        </div>
+      </section>
+
       <Testimonials />
       <TrustedBy />
+      <Stats />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -65,4 +82,3 @@ function Index() {
     </SiteLayout>
   );
 }
-
