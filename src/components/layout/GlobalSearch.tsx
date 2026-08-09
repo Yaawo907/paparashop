@@ -1,12 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Search, ArrowUpRight, X, Package, Tag, Layers, Sparkles } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
 import { searchAll, type SearchResult } from "@/lib/search";
 import { cn } from "@/lib/utils";
 
@@ -21,103 +15,85 @@ const KIND_META: Record<
 };
 
 type Props = {
-  triggerClassName?: string;
+  className?: string;
   compact?: boolean;
 };
 
-export function GlobalSearch({ triggerClassName, compact = false }: Props) {
-  const [open, setOpen] = useState(false);
+export function GlobalSearch({ className, compact = false }: Props) {
   const [query, setQuery] = useState("");
+  const [focused, setFocused] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   const results = useMemo(() => searchAll(query, 40), [query]);
+  const open = focused && query.trim().length > 0;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen((v) => !v);
+        inputRef.current?.focus();
       }
+      if (e.key === "Escape") setFocused(false);
+    };
+    const onClick = (e: MouseEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) setFocused(false);
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClick);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClick);
+    };
   }, []);
 
-  useEffect(() => {
-    if (!open) setQuery("");
-  }, [open]);
+  const close = () => {
+    setFocused(false);
+    setQuery("");
+  };
 
   const handleInternal = (to: string) => {
-    setOpen(false);
+    close();
     const [path, hash] = to.split("#");
     navigate({ to: path, hash: hash || undefined });
   };
 
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Rechercher un article"
-        className={cn(
-          "inline-flex items-center gap-2 rounded-md text-white/85 transition-colors hover:text-accent",
-          compact ? "p-2" : "px-3 py-2",
-          triggerClassName,
+    <div ref={containerRef} className={cn("relative", compact ? "w-40 sm:w-56 lg:w-72" : "w-full", className)}>
+      <div className="flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 focus-within:border-accent">
+        <Search className="h-4 w-4 shrink-0 text-white/70" />
+        <input
+          ref={inputRef}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => setFocused(true)}
+          aria-label="Rechercher un article"
+          placeholder="Rechercher un produit…"
+          className="h-9 w-full bg-transparent text-sm text-white outline-none placeholder:text-white/60"
+        />
+        {query && (
+          <button
+            type="button"
+            onClick={close}
+            aria-label="Effacer"
+            className="rounded p-1 text-white/70 hover:text-white"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
         )}
-      >
-        <Search className="h-5 w-5" strokeWidth={2} />
-        {!compact && (
-          <>
-            <span className="hidden text-sm font-medium xl:inline">Rechercher…</span>
-            <span className="hidden rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px] text-white/60 xl:inline">
-              Ctrl K
-            </span>
-          </>
-        )}
-      </button>
+      </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-2xl gap-0 overflow-hidden p-0">
-          <DialogTitle className="sr-only">Recherche globale</DialogTitle>
-          <DialogDescription className="sr-only">
-            Rechercher un produit, une marque ou une catégorie sur PaparaShop
-          </DialogDescription>
-
-          <div className="flex items-center gap-2 border-b px-4">
-            <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
-            <input
-              autoFocus
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Rechercher un produit, une marque, une catégorie…"
-              className="h-12 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-            />
-            {query && (
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                aria-label="Effacer"
-                className="rounded p-1 text-muted-foreground hover:bg-secondary"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-
+      {open && (
+        <div className="absolute right-0 top-full z-50 mt-2 w-[min(90vw,32rem)] overflow-hidden rounded-lg border border-border bg-popover shadow-xl">
           <div className="max-h-[60vh] overflow-y-auto">
-            {!query && (
-              <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-                Tapez le nom d'un boîtier, d'une marque (Canon, Sony, RØDE…) ou d'une catégorie.
-              </div>
-            )}
-
-            {query && results.length === 0 && (
+            {results.length === 0 && (
               <div className="px-4 py-8 text-center text-sm text-muted-foreground">
                 Aucun résultat pour <span className="font-medium">« {query} »</span>.
                 <div className="mt-3">
                   <Link
                     to="/catalogue"
-                    onClick={() => setOpen(false)}
+                    onClick={close}
                     className="text-primary underline underline-offset-4 hover:text-accent-foreground"
                   >
                     Parcourir tout le catalogue
@@ -136,12 +112,12 @@ export function GlobalSearch({ triggerClassName, compact = false }: Props) {
                         <img
                           src={r.image}
                           alt=""
-                          className="h-12 w-12 shrink-0 rounded-md object-cover"
+                          className="h-10 w-10 shrink-0 rounded-md object-cover"
                           loading="lazy"
                         />
                       ) : (
-                        <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                          <Icon className="h-5 w-5" />
+                        <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                          <Icon className="h-4 w-4" />
                         </span>
                       )}
                       <div className="min-w-0 flex-1">
@@ -162,7 +138,7 @@ export function GlobalSearch({ triggerClassName, compact = false }: Props) {
                   );
 
                   const baseCls =
-                    "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-secondary/60";
+                    "flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-secondary/60";
 
                   if (r.url) {
                     return (
@@ -171,7 +147,7 @@ export function GlobalSearch({ triggerClassName, compact = false }: Props) {
                           href={r.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={() => setOpen(false)}
+                          onClick={close}
                           className={baseCls}
                         >
                           {content}
@@ -195,14 +171,8 @@ export function GlobalSearch({ triggerClassName, compact = false }: Props) {
               </ul>
             )}
           </div>
-
-          <div className="border-t bg-secondary/40 px-4 py-2 text-[11px] text-muted-foreground">
-            Astuce : ouvrez la recherche avec{" "}
-            <kbd className="rounded border bg-background px-1 py-0.5 font-mono">Ctrl</kbd> +{" "}
-            <kbd className="rounded border bg-background px-1 py-0.5 font-mono">K</kbd>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+        </div>
+      )}
+    </div>
   );
 }
