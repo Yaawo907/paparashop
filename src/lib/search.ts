@@ -1,5 +1,5 @@
-import { CATEGORIES, getModelName, getModelUrl } from "@/lib/catalog";
-import { ALL_FEATURED } from "@/lib/featured";
+import { type Category, getModelName, getModelUrl } from "@/lib/catalog";
+import { type FeaturedItem } from "@/lib/featured";
 import { SITE } from "@/lib/site";
 
 export type SearchResult = {
@@ -13,10 +13,13 @@ export type SearchResult = {
   keywords: string;
 };
 
-const INDEX: SearchResult[] = (() => {
+export function buildIndex(
+  categories: Category[],
+  featured: { item: FeaturedItem }[],
+): SearchResult[] {
   const items: SearchResult[] = [];
 
-  for (const cat of CATEGORIES) {
+  for (const cat of categories) {
     items.push({
       id: `cat:${cat.slug}`,
       kind: "category",
@@ -55,7 +58,7 @@ const INDEX: SearchResult[] = (() => {
     }
   }
 
-  for (const { item } of ALL_FEATURED) {
+  for (const { item } of featured) {
     items.push({
       id: `feat:${item.name}`,
       kind: "product",
@@ -68,7 +71,7 @@ const INDEX: SearchResult[] = (() => {
   }
 
   return items;
-})();
+}
 
 function normalize(s: string): string {
   return s
@@ -77,13 +80,17 @@ function normalize(s: string): string {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
-export function searchAll(query: string, limit = 30): SearchResult[] {
+export function searchAll(
+  index: SearchResult[],
+  query: string,
+  limit = 30,
+): SearchResult[] {
   const q = normalize(query.trim());
   if (!q) return [];
   const tokens = q.split(/\s+/).filter(Boolean);
 
   const scored: { r: SearchResult; score: number }[] = [];
-  for (const r of INDEX) {
+  for (const r of index) {
     const hay = normalize(`${r.title} ${r.subtitle} ${r.keywords}`);
     let score = 0;
     let ok = true;
