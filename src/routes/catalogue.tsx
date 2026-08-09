@@ -1,14 +1,28 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
 import { CategorySection } from "@/components/catalog/CategorySection";
 import { FeaturedProductsTabs } from "@/components/catalog/FeaturedProductsTabs";
 import { Commitments } from "@/components/home/Commitments";
 
-import { CATEGORIES } from "@/lib/catalog";
+import { categoriesQuery, productsQuery } from "@/lib/cms.queries";
+import { toCategories } from "@/lib/cms-adapters";
 
 export const Route = createFileRoute("/catalogue")({
   component: CataloguePage,
+  loader: async ({ context }) => {
+    await Promise.all([
+      context.queryClient.ensureQueryData(categoriesQuery),
+      context.queryClient.ensureQueryData(productsQuery),
+    ]);
+  },
+  errorComponent: ({ error }) => (
+    <div role="alert" className="p-10 text-center text-sm text-muted-foreground">
+      Impossible de charger le catalogue : {error.message}
+    </div>
+  ),
+  notFoundComponent: () => <div className="p-10 text-center">Catalogue introuvable.</div>,
   head: () => ({
     meta: [
       { title: "Catalogue — PaparaShop | 8 catégories, 40+ marques" },
@@ -28,6 +42,9 @@ export const Route = createFileRoute("/catalogue")({
 });
 
 function CataloguePage() {
+  const { data } = useSuspenseQuery(categoriesQuery);
+  const CATEGORIES = toCategories(data);
+
   return (
     <SiteLayout>
       <section className="bg-primary py-20 text-white sm:py-24">
