@@ -51,10 +51,11 @@ function AuthPage() {
         });
         if (error) throw error;
         if (data.session) {
-          navigate({ to: "/admin" });
-        } else {
-          toast.success("Compte créé — confirmez votre email pour vous connecter.");
+          await supabase.auth.signOut();
         }
+        toast.success("Compte créé — connectez-vous pour continuer.");
+        setMode("signin");
+        setPassword("");
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Une erreur est survenue");
