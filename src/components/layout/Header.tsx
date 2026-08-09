@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn } from "lucide-react";
 import logoAsset from "@/assets/papara-logo.png.asset.json";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -66,6 +66,12 @@ export function Header() {
 
         <div className="flex items-center gap-1 lg:gap-3">
           <GlobalSearch compact />
+          <Link
+            to="/auth"
+            className="hidden items-center gap-1.5 rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white/85 transition-colors hover:text-accent lg:inline-flex"
+          >
+            <LogIn className="h-4 w-4" /> Connexion
+          </Link>
           <a
             href={SITE.catalogUrl}
             target="_blank"
@@ -101,6 +107,15 @@ export function Header() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                to="/auth"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium uppercase tracking-wide text-white/85 hover:bg-white/10 hover:text-accent [&.active]:text-accent"
+              >
+                <LogIn className="h-4 w-4" /> Connexion
+              </Link>
+            </li>
             <li className="pt-2">
               <a
                 href={SITE.catalogUrl}
