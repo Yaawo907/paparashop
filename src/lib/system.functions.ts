@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
 import {
   READONLY_COLUMNS,
   SYSTEM_TABLES,
@@ -59,16 +61,91 @@ export const getSystemTables = createServerFn({ method: "GET" })
     return out;
   });
 
+export type SettingEntry = {
+  key: string;
+  label: string;
+  secret: boolean;
+  masked: string;
+  source: "db" | "env" | "none";
+};
+
+async function assertAdmin(context: { supabase: any; userId: string }) {
+  const { data: roles } = await context.supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", context.userId);
+  if (!(roles ?? []).some((r: { role: string }) => r.role === "admin")) {
+    throw new Response("Forbidden", { status: 403 });
+  }
+}
+
+/** Paramètres modifiables : valeurs masquées, jamais renvoyées en clair. */
+export const getAppSettings = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<SettingEntry[]> => {
+    await assertAdmin(context);
+    const { EDITABLE_SETTINGS, maskValue } = await import("@/lib/app-settings.shared");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await (supabaseAdmin as unknown as {
+      from: (t: string) => {
+        select: (s: string) => Promise<{ data: { key: string; value: string }[] | null }>;
+      };
+    })
+      .from("app_settings")
+      .select("key, value");
+    const db = new Map((data ?? []).map((r) => [r.key, (r.value ?? "").trim()]));
+
+    return EDITABLE_SETTINGS.map((s) => {
+      const dbValue = db.get(s.key) ?? "";
+      const envValue = (process.env[s.key] ?? "").trim();
+      const value = dbValue || envValue;
+      return {
+        key: s.key,
+        label: s.label,
+        secret: s.secret,
+        masked: maskValue(value, s.secret),
+        source: dbValue ? ("db" as const) : envValue ? ("env" as const) : ("none" as const),
+      };
+    });
+  });
+
+/** Écriture d'un paramètre modifiable (admin uniquement). */
+export const setAppSetting = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => {
+    const parsed = z
+      .object({ key: z.string().trim().min(1).max(120), value: z.string().trim().max(2000) })
+      .parse(input);
+    return parsed;
+  })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { isEditableSetting } = await import("@/lib/app-settings.shared");
+    if (!isEditableSetting(data.key)) throw new Error("Paramètre non autorisé");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await (supabaseAdmin as unknown as {
+      from: (t: string) => {
+        upsert: (
+          p: Record<string, unknown>,
+          o: { onConflict: string },
+        ) => Promise<{ error: { message: string } | null }>;
+      };
+    })
+      .from("app_settings")
+      .upsert({ key: data.key, value: data.value }, { onConflict: "key" });
+    if (error) throw new Error(error.message);
+
+    const { invalidateSettingsCache } = await import("@/lib/app-settings.server");
+    invalidateSettingsCache();
+    return { ok: true };
+  });
+
 /** Liste des noms de secrets configurés (jamais les valeurs). */
 export const getSecretNames = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<string[]> => {
-    const { data: roles } = await context.supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", context.userId);
-    const isAdmin = (roles ?? []).some((r: { role: string }) => r.role === "admin");
-    if (!isAdmin) throw new Response("Forbidden", { status: 403 });
+    await assertAdmin(context);
 
     const known = [
       "KKIAPAY_PUBLIC_KEY",
@@ -84,6 +161,7 @@ export const getSecretNames = createServerFn({ method: "GET" })
     ];
     return known.filter((k) => Boolean(process.env[k]));
   });
+
 
 /** Mise à jour d'une ligne d'une table technique (admin uniquement). */
 export const updateSystemRow = createServerFn({ method: "POST" })

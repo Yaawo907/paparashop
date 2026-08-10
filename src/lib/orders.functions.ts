@@ -20,9 +20,11 @@ const checkoutSchema = z.object({
     .max(50),
 });
 
-export const getPaymentConfig = createServerFn({ method: "GET" }).handler(async () => ({
-  publicKey: process.env["KKIAPAY_PUBLIC_KEY"] ?? "",
-}));
+export const getPaymentConfig = createServerFn({ method: "GET" }).handler(async () => {
+  const { getSetting } = await import("@/lib/app-settings.server");
+  return { publicKey: await getSetting("KKIAPAY_PUBLIC_KEY") };
+});
+
 
 export const createOrder = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => checkoutSchema.parse(input))

@@ -5,11 +5,15 @@ import { toast } from "sonner";
 import { Pencil, Trash2 } from "lucide-react";
 import {
   deleteSystemRow,
+  getAppSettings,
   getSecretNames,
   getSystemTables,
+  setAppSetting,
   updateSystemRow,
+  type SettingEntry,
 } from "@/lib/system.functions";
 import { READONLY_COLUMNS, type SystemTable } from "@/lib/system.shared";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,12 +42,16 @@ type DeleteState = { table: string; id: string } | null;
 export function SystemAdmin() {
   const fetchTables = useServerFn(getSystemTables);
   const fetchSecrets = useServerFn(getSecretNames);
+  const fetchSettings = useServerFn(getAppSettings);
+  const saveSetting = useServerFn(setAppSetting);
   const saveRow = useServerFn(updateSystemRow);
   const removeRow = useServerFn(deleteSystemRow);
   const qc = useQueryClient();
 
   const [edit, setEdit] = useState<EditState>(null);
   const [confirmDelete, setConfirmDelete] = useState<DeleteState>(null);
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
+
 
   const tables = useQuery({
     queryKey: ["admin", "system-tables"],
@@ -53,6 +61,21 @@ export function SystemAdmin() {
     queryKey: ["admin", "secrets"],
     queryFn: () => fetchSecrets({}) as Promise<string[]>,
   });
+  const settings = useQuery({
+    queryKey: ["admin", "app-settings"],
+    queryFn: () => fetchSettings({}) as Promise<SettingEntry[]>,
+  });
+
+  const settingMutation = useMutation({
+    mutationFn: (v: { key: string; value: string }) => saveSetting({ data: v }),
+    onSuccess: (_r, v) => {
+      toast.success("Paramètre enregistré");
+      setDrafts((d) => ({ ...d, [v.key]: "" }));
+      qc.invalidateQueries({ queryKey: ["admin", "app-settings"] });
+    },
+    onError: (e: Error) => toast.error(e.message || "Échec de l'enregistrement"),
+  });
+
 
   const updateMutation = useMutation({
     mutationFn: (v: { table: string; id: string; patch: Record<string, string> }) =>
@@ -78,25 +101,63 @@ export function SystemAdmin() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="font-display text-xl font-bold text-primary">Secrets configurés</h2>
+        <h2 className="font-display text-xl font-bold text-primary">Clés & paramètres</h2>
         <p className="mt-1 text-xs text-muted-foreground">
-          Les valeurs ne sont jamais affichées ni transmises au navigateur. Pour en modifier une
-          (clé KKiaPay, email/WhatsApp d'alerte…), la mise à jour se fait via le formulaire sécurisé
-          de la plateforme — demandez-le dans le chat de l'éditeur.
+          Modifiez ici vos clés KKiaPay et les destinataires d'alerte. Les valeurs sont stockées côté
+          serveur et n'apparaissent jamais en clair : seules les 4 premiers et derniers caractères
+          sont affichés.
         </p>
 
-        <div className="mt-3 flex flex-wrap gap-2">
-          {secrets.isLoading && <p className="text-sm text-muted-foreground">Chargement…</p>}
+        <div className="mt-3 space-y-3">
+          {settings.isLoading && <p className="text-sm text-muted-foreground">Chargement…</p>}
+          {(settings.data ?? []).map((s) => (
+            <div
+              key={s.key}
+              className="rounded-xl border border-border bg-card p-3 sm:flex sm:items-end sm:gap-3"
+            >
+              <div className="min-w-0 flex-1">
+                <Label htmlFor={`set-${s.key}`} className="text-xs">
+                  {s.label}
+                </Label>
+                <p className="truncate font-mono text-[11px] text-muted-foreground">
+                  {s.key} · {s.masked || "non défini"} ·{" "}
+                  {s.source === "db" ? "modifié ici" : s.source === "env" ? "valeur plateforme" : "vide"}
+                </p>
+                <Input
+                  id={`set-${s.key}`}
+                  className="mt-2"
+                  type={s.secret ? "password" : "text"}
+                  autoComplete="off"
+                  placeholder="Nouvelle valeur…"
+                  value={drafts[s.key] ?? ""}
+                  onChange={(e) => setDrafts((d) => ({ ...d, [s.key]: e.target.value }))}
+                />
+              </div>
+              <Button
+                className="mt-2 w-full sm:mt-0 sm:w-auto"
+                disabled={!((drafts[s.key] ?? "").trim()) || settingMutation.isPending}
+                onClick={() =>
+                  settingMutation.mutate({ key: s.key, value: (drafts[s.key] ?? "").trim() })
+                }
+              >
+                Enregistrer
+              </Button>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-2">
           {(secrets.data ?? []).map((name) => (
             <span
               key={name}
-              className="rounded-full border border-border bg-card px-3 py-1 font-mono text-xs text-primary"
+              className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] text-muted-foreground"
             >
               {name} · ••••••
             </span>
           ))}
         </div>
       </div>
+
 
       <div className="space-y-6">
         <h2 className="font-display text-xl font-bold text-primary">Tables techniques</h2>
