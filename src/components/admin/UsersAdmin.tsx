@@ -121,7 +121,7 @@ export function UsersAdmin() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Rechercher un compte (email ou nom)…"
-          className="max-w-sm"
+          className="w-full sm:max-w-sm"
         />
         <p className="text-xs text-muted-foreground">
           {rows.length} compte{rows.length > 1 ? "s" : ""}
@@ -137,7 +137,55 @@ export function UsersAdmin() {
         <p className="text-sm text-destructive">Erreur de chargement des comptes.</p>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
+      {/* Mobile : cartes */}
+      <div className="space-y-3 md:hidden">
+        {rows.map((u) => (
+          <div key={u.id} className="rounded-xl border border-border bg-card p-3">
+            <p className="truncate font-medium text-foreground">
+              {u.full_name || "—"}
+              {u.id === meId && (
+                <span className="ml-1 text-[11px] text-muted-foreground">(vous)</span>
+              )}
+            </p>
+            <p className="truncate text-xs text-muted-foreground">{u.email ?? u.id}</p>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {u.roles.length === 0 ? (
+                <span className="text-xs text-muted-foreground">Client</span>
+              ) : (
+                u.roles.map((r) => (
+                  <Badge key={r} variant="secondary" className="gap-1">
+                    <ShieldCheck className="h-3 w-3" />
+                    {ROLES.find((x) => x.value === r)?.label ?? r}
+                  </Badge>
+                ))
+              )}
+            </div>
+            <div className="mt-3 grid grid-cols-1 gap-2 xs:grid-cols-2">
+              {ROLES.map((role) => {
+                const has = u.roles.includes(role.value);
+                const selfDemote = u.id === meId && role.value === "admin" && has;
+                return (
+                  <Button
+                    key={role.value}
+                    size="sm"
+                    className="w-full"
+                    variant={has ? "default" : "outline"}
+                    disabled={selfDemote || toggleRole.isPending}
+                    onClick={() => toggleRole.mutate({ userId: u.id, role: role.value, has })}
+                  >
+                    {has ? `Retirer ${role.label}` : role.label}
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+        {!usersQuery.isLoading && rows.length === 0 && (
+          <p className="text-sm text-muted-foreground">Aucun compte trouvé.</p>
+        )}
+      </div>
+
+      <div className="hidden overflow-hidden rounded-xl border border-border bg-card md:block">
         <table className="w-full text-sm">
           <thead className="bg-secondary/50 text-left text-xs uppercase text-muted-foreground">
             <tr>
