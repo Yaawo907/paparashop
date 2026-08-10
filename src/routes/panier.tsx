@@ -33,9 +33,26 @@ export const Route = createFileRoute("/panier")({
 declare global {
   interface Window {
     openKkiapayWidget?: (opts: Record<string, unknown>) => void;
+    addKkiapayListener?: (event: string, cb: (res: unknown) => void) => void;
     addSuccessListener?: (cb: (res: { transactionId: string }) => void) => void;
     addFailedListener?: (cb: (res: unknown) => void) => void;
   }
+}
+
+const PENDING_KEY = "paparashop.pendingOrder.v1";
+
+function extractTransactionId(res: unknown): string | null {
+  if (typeof res === "string") return res;
+  if (res && typeof res === "object") {
+    const r = res as Record<string, unknown>;
+    for (const k of ["transactionId", "transaction_id", "id"]) {
+      const v = r[k];
+      if (typeof v === "string" && v.length >= 3) return v;
+    }
+    if (r["detail"]) return extractTransactionId(r["detail"]);
+    if (r["data"]) return extractTransactionId(r["data"]);
+  }
+  return null;
 }
 
 function useKkiapayScript() {
@@ -53,6 +70,7 @@ function useKkiapayScript() {
   }, []);
   return ready;
 }
+
 
 const emptyForm = {
   name: "",
