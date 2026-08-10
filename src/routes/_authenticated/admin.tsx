@@ -9,6 +9,7 @@ import { CategoriesAdmin } from "@/components/admin/CategoriesAdmin";
 import { ProductsAdmin } from "@/components/admin/ProductsAdmin";
 import { PromotionsAdmin } from "@/components/admin/PromotionsAdmin";
 import { TestimonialsAdmin } from "@/components/admin/TestimonialsAdmin";
+import { OrdersAdmin } from "@/components/admin/OrdersAdmin";
 import { ContentAdmin } from "@/components/admin/ContentAdmin";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -87,6 +88,7 @@ function AdminPage() {
               <TabsTrigger value="products">Produits</TabsTrigger>
               <TabsTrigger value="promotions">Promotions</TabsTrigger>
               <TabsTrigger value="testimonials">Témoignages</TabsTrigger>
+              <TabsTrigger value="orders">Commandes</TabsTrigger>
               <TabsTrigger value="content">Textes</TabsTrigger>
             </TabsList>
             <TabsContent value="categories" className="pt-6">
@@ -100,6 +102,9 @@ function AdminPage() {
             </TabsContent>
             <TabsContent value="testimonials" className="pt-6">
               <TestimonialsAdmin />
+            </TabsContent>
+            <TabsContent value="orders" className="pt-6">
+              <OrdersAdmin />
             </TabsContent>
             <TabsContent value="content" className="pt-6">
               <ContentAdmin />
