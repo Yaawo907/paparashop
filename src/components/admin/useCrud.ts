@@ -9,7 +9,9 @@ export type CrudTable =
   | "products"
   | "promotions"
   | "testimonials"
-  | "site_content";
+  | "site_content"
+  | "hero_slides"
+  | "trusted_clients";
 
 type Row = Record<string, unknown> & { id?: string };
 

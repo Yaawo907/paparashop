@@ -12,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { HeroAdmin } from "@/components/admin/HeroAdmin";
+import { ClientsAdmin } from "@/components/admin/ClientsAdmin";
 import { CategoriesAdmin } from "@/components/admin/CategoriesAdmin";
 import { ProductsAdmin } from "@/components/admin/ProductsAdmin";
 import { PromotionsAdmin } from "@/components/admin/PromotionsAdmin";
@@ -70,6 +72,8 @@ function AdminPage() {
     { value: "categories", label: "Catalogue" },
     { value: "products", label: "Produits" },
     { value: "promotions", label: "Promotions" },
+    { value: "hero", label: "Carrousel accueil" },
+    { value: "clients", label: "Clients" },
     { value: "orders", label: "Commandes" },
     ...(isEditor
       ? [
@@ -154,6 +158,12 @@ function AdminPage() {
             </TabsContent>
             <TabsContent value="promotions" className="pt-6">
               <PromotionsAdmin />
+            </TabsContent>
+            <TabsContent value="hero" className="pt-6">
+              <HeroAdmin />
+            </TabsContent>
+            <TabsContent value="clients" className="pt-6">
+              <ClientsAdmin />
             </TabsContent>
             <TabsContent value="orders" className="pt-6">
               <OrdersAdmin />

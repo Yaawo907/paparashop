@@ -3,9 +3,11 @@ import type { Database } from "@/integrations/supabase/types";
 import type {
   CmsCategory,
   CmsContent,
+  CmsHeroSlide,
   CmsProduct,
   CmsPromotion,
   CmsTestimonial,
+  CmsTrustedClient,
 } from "@/lib/cms-types";
 
 function publicClient() {
@@ -88,4 +90,26 @@ export async function fetchContent(): Promise<CmsContent> {
     out[row.key] = (row.value ?? {}) as Record<string, string>;
   }
   return out;
+}
+
+export async function fetchHeroSlides(): Promise<CmsHeroSlide[]> {
+  const supabase = publicClient();
+  const { data, error } = await supabase
+    .from("hero_slides")
+    .select("*")
+    .eq("is_active", true)
+    .order("position");
+  if (error) throw error;
+  return (data ?? []) as CmsHeroSlide[];
+}
+
+export async function fetchTrustedClients(): Promise<CmsTrustedClient[]> {
+  const supabase = publicClient();
+  const { data, error } = await supabase
+    .from("trusted_clients")
+    .select("*")
+    .eq("is_active", true)
+    .order("position");
+  if (error) throw error;
+  return (data ?? []) as CmsTrustedClient[];
 }
