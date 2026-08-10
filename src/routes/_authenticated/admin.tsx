@@ -11,6 +11,7 @@ import { PromotionsAdmin } from "@/components/admin/PromotionsAdmin";
 import { TestimonialsAdmin } from "@/components/admin/TestimonialsAdmin";
 import { OrdersAdmin } from "@/components/admin/OrdersAdmin";
 import { ContentAdmin } from "@/components/admin/ContentAdmin";
+import { UsersAdmin } from "@/components/admin/UsersAdmin";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
@@ -40,7 +41,7 @@ function AdminPage() {
         .select("role")
         .eq("user_id", userData.user?.id ?? "");
       if (!active) return;
-      setStaff((data ?? []).some((r) => r.role === "admin" || r.role === "editor"));
+      setStaff((data ?? []).length > 0);
     })();
     return () => {
       active = false;
@@ -90,6 +91,7 @@ function AdminPage() {
               <TabsTrigger value="testimonials">Témoignages</TabsTrigger>
               <TabsTrigger value="orders">Commandes</TabsTrigger>
               <TabsTrigger value="content">Textes</TabsTrigger>
+              <TabsTrigger value="users">Utilisateurs</TabsTrigger>
             </TabsList>
             <TabsContent value="categories" className="pt-6">
               <CategoriesAdmin />
@@ -108,6 +110,9 @@ function AdminPage() {
             </TabsContent>
             <TabsContent value="content" className="pt-6">
               <ContentAdmin />
+            </TabsContent>
+            <TabsContent value="users" className="pt-6">
+              <UsersAdmin />
             </TabsContent>
           </Tabs>
         )}
