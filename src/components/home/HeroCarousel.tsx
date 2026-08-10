@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+
 import heroCameras from "@/assets/hero-cameras.jpg";
 import heroVideo from "@/assets/hero-video.jpg";
 import heroStudio from "@/assets/hero-studio.jpg";
 import heroLenses from "@/assets/hero-lenses.jpg";
 import heroGear from "@/assets/hero-gear.jpg";
-import { SITE } from "@/lib/site";
+
 
 type Slide = {
   title: string;
@@ -71,15 +73,14 @@ export function HeroCarousel() {
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/85 sm:text-base">
             {slides[index].subtitle}
           </p>
-          <a
-            href={SITE.catalogUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/catalogue"
             className="mt-5 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50"
           >
             Découvrir le catalogue
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
+
         </div>
       </div>
 
