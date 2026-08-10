@@ -53,6 +53,41 @@ export function SystemAdmin() {
   const [edit, setEdit] = useState<EditState>(null);
   const [confirmDelete, setConfirmDelete] = useState<DeleteState>(null);
   const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const [testEmail, setTestEmail] = useState("");
+
+  const testEmailMutation = useMutation({
+    mutationFn: async (recipientEmail: string) => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) throw new Error("Session expirée");
+      const res = await fetch("/lovable/email/transactional/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          templateName: "email-test",
+          recipientEmail,
+          idempotencyKey: `admin-test-${crypto.randomUUID()}`,
+          templateData: {
+            recipientName: "",
+            sentAt: new Date().toLocaleString("fr-FR"),
+          },
+        }),
+      });
+      const json = await res.json().catch(() => ({ error: "Réponse invalide" }));
+      if (!res.ok) throw new Error(json.error || `Erreur ${res.status}`);
+      return json;
+    },
+    onSuccess: () => {
+      toast.success("E-mail de test envoyé — vérifiez la boîte de réception");
+      setTestEmail("");
+    },
+    onError: (e: Error) => toast.error(e.message || "Échec de l'envoi"),
+  });
+
 
 
   const tables = useQuery({
