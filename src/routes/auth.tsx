@@ -115,13 +115,21 @@ function AuthPage() {
             </Button>
           </form>
 
+          <Link
+            to="/mot-de-passe-oublie"
+            className="mt-4 block text-center text-sm text-primary underline"
+          >
+            Mot de passe oublié ?
+          </Link>
+
           <button
             type="button"
             onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-            className="mt-6 w-full text-center text-sm text-muted-foreground underline"
+            className="mt-3 w-full text-center text-sm text-muted-foreground underline"
           >
             {mode === "signin" ? "Créer un compte" : "J'ai déjà un compte"}
           </button>
+
         </div>
       </section>
     </SiteLayout>

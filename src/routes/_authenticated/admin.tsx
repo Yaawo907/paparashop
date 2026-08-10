@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
+
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -109,10 +110,19 @@ function AdminPage() {
             </h1>
             <p className="truncate text-xs text-muted-foreground">{email}</p>
           </div>
-          <Button variant="outline" size="sm" className="shrink-0" onClick={signOut}>
-            <LogOut className="h-4 w-4 sm:mr-1" />
-            <span className="hidden sm:inline">Déconnexion</span>
-          </Button>
+          <div className="flex shrink-0 items-center gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/profil">
+                <User className="h-4 w-4 sm:mr-1" />
+                <span className="hidden sm:inline">Mon profil</span>
+              </Link>
+            </Button>
+            <Button variant="outline" size="sm" onClick={signOut}>
+              <LogOut className="h-4 w-4 sm:mr-1" />
+              <span className="hidden sm:inline">Déconnexion</span>
+            </Button>
+          </div>
+
         </div>
       </header>
 
