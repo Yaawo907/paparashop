@@ -20,9 +20,10 @@ const KIND_META: Record<
 type Props = {
   className?: string;
   compact?: boolean;
+  variant?: "dark" | "light";
 };
 
-export function GlobalSearch({ className, compact = false }: Props) {
+export function GlobalSearch({ className, compact = false, variant = "dark" }: Props) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -70,10 +71,19 @@ export function GlobalSearch({ className, compact = false }: Props) {
     navigate({ to: path, hash: hash || undefined });
   };
 
+  const isLight = variant === "light";
+
   return (
     <div ref={containerRef} className={cn("relative", compact ? "w-40 sm:w-56 lg:w-72" : "w-full", className)}>
-      <div className="flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 focus-within:border-accent">
-        <Search className="h-4 w-4 shrink-0 text-white/70" />
+      <div
+        className={cn(
+          "flex items-center gap-2 rounded-md border px-3 focus-within:border-accent",
+          isLight
+            ? "border-input bg-white shadow-sm focus-within:ring-1 focus-within:ring-accent"
+            : "border-white/20 bg-white/10",
+        )}
+      >
+        <Search className={cn("h-4 w-4 shrink-0", isLight ? "text-muted-foreground" : "text-white/70")} />
         <input
           ref={inputRef}
           value={query}
@@ -81,14 +91,17 @@ export function GlobalSearch({ className, compact = false }: Props) {
           onFocus={() => setFocused(true)}
           aria-label="Rechercher un article"
           placeholder="Rechercher un produit…"
-          className="h-9 w-full bg-transparent text-sm text-white outline-none placeholder:text-white/60"
+          className={cn(
+            "h-10 w-full bg-transparent text-sm outline-none",
+            isLight ? "text-foreground placeholder:text-muted-foreground" : "text-white placeholder:text-white/60",
+          )}
         />
         {query && (
           <button
             type="button"
             onClick={close}
             aria-label="Effacer"
-            className="rounded p-1 text-white/70 hover:text-white"
+            className={cn("rounded p-1", isLight ? "text-muted-foreground hover:text-foreground" : "text-white/70 hover:text-white")}
           >
             <X className="h-3.5 w-3.5" />
           </button>
