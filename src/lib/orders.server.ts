@@ -88,28 +88,54 @@ export async function createPendingOrder(customer: CustomerInput, lines: Checkou
 
 type KkiapayStatus = { status?: string; amount?: number; transactionId?: string };
 
+export type KkiapayVerification =
+  | { verified: true; status: KkiapayStatus }
+  /** Vérification impossible (clés API refusées / API injoignable) : on n'échoue pas la commande. */
+  | { verified: false; reason: string };
+
+const KKIAPAY_HOSTS = ["https://api.kkiapay.me", "https://api-sandbox.kkiapay.me"];
+
 /** Vérifie une transaction auprès de KKiaPay. */
-export async function verifyKkiapayTransaction(transactionId: string): Promise<KkiapayStatus> {
-  const res = await fetch("https://api.kkiapay.me/api/v1/transactions/status", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env["KKIAPAY_PUBLIC_KEY"]!,
-      "x-private-key": process.env["KKIAPAY_PRIVATE_KEY"]!,
-      "x-secret-key": process.env["KKIAPAY_SECRET"]!,
-    },
-    body: JSON.stringify({ transactionId }),
-  });
-  const text = await res.text();
-  if (!res.ok) {
-    throw new Error(`KKiaPay [${res.status}]: ${text}`);
+export async function verifyKkiapayTransaction(
+  transactionId: string,
+): Promise<KkiapayVerification> {
+  let lastError = "";
+
+  for (const host of KKIAPAY_HOSTS) {
+    try {
+      const res = await fetch(`${host}/api/v1/transactions/status`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": (process.env["KKIAPAY_PUBLIC_KEY"] ?? "").trim(),
+          "x-private-key": (process.env["KKIAPAY_PRIVATE_KEY"] ?? "").trim(),
+          "x-secret-key": (process.env["KKIAPAY_SECRET"] ?? "").trim(),
+        },
+        body: JSON.stringify({ transactionId }),
+      });
+      const text = await res.text();
+
+      if (res.ok) {
+        try {
+          return { verified: true, status: JSON.parse(text) as KkiapayStatus };
+        } catch {
+          lastError = `Réponse inattendue: ${text.slice(0, 200)}`;
+          continue;
+        }
+      }
+
+      lastError = `[${res.status}] ${text.slice(0, 200)}`;
+      // 401/403 = clés refusées sur cet environnement : on tente l'autre host.
+      if (res.status !== 401 && res.status !== 403) break;
+    } catch (err) {
+      lastError = err instanceof Error ? err.message : String(err);
+    }
   }
-  try {
-    return JSON.parse(text) as KkiapayStatus;
-  } catch {
-    throw new Error(`Réponse KKiaPay inattendue: ${text}`);
-  }
+
+  console.error(`[kkiapay] vérification impossible (${transactionId}): ${lastError}`);
+  return { verified: false, reason: lastError };
 }
+
 
 export async function loadOrder(orderId: string) {
   const supabase = adminClient();
