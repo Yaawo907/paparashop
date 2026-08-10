@@ -91,23 +91,32 @@ function PanierPage() {
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<string | null>(null);
   const orderRef = useRef<{ id: string; number: string } | null>(null);
+  const handlingRef = useRef(false);
 
   const { data: config } = useQuery({
     queryKey: ["payment", "config"],
     queryFn: () => getPaymentConfig(),
   });
 
-  useEffect(() => {
-    if (!scriptReady) return;
-    window.addSuccessListener?.(async (res) => {
-      const order = orderRef.current;
-      if (!order) return;
+  const finalize = useCallback(
+    async (transactionId: string) => {
+      let order = orderRef.current;
+      if (!order) {
+        try {
+          const raw = window.localStorage.getItem(PENDING_KEY);
+          if (raw) order = JSON.parse(raw) as { id: string; number: string };
+        } catch {
+          /* ignore */
+        }
+      }
+      if (!order || handlingRef.current) return;
+      handlingRef.current = true;
       try {
-        const result = await confirmPaymentFn({
-          data: { orderId: order.id, transactionId: res.transactionId },
-        });
+        const result = await confirmPaymentFn({ data: { orderId: order.id, transactionId } });
         if (result.ok) {
           clear();
+          window.localStorage.removeItem(PENDING_KEY);
+          orderRef.current = null;
           setDone(result.orderNumber);
           toast.success("Paiement confirmé, merci !");
         } else {
@@ -116,14 +125,49 @@ function PanierPage() {
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Vérification du paiement impossible.");
       } finally {
+        handlingRef.current = false;
         setBusy(false);
       }
-    });
-    window.addFailedListener?.(() => {
+    },
+    [confirmPaymentFn, clear],
+  );
+
+  // Écoute tous les canaux possibles du SDK KKiaPay (API récente + ancienne + events DOM)
+  useEffect(() => {
+    if (!scriptReady) return;
+
+    const onSuccess = (res: unknown) => {
+      const id = extractTransactionId(res);
+      if (id) void finalize(id);
+    };
+    const onFailed = () => {
       setBusy(false);
       toast.error("Le paiement a échoué ou a été annulé.");
-    });
-  }, [scriptReady, confirmPaymentFn, clear]);
+    };
+
+    window.addKkiapayListener?.("success", onSuccess);
+    window.addKkiapayListener?.("failed", onFailed);
+    window.addSuccessListener?.(onSuccess as (r: { transactionId: string }) => void);
+    window.addFailedListener?.(onFailed);
+    window.addEventListener("kkiapay.success", onSuccess as EventListener);
+    window.addEventListener("kkiapay.failed", onFailed as EventListener);
+
+    return () => {
+      window.removeEventListener("kkiapay.success", onSuccess as EventListener);
+      window.removeEventListener("kkiapay.failed", onFailed as EventListener);
+    };
+  }, [scriptReady, finalize]);
+
+  // Reprise après redirection : ?transaction_id=... ou commande en attente
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("transaction_id") ?? params.get("transactionId");
+    if (id) {
+      setBusy(true);
+      void finalize(id);
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, [finalize]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -137,6 +181,14 @@ function PanierPage() {
         },
       });
       orderRef.current = { id: order.orderId, number: order.orderNumber };
+      try {
+        window.localStorage.setItem(
+          PENDING_KEY,
+          JSON.stringify({ id: order.orderId, number: order.orderNumber }),
+        );
+      } catch {
+        /* ignore */
+      }
 
       if (!config?.publicKey || !window.openKkiapayWidget) {
         setBusy(false);
@@ -154,12 +206,14 @@ function PanierPage() {
         email: form.email,
         phone: form.phone,
         data: order.orderNumber,
+        callback: `${window.location.origin}/panier`,
       });
     } catch (err) {
       setBusy(false);
       toast.error(err instanceof Error ? err.message : "Commande impossible.");
     }
   };
+
 
   if (done) {
     return (
