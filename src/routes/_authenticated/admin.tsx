@@ -100,10 +100,11 @@ function AdminPage() {
               <TabsTrigger value="categories">Catalogue</TabsTrigger>
               <TabsTrigger value="products">Produits</TabsTrigger>
               <TabsTrigger value="promotions">Promotions</TabsTrigger>
-              <TabsTrigger value="testimonials">Témoignages</TabsTrigger>
               <TabsTrigger value="orders">Commandes</TabsTrigger>
-              <TabsTrigger value="content">Textes</TabsTrigger>
-              <TabsTrigger value="users">Utilisateurs</TabsTrigger>
+              {isEditor && <TabsTrigger value="testimonials">Témoignages</TabsTrigger>}
+              {isEditor && <TabsTrigger value="content">Textes</TabsTrigger>}
+              {isAdmin && <TabsTrigger value="users">Utilisateurs</TabsTrigger>}
+              {isAdmin && <TabsTrigger value="system">Système</TabsTrigger>}
             </TabsList>
             <TabsContent value="categories" className="pt-6">
               <CategoriesAdmin />
@@ -114,19 +115,31 @@ function AdminPage() {
             <TabsContent value="promotions" className="pt-6">
               <PromotionsAdmin />
             </TabsContent>
-            <TabsContent value="testimonials" className="pt-6">
-              <TestimonialsAdmin />
-            </TabsContent>
             <TabsContent value="orders" className="pt-6">
               <OrdersAdmin />
             </TabsContent>
-            <TabsContent value="content" className="pt-6">
-              <ContentAdmin />
-            </TabsContent>
-            <TabsContent value="users" className="pt-6">
-              <UsersAdmin />
-            </TabsContent>
+            {isEditor && (
+              <TabsContent value="testimonials" className="pt-6">
+                <TestimonialsAdmin />
+              </TabsContent>
+            )}
+            {isEditor && (
+              <TabsContent value="content" className="pt-6">
+                <ContentAdmin />
+              </TabsContent>
+            )}
+            {isAdmin && (
+              <TabsContent value="users" className="pt-6">
+                <UsersAdmin />
+              </TabsContent>
+            )}
+            {isAdmin && (
+              <TabsContent value="system" className="pt-6">
+                <SystemAdmin />
+              </TabsContent>
+            )}
           </Tabs>
+
         )}
       </main>
     </div>
