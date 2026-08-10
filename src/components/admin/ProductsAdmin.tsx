@@ -109,6 +109,30 @@ function ProductForm({
         value={form.image_url ?? ""}
         onChange={(url) => set({ image_url: url })}
       />
+      <div className="grid gap-4 sm:grid-cols-3">
+        <div className="space-y-2">
+          <Label>Prix (FCFA) — 0 = non vendable en ligne</Label>
+          <Input
+            type="number"
+            min={0}
+            value={form.price ?? 0}
+            onChange={(e) => set({ price: Number(e.target.value) })}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>Stock</Label>
+          <Input
+            type="number"
+            min={0}
+            value={form.stock ?? 0}
+            onChange={(e) => set({ stock: Number(e.target.value) })}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>Référence (SKU)</Label>
+          <Input value={form.sku ?? ""} onChange={(e) => set({ sku: e.target.value })} />
+        </div>
+      </div>
       <div className="space-y-2">
         <Label>Lien produit externe</Label>
         <Input
@@ -117,6 +141,7 @@ function ProductForm({
           placeholder="https://…"
         />
       </div>
+
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
           <Label>Ordre</Label>
