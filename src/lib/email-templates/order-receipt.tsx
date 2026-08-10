@@ -5,6 +5,7 @@ import {
   Heading,
   Hr,
   Html,
+  Link,
   Preview,
   Section,
   Text,
@@ -25,6 +26,8 @@ export interface OrderReceiptProps {
   transactionId?: string;
   delivery?: string;
   lines?: OrderLine[];
+  supportEmail?: string;
+  whatsappUrl?: string;
 }
 
 const teal = "#0d9488";
@@ -36,6 +39,8 @@ export function OrderReceiptEmail({
   transactionId = "-",
   delivery = "",
   lines = [],
+  supportEmail = "paparashop26@gmail.com",
+  whatsappUrl = "https://wa.me/2290162447474",
 }: OrderReceiptProps) {
   return (
     <Html lang="fr">
