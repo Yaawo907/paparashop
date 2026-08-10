@@ -9,6 +9,7 @@ import { Stats } from "@/components/home/Stats";
 import { TrustedBy } from "@/components/home/TrustedBy";
 import { Testimonials } from "@/components/home/Testimonials";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
+import { GlobalSearch } from "@/components/layout/GlobalSearch";
 import { SITE, LOCATIONS } from "@/lib/site";
 import { categoriesQuery, productsQuery, testimonialsQuery } from "@/lib/cms.queries";
 
@@ -66,6 +67,14 @@ function Index() {
   return (
     <SiteLayout>
       <HeroCarousel />
+      <section className="bg-muted/50 border-b border-border py-6">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <label htmlFor="landing-search" className="sr-only">
+            Rechercher un article
+          </label>
+          <GlobalSearch variant="light" className="w-full" />
+        </div>
+      </section>
       <ShopByCategory />
       <FeaturedProductsTabs />
       <FeaturedProducts />
