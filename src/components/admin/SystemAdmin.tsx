@@ -42,12 +42,16 @@ type DeleteState = { table: string; id: string } | null;
 export function SystemAdmin() {
   const fetchTables = useServerFn(getSystemTables);
   const fetchSecrets = useServerFn(getSecretNames);
+  const fetchSettings = useServerFn(getAppSettings);
+  const saveSetting = useServerFn(setAppSetting);
   const saveRow = useServerFn(updateSystemRow);
   const removeRow = useServerFn(deleteSystemRow);
   const qc = useQueryClient();
 
   const [edit, setEdit] = useState<EditState>(null);
   const [confirmDelete, setConfirmDelete] = useState<DeleteState>(null);
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
+
 
   const tables = useQuery({
     queryKey: ["admin", "system-tables"],
