@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+
 import heroCameras from "@/assets/hero-cameras.jpg";
 import heroVideo from "@/assets/hero-video.jpg";
 import heroStudio from "@/assets/hero-studio.jpg";
