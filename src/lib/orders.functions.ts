@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { getRequest } from "@tanstack/react-start/server";
 
 const customerSchema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -54,7 +55,8 @@ export const confirmPayment = createServerFn({ method: "POST" })
     await markOrderPaid(data.orderId, data.transactionId);
 
     const { notifyOrderPaid } = await import("@/lib/order-notify.server");
-    await notifyOrderPaid({ ...order, transaction_id: data.transactionId }, items);
+    const origin = new URL(getRequest().url).origin;
+    await notifyOrderPaid({ ...order, transaction_id: data.transactionId }, items, origin);
 
     return { ok: true as const, orderNumber: order.order_number, total: Number(order.total) };
   });

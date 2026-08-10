@@ -42,7 +42,7 @@ export function buildStaffWhatsAppLink(order: Order, items: OrderItem[]) {
  * domaine d'envoi n'est pas vérifié, l'échec est journalisé sans bloquer
  * la confirmation de la commande.
  */
-export async function notifyOrderPaid(order: Order, items: OrderItem[]) {
+export async function notifyOrderPaid(order: Order, items: OrderItem[], baseUrl = "") {
   const waLink = buildStaffWhatsAppLink(order, items);
   const staffEmail = process.env["ORDER_ALERT_EMAIL"];
   const receipt = buildReceiptText(order, items);
@@ -50,7 +50,7 @@ export async function notifyOrderPaid(order: Order, items: OrderItem[]) {
   console.log(`[order-paid] ${order.order_number}\n${receipt}\nWhatsApp: ${waLink ?? "n/a"}`);
 
   const send = async (to: string, subject: string, body: string) => {
-    const base = process.env["SITE_URL"] ?? "";
+    const base = baseUrl || process.env["SITE_URL"] || "";
     if (!base) return;
     const res = await fetch(`${base}/lovable/email/transactional/send`, {
       method: "POST",
