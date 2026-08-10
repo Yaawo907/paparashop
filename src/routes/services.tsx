@@ -15,7 +15,7 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "Vente d'équipements & audiovisuel professionnels : appareils photo, caméras, accessoires studio, conseil expert, service après-vente — découvrez tous les services PaparaShop.",
+          "Vente d'EQUIPEMENTIER AUDIOVISUEL professionnel : appareils photo, caméras, accessoires studio, conseil expert, service après-vente — découvrez tous les services PaparaShop.",
       },
     ],
   }),
@@ -67,7 +67,7 @@ function ServicesPage() {
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg">
             De la vente à l'accompagnement, PaparaShop vous apporte une expertise complète
-            sur l'ensemble de vos équipements & audiovisuel.
+            sur l'ensemble de votre EQUIPEMENTIER AUDIOVISUEL.
           </p>
         </div>
       </section>
