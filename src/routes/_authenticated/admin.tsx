@@ -5,6 +5,13 @@ import { LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { CategoriesAdmin } from "@/components/admin/CategoriesAdmin";
 import { ProductsAdmin } from "@/components/admin/ProductsAdmin";
 import { PromotionsAdmin } from "@/components/admin/PromotionsAdmin";
@@ -32,6 +39,7 @@ function AdminPage() {
   const [staff, setStaff] = useState<boolean | null>(null);
   const [roles, setRoles] = useState<string[]>([]);
   const [email, setEmail] = useState("");
+  const [tab, setTab] = useState("categories");
 
   useEffect(() => {
     let active = true;
@@ -58,6 +66,24 @@ function AdminPage() {
   // commercial : catalogue, produits, promotions, images, commandes
   // éditeur : + textes et témoignages
   // admin : + utilisateurs et tables techniques
+  const visibleTabs = [
+    { value: "categories", label: "Catalogue" },
+    { value: "products", label: "Produits" },
+    { value: "promotions", label: "Promotions" },
+    { value: "orders", label: "Commandes" },
+    ...(isEditor
+      ? [
+          { value: "testimonials", label: "Témoignages" },
+          { value: "content", label: "Textes" },
+        ]
+      : []),
+    ...(isAdmin
+      ? [
+          { value: "users", label: "Utilisateurs" },
+          { value: "system", label: "Système" },
+        ]
+      : []),
+  ];
 
 
   async function signOut() {
@@ -70,20 +96,21 @@ function AdminPage() {
   return (
     <div className="min-h-screen bg-secondary/30">
       <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
-          <div>
-            <h1 className="font-display text-lg font-bold text-primary">
+        <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:px-6 sm:py-4">
+          <div className="min-w-0">
+            <h1 className="truncate font-display text-base font-bold text-primary sm:text-lg">
               Administration PaparaShop
             </h1>
-            <p className="text-xs text-muted-foreground">{email}</p>
+            <p className="truncate text-xs text-muted-foreground">{email}</p>
           </div>
-          <Button variant="outline" size="sm" onClick={signOut}>
-            <LogOut className="mr-1 h-4 w-4" /> Déconnexion
+          <Button variant="outline" size="sm" className="shrink-0" onClick={signOut}>
+            <LogOut className="h-4 w-4 sm:mr-1" />
+            <span className="hidden sm:inline">Déconnexion</span>
           </Button>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <main className="mx-auto max-w-7xl px-3 py-6 sm:px-6 sm:py-8">
         {staff === null && <p className="text-sm text-muted-foreground">Vérification des accès…</p>}
         {staff === false && (
           <div className="rounded-xl border border-border bg-card p-6">
@@ -95,17 +122,30 @@ function AdminPage() {
           </div>
         )}
         {staff && (
-          <Tabs defaultValue="categories">
-            <TabsList className="flex-wrap">
-              <TabsTrigger value="categories">Catalogue</TabsTrigger>
-              <TabsTrigger value="products">Produits</TabsTrigger>
-              <TabsTrigger value="promotions">Promotions</TabsTrigger>
-              <TabsTrigger value="orders">Commandes</TabsTrigger>
-              {isEditor && <TabsTrigger value="testimonials">Témoignages</TabsTrigger>}
-              {isEditor && <TabsTrigger value="content">Textes</TabsTrigger>}
-              {isAdmin && <TabsTrigger value="users">Utilisateurs</TabsTrigger>}
-              {isAdmin && <TabsTrigger value="system">Système</TabsTrigger>}
+          <Tabs value={tab} onValueChange={setTab}>
+            {/* Mobile : sélecteur compact — Desktop : onglets */}
+            <div className="md:hidden">
+              <Select value={tab} onValueChange={setTab}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Section" />
+                </SelectTrigger>
+                <SelectContent>
+                  {visibleTabs.map((t) => (
+                    <SelectItem key={t.value} value={t.value}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <TabsList className="hidden flex-wrap md:flex">
+              {visibleTabs.map((t) => (
+                <TabsTrigger key={t.value} value={t.value}>
+                  {t.label}
+                </TabsTrigger>
+              ))}
             </TabsList>
+
             <TabsContent value="categories" className="pt-6">
               <CategoriesAdmin />
             </TabsContent>
@@ -139,7 +179,6 @@ function AdminPage() {
               </TabsContent>
             )}
           </Tabs>
-
         )}
       </main>
     </div>
