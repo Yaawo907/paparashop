@@ -17,6 +17,9 @@ import rodePodcastBundle from "@/assets/featured/rode-podcast-bundle.jpg";
 import godoxAd200 from "@/assets/featured/godox-ad200.jpg";
 
 export type FeaturedItem = {
+  id?: string;
+  price?: number | null;
+  stock?: number | null;
   name: string;
   category: string;
   note: string;

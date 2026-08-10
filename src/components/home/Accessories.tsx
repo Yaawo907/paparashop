@@ -5,6 +5,8 @@ import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
 import { SITE } from "@/lib/site";
 import { productsQuery } from "@/lib/cms.queries";
 import { toFeatured } from "@/lib/cms-adapters";
+import { AddToCartButton } from "@/components/shop/AddToCartButton";
+import { formatXOF } from "@/lib/cart";
 
 export function Accessories() {
   const { data: products } = useSuspenseQuery(productsQuery);
@@ -52,6 +54,10 @@ export function Accessories() {
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
                   {item.note}
                 </p>
+                {item.price ? (
+                  <p className="mt-3 font-display text-lg font-bold text-primary">{formatXOF(item.price)}</p>
+                ) : null}
+                <AddToCartButton id={item.id} name={item.name} price={item.price} image={item.image} className="mt-3 w-full" />
                 <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary transition-colors group-hover:text-accent-foreground">
                   Voir sur le catalogue
                   <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

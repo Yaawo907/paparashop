@@ -10,6 +10,8 @@ import { SITE } from "@/lib/site";
 import { type FeaturedItem } from "@/lib/featured";
 import { productsQuery } from "@/lib/cms.queries";
 import { toFeatured } from "@/lib/cms-adapters";
+import { AddToCartButton } from "@/components/shop/AddToCartButton";
+import { formatXOF } from "@/lib/cart";
 
 function Grid({ items }: { items: FeaturedItem[] }) {
   return (
@@ -35,6 +37,10 @@ function Grid({ items }: { items: FeaturedItem[] }) {
             </p>
             <h3 className="mt-1 font-display text-lg font-bold text-primary">{it.name}</h3>
             <p className="mt-2 flex-1 text-sm text-muted-foreground">{it.note}</p>
+            {it.price ? (
+              <p className="mt-3 font-display text-lg font-bold text-primary">{formatXOF(it.price)}</p>
+            ) : null}
+            <AddToCartButton id={it.id} name={it.name} price={it.price} image={it.image} className="mt-3 w-full" />
             <a
               href={it.url || SITE.catalogUrl}
               target="_blank"

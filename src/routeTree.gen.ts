@@ -15,6 +15,7 @@ import { Route as AProposRouteImport } from './routes/a-propos'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CatalogueRouteImport } from './routes/catalogue'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as PanierRouteImport } from './routes/panier'
 import { Route as PromotionsRouteImport } from './routes/promotions'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -49,6 +50,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PanierRoute = PanierRouteImport.update({
+  id: '/panier',
+  path: '/panier',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PromotionsRoute = PromotionsRouteImport.update({
   id: '/promotions',
   path: '/promotions',
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/catalogue': typeof CatalogueRoute
   '/contact': typeof ContactRoute
+  '/panier': typeof PanierRoute
   '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/catalogue': typeof CatalogueRoute
   '/contact': typeof ContactRoute
+  '/panier': typeof PanierRoute
   '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/catalogue': typeof CatalogueRoute
   '/contact': typeof ContactRoute
+  '/panier': typeof PanierRoute
   '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/catalogue'
     | '/contact'
+    | '/panier'
     | '/promotions'
     | '/services'
     | '/admin'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/catalogue'
     | '/contact'
+    | '/panier'
     | '/promotions'
     | '/services'
     | '/admin'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/catalogue'
     | '/contact'
+    | '/panier'
     | '/promotions'
     | '/services'
     | '/_authenticated/admin'
@@ -149,6 +161,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CatalogueRoute: typeof CatalogueRoute
   ContactRoute: typeof ContactRoute
+  PanierRoute: typeof PanierRoute
   PromotionsRoute: typeof PromotionsRoute
   ServicesRoute: typeof ServicesRoute
   ApiPublicMediaSplatRoute: typeof ApiPublicMediaSplatRoute
@@ -196,6 +209,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/panier': {
+      id: '/panier'
+      path: '/panier'
+      fullPath: '/panier'
+      preLoaderRoute: typeof PanierRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/promotions': {
@@ -247,6 +267,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CatalogueRoute: CatalogueRoute,
   ContactRoute: ContactRoute,
+  PanierRoute: PanierRoute,
   PromotionsRoute: PromotionsRoute,
   ServicesRoute: ServicesRoute,
   ApiPublicMediaSplatRoute: ApiPublicMediaSplatRoute,
@@ -254,13 +275,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

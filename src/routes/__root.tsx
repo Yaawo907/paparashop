@@ -11,6 +11,8 @@ import {
 import appCss from "../styles.css?url";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { Toaster } from "@/components/ui/sonner";
+import { CartProvider } from "@/lib/cart";
+import { CartSheet } from "@/components/shop/CartSheet";
 
 function NotFoundComponent() {
   return (
@@ -139,7 +141,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <CartProvider>
+        <Outlet />
+        <CartSheet />
+      </CartProvider>
       <Toaster richColors position="top-right" />
     </QueryClientProvider>
   );
