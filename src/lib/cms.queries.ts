@@ -2,9 +2,11 @@ import { queryOptions } from "@tanstack/react-query";
 import {
   getCategories,
   getContent,
+  getHeroSlides,
   getProducts,
   getPromotions,
   getTestimonials,
+  getTrustedClients,
 } from "@/lib/cms.functions";
 
 export const categoriesQuery = queryOptions({
@@ -30,4 +32,14 @@ export const testimonialsQuery = queryOptions({
 export const contentQuery = queryOptions({
   queryKey: ["cms", "content"],
   queryFn: () => getContent(),
+});
+
+export const heroSlidesQuery = queryOptions({
+  queryKey: ["cms", "hero_slides"],
+  queryFn: () => getHeroSlides(),
+});
+
+export const trustedClientsQuery = queryOptions({
+  queryKey: ["cms", "trusted_clients"],
+  queryFn: () => getTrustedClients(),
 });

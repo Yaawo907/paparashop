@@ -64,3 +64,24 @@ export type CmsTestimonial = {
 };
 
 export type CmsContent = Record<string, Record<string, string>>;
+
+export type CmsHeroSlide = {
+  id: string;
+  title: string;
+  subtitle: string;
+  image_url: string | null;
+  cta_label: string;
+  cta_url: string;
+  position: number;
+  is_active: boolean;
+};
+
+export type CmsTrustedClient = {
+  id: string;
+  name: string;
+  sector: string;
+  logo_url: string | null;
+  url: string | null;
+  position: number;
+  is_active: boolean;
+};
