@@ -78,25 +78,63 @@ export function SystemAdmin() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="font-display text-xl font-bold text-primary">Secrets configurés</h2>
+        <h2 className="font-display text-xl font-bold text-primary">Clés & paramètres</h2>
         <p className="mt-1 text-xs text-muted-foreground">
-          Les valeurs ne sont jamais affichées ni transmises au navigateur. Pour en modifier une
-          (clé KKiaPay, email/WhatsApp d'alerte…), la mise à jour se fait via le formulaire sécurisé
-          de la plateforme — demandez-le dans le chat de l'éditeur.
+          Modifiez ici vos clés KKiaPay et les destinataires d'alerte. Les valeurs sont stockées côté
+          serveur et n'apparaissent jamais en clair : seules les 4 premiers et derniers caractères
+          sont affichés.
         </p>
 
-        <div className="mt-3 flex flex-wrap gap-2">
-          {secrets.isLoading && <p className="text-sm text-muted-foreground">Chargement…</p>}
+        <div className="mt-3 space-y-3">
+          {settings.isLoading && <p className="text-sm text-muted-foreground">Chargement…</p>}
+          {(settings.data ?? []).map((s) => (
+            <div
+              key={s.key}
+              className="rounded-xl border border-border bg-card p-3 sm:flex sm:items-end sm:gap-3"
+            >
+              <div className="min-w-0 flex-1">
+                <Label htmlFor={`set-${s.key}`} className="text-xs">
+                  {s.label}
+                </Label>
+                <p className="truncate font-mono text-[11px] text-muted-foreground">
+                  {s.key} · {s.masked || "non défini"} ·{" "}
+                  {s.source === "db" ? "modifié ici" : s.source === "env" ? "valeur plateforme" : "vide"}
+                </p>
+                <Input
+                  id={`set-${s.key}`}
+                  className="mt-2"
+                  type={s.secret ? "password" : "text"}
+                  autoComplete="off"
+                  placeholder="Nouvelle valeur…"
+                  value={drafts[s.key] ?? ""}
+                  onChange={(e) => setDrafts((d) => ({ ...d, [s.key]: e.target.value }))}
+                />
+              </div>
+              <Button
+                className="mt-2 w-full sm:mt-0 sm:w-auto"
+                disabled={!((drafts[s.key] ?? "").trim()) || settingMutation.isPending}
+                onClick={() =>
+                  settingMutation.mutate({ key: s.key, value: (drafts[s.key] ?? "").trim() })
+                }
+              >
+                Enregistrer
+              </Button>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-2">
           {(secrets.data ?? []).map((name) => (
             <span
               key={name}
-              className="rounded-full border border-border bg-card px-3 py-1 font-mono text-xs text-primary"
+              className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] text-muted-foreground"
             >
               {name} · ••••••
             </span>
           ))}
         </div>
       </div>
+
 
       <div className="space-y-6">
         <h2 className="font-display text-xl font-bold text-primary">Tables techniques</h2>
