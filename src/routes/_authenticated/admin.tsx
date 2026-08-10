@@ -12,6 +12,8 @@ import { TestimonialsAdmin } from "@/components/admin/TestimonialsAdmin";
 import { OrdersAdmin } from "@/components/admin/OrdersAdmin";
 import { ContentAdmin } from "@/components/admin/ContentAdmin";
 import { UsersAdmin } from "@/components/admin/UsersAdmin";
+import { SystemAdmin } from "@/components/admin/SystemAdmin";
+
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
@@ -28,6 +30,7 @@ function AdminPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [staff, setStaff] = useState<boolean | null>(null);
+  const [roles, setRoles] = useState<string[]>([]);
   const [email, setEmail] = useState("");
 
   useEffect(() => {
@@ -41,12 +44,21 @@ function AdminPage() {
         .select("role")
         .eq("user_id", userData.user?.id ?? "");
       if (!active) return;
-      setStaff((data ?? []).length > 0);
+      const list = (data ?? []).map((r) => r.role as string);
+      setRoles(list);
+      setStaff(list.length > 0);
     })();
     return () => {
       active = false;
     };
   }, []);
+
+  const isAdmin = roles.includes("admin");
+  const isEditor = isAdmin || roles.includes("editor");
+  // commercial : catalogue, produits, promotions, images, commandes
+  // éditeur : + textes et témoignages
+  // admin : + utilisateurs et tables techniques
+
 
   async function signOut() {
     await qc.cancelQueries();
@@ -88,10 +100,11 @@ function AdminPage() {
               <TabsTrigger value="categories">Catalogue</TabsTrigger>
               <TabsTrigger value="products">Produits</TabsTrigger>
               <TabsTrigger value="promotions">Promotions</TabsTrigger>
-              <TabsTrigger value="testimonials">Témoignages</TabsTrigger>
               <TabsTrigger value="orders">Commandes</TabsTrigger>
-              <TabsTrigger value="content">Textes</TabsTrigger>
-              <TabsTrigger value="users">Utilisateurs</TabsTrigger>
+              {isEditor && <TabsTrigger value="testimonials">Témoignages</TabsTrigger>}
+              {isEditor && <TabsTrigger value="content">Textes</TabsTrigger>}
+              {isAdmin && <TabsTrigger value="users">Utilisateurs</TabsTrigger>}
+              {isAdmin && <TabsTrigger value="system">Système</TabsTrigger>}
             </TabsList>
             <TabsContent value="categories" className="pt-6">
               <CategoriesAdmin />
@@ -102,19 +115,31 @@ function AdminPage() {
             <TabsContent value="promotions" className="pt-6">
               <PromotionsAdmin />
             </TabsContent>
-            <TabsContent value="testimonials" className="pt-6">
-              <TestimonialsAdmin />
-            </TabsContent>
             <TabsContent value="orders" className="pt-6">
               <OrdersAdmin />
             </TabsContent>
-            <TabsContent value="content" className="pt-6">
-              <ContentAdmin />
-            </TabsContent>
-            <TabsContent value="users" className="pt-6">
-              <UsersAdmin />
-            </TabsContent>
+            {isEditor && (
+              <TabsContent value="testimonials" className="pt-6">
+                <TestimonialsAdmin />
+              </TabsContent>
+            )}
+            {isEditor && (
+              <TabsContent value="content" className="pt-6">
+                <ContentAdmin />
+              </TabsContent>
+            )}
+            {isAdmin && (
+              <TabsContent value="users" className="pt-6">
+                <UsersAdmin />
+              </TabsContent>
+            )}
+            {isAdmin && (
+              <TabsContent value="system" className="pt-6">
+                <SystemAdmin />
+              </TabsContent>
+            )}
           </Tabs>
+
         )}
       </main>
     </div>
