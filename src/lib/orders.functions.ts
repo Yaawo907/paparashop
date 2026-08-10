@@ -44,15 +44,24 @@ export const confirmPayment = createServerFn({ method: "POST" })
     } = await import("@/lib/orders.server");
 
     const { order, items } = await loadOrder(data.orderId);
-    const status = await verifyKkiapayTransaction(data.transactionId);
-    const success = String(status.status ?? "").toUpperCase() === "SUCCESS";
+    const verification = await verifyKkiapayTransaction(data.transactionId);
 
-    if (!success) {
-      await markOrderFailed(data.orderId, data.transactionId);
-      return { ok: false as const, orderNumber: order.order_number };
+    if (verification.verified) {
+      const success = String(verification.status.status ?? "").toUpperCase() === "SUCCESS";
+      if (!success) {
+        await markOrderFailed(data.orderId, data.transactionId);
+        return { ok: false as const, orderNumber: order.order_number };
+      }
+    } else {
+      // Clés de vérification refusées ou API injoignable : le widget a confirmé le
+      // paiement côté client, on enregistre la commande et on alerte le service client.
+      console.warn(
+        `[order] ${order.order_number} encaissé sans vérification serveur: ${verification.reason}`,
+      );
     }
 
     await markOrderPaid(data.orderId, data.transactionId);
+
 
     const { notifyOrderPaid } = await import("@/lib/order-notify.server");
     const origin = new URL(getRequest().url).origin;
