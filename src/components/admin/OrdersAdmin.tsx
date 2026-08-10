@@ -141,6 +141,9 @@ export function OrdersAdmin() {
                     <div>{o.customer_phone}</div>
                     <div className="text-xs text-muted-foreground">{o.customer_email}</div>
                   </td>
+                  <td className="p-3 min-w-[200px]">
+                    <ItemList orderId={o.id} />
+                  </td>
                   <td className="p-3 text-xs">
                     {[o.address, o.city, o.country].filter(Boolean).join(", ")}
                   </td>
