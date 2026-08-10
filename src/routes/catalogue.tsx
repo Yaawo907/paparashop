@@ -100,7 +100,7 @@ function CataloguePage() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-start gap-8">
-          <CatalogueSidebar categories={CATEGORIES} className="hidden lg:block lg:w-64 shrink-0" />
+          <CatalogueSidebar categories={CATEGORIES} className="lg:w-64 shrink-0" />
           <div className="min-w-0 flex-1">
             {CATEGORIES.map((cat, idx) => (
               <CategorySection key={cat.slug} category={cat} index={idx} />
@@ -108,6 +108,7 @@ function CataloguePage() {
           </div>
         </div>
       </div>
+
 
       <FeaturedProductsTabs />
 
