@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { heroSlidesQuery } from "@/lib/cms.queries";
 import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 
 import heroCameras from "@/assets/hero-cameras.jpg";
@@ -13,24 +15,42 @@ type Slide = {
   title: string;
   subtitle: string;
   image: string;
+  ctaLabel: string;
+  ctaUrl: string;
 };
 
-const slides: Slide[] = [
-  { title: "Appareils Photo Pro", subtitle: "Canon, Nikon, Sony • Reflex & Mirrorless", image: heroCameras },
-  { title: "Caméras Vidéo 4K", subtitle: "Caméscopes professionnels • Full HD & Ultra HD", image: heroVideo },
-  { title: "Accessoires Studio", subtitle: "Éclairage LED • Softbox • Réflecteurs", image: heroStudio },
-  { title: "Objectifs & Lentilles", subtitle: "Objectifs premium • Trépieds professionnels", image: heroLenses },
-  { title: "Équipement Complet", subtitle: "Solutions intégrées pour photographes pros", image: heroGear },
+const FALLBACK_IMAGES = [heroCameras, heroVideo, heroStudio, heroLenses, heroGear];
+
+const defaultSlides: Slide[] = [
+  { title: "Appareils Photo Pro", subtitle: "Canon, Nikon, Sony • Reflex & Mirrorless", image: heroCameras, ctaLabel: "Découvrir le catalogue", ctaUrl: "/catalogue" },
+  { title: "Caméras Vidéo 4K", subtitle: "Caméscopes professionnels • Full HD & Ultra HD", image: heroVideo, ctaLabel: "Découvrir le catalogue", ctaUrl: "/catalogue" },
+  { title: "Accessoires Studio", subtitle: "Éclairage LED • Softbox • Réflecteurs", image: heroStudio, ctaLabel: "Découvrir le catalogue", ctaUrl: "/catalogue" },
+  { title: "Objectifs & Lentilles", subtitle: "Objectifs premium • Trépieds professionnels", image: heroLenses, ctaLabel: "Découvrir le catalogue", ctaUrl: "/catalogue" },
+  { title: "Équipement Complet", subtitle: "Solutions intégrées pour photographes pros", image: heroGear, ctaLabel: "Découvrir le catalogue", ctaUrl: "/catalogue" },
 ];
 
 const AUTOPLAY_MS = 5500;
 
 export function HeroCarousel() {
+  const { data: rows = [] } = useQuery(heroSlidesQuery);
+  const slides: Slide[] =
+    rows.length > 0
+      ? rows.map((r, i) => ({
+          title: r.title,
+          subtitle: r.subtitle,
+          image: r.image_url || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
+          ctaLabel: r.cta_label || "Découvrir le catalogue",
+          ctaUrl: r.cta_url || "/catalogue",
+        }))
+      : defaultSlides;
+
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
 
-  const next = useCallback(() => setIndex((i) => (i + 1) % slides.length), []);
-  const prev = useCallback(() => setIndex((i) => (i - 1 + slides.length) % slides.length), []);
+  const count = slides.length;
+  const next = useCallback(() => setIndex((i) => (i + 1) % count), [count]);
+  const prev = useCallback(() => setIndex((i) => (i - 1 + count) % count), [count]);
+  const active = slides[Math.min(index, count - 1)];
 
   useEffect(() => {
     if (!playing) return;
@@ -42,7 +62,7 @@ export function HeroCarousel() {
     <section className="relative h-[42vh] min-h-[300px] max-h-[420px] w-full overflow-hidden bg-primary-dark">
       {slides.map((slide, i) => (
         <div
-          key={slide.title}
+          key={`${slide.title}-${i}`}
           className={`absolute inset-0 transition-opacity duration-1000 ${
             i === index ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
@@ -68,18 +88,30 @@ export function HeroCarousel() {
       <div className="relative z-10 flex h-full items-center justify-center px-6">
         <div key={index} className="max-w-3xl text-center text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
           <h1 className="font-display text-2xl font-bold leading-tight text-accent sm:text-3xl md:text-4xl text-balance">
-            {slides[index].title}
+            {active.title}
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/85 sm:text-base">
-            {slides[index].subtitle}
+            {active.subtitle}
           </p>
-          <Link
-            to="/catalogue"
-            className="mt-5 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50"
-          >
-            Découvrir le catalogue
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          {active.ctaUrl.startsWith("http") ? (
+            <a
+              href={active.ctaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50"
+            >
+              {active.ctaLabel}
+              <ArrowRight className="h-4 w-4" />
+            </a>
+          ) : (
+            <Link
+              to={active.ctaUrl}
+              className="mt-5 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50"
+            >
+              {active.ctaLabel}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          )}
 
         </div>
       </div>
@@ -109,7 +141,7 @@ export function HeroCarousel() {
       <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-3">
         {slides.map((s, i) => (
           <button
-            key={s.title}
+            key={`${s.title}-${i}`}
             onClick={() => setIndex(i)}
             aria-label={`Aller à la slide ${i + 1}`}
             className={`h-2.5 rounded-full transition-all ${
