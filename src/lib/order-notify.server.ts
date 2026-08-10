@@ -49,33 +49,57 @@ export async function notifyOrderPaid(order: Order, items: OrderItem[], baseUrl 
 
   console.log(`[order-paid] ${order.order_number}\n${receipt}\nWhatsApp: ${waLink ?? "n/a"}`);
 
-  const send = async (to: string, subject: string, body: string) => {
+  const lines = items.map((i) => ({
+    name: i.name,
+    quantity: i.quantity,
+    lineTotal: fmt(Number(i.unit_price) * i.quantity),
+  }));
+  const delivery = [order.address, order.city, order.country].filter(Boolean).join(", ");
+  const common = {
+    orderNumber: order.order_number,
+    total: fmt(Number(order.total)),
+    transactionId: order.transaction_id ?? "-",
+    delivery,
+    lines,
+  };
+
+  const send = async (
+    to: string,
+    templateName: string,
+    templateData: Record<string, unknown>,
+  ) => {
     const base = baseUrl || process.env["SITE_URL"] || "";
     if (!base) return;
     const res = await fetch(`${base}/lovable/email/transactional/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env["LOVABLE_API_KEY"] ?? ""}`,
+        Authorization: `Bearer ${process.env["SUPABASE_SERVICE_ROLE_KEY"] ?? ""}`,
       },
       body: JSON.stringify({
-        templateName: "order-receipt",
+        templateName,
         recipientEmail: to,
-        idempotencyKey: `${order.id}-${to}`,
-        templateData: { subject, body, orderNumber: order.order_number },
+        idempotencyKey: `${order.id}-${templateName}`,
+        templateData,
       }),
     });
     if (!res.ok) console.error(`[order-email] ${res.status} ${await res.text()}`);
   };
 
   try {
-    await send(order.customer_email, `Reçu de votre commande ${order.order_number}`, receipt);
+    await send(order.customer_email, "order-receipt", {
+      ...common,
+      customerName: order.customer_name,
+    });
     if (staffEmail) {
-      await send(
-        staffEmail,
-        `Nouvelle commande payée ${order.order_number}`,
-        `${receipt}\n\nRépondre au client : ${waLink ?? ""}`,
-      );
+      await send(staffEmail, "order-alert", {
+        ...common,
+        customerName: order.customer_name,
+        customerPhone: order.customer_phone,
+        customerEmail: order.customer_email,
+        notes: order.notes ?? "",
+        whatsappLink: waLink ?? "",
+      });
     }
   } catch (err) {
     console.error("[order-email] envoi impossible", err);
@@ -83,3 +107,4 @@ export async function notifyOrderPaid(order: Order, items: OrderItem[], baseUrl 
 
   return { whatsappLink: waLink };
 }
+
