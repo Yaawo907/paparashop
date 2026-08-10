@@ -60,15 +60,18 @@ export function buildIndex(
 
   for (const { item } of featured) {
     items.push({
-      id: `feat:${item.name}`,
+      id: `feat:${item.id ?? item.name}`,
       kind: "product",
       title: item.name,
       subtitle: `${item.category} — vedette`,
       image: item.image,
-      url: item.url || SITE.catalogUrl,
+      // Lien externe seulement s'il est renseigné ; sinon on ouvre la fiche interne.
+      url: item.url && item.url !== SITE.catalogUrl ? item.url : undefined,
+      to: item.id ? `/produit/${item.id}` : "/catalogue",
       keywords: `${item.name} ${item.category} ${item.note}`.toLowerCase(),
     });
   }
+
 
   return items;
 }

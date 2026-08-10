@@ -19,6 +19,7 @@ import { Route as PanierRouteImport } from './routes/panier'
 import { Route as PromotionsRouteImport } from './routes/promotions'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ProduitIdRouteImport } from './routes/produit.$id'
 import { Route as ApiPublicMediaSplatRouteImport } from './routes/api/public/media/$'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 
@@ -71,6 +72,11 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ProduitIdRoute = ProduitIdRouteImport.update({
+  id: '/produit/$id',
+  path: '/produit/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicMediaSplatRoute = ApiPublicMediaSplatRouteImport.update({
   id: '/api/public/media/$',
   path: '/api/public/media/$',
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/produit/$id': typeof ProduitIdRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/produit/$id': typeof ProduitIdRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/produit/$id': typeof ProduitIdRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/promotions'
     | '/services'
     | '/admin'
+    | '/produit/$id'
     | '/api/public/media/$'
     | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/promotions'
     | '/services'
     | '/admin'
+    | '/produit/$id'
     | '/api/public/media/$'
     | '/lovable/email/queue/process'
   id:
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/promotions'
     | '/services'
     | '/_authenticated/admin'
+    | '/produit/$id'
     | '/api/public/media/$'
     | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
@@ -177,6 +189,7 @@ export interface RootRouteChildren {
   PanierRoute: typeof PanierRoute
   PromotionsRoute: typeof PromotionsRoute
   ServicesRoute: typeof ServicesRoute
+  ProduitIdRoute: typeof ProduitIdRoute
   ApiPublicMediaSplatRoute: typeof ApiPublicMediaSplatRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
@@ -253,6 +266,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/produit/$id': {
+      id: '/produit/$id'
+      path: '/produit/$id'
+      fullPath: '/produit/$id'
+      preLoaderRoute: typeof ProduitIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/media/$': {
       id: '/api/public/media/$'
       path: '/api/public/media/$'
@@ -291,19 +311,10 @@ const rootRouteChildren: RootRouteChildren = {
   PanierRoute: PanierRoute,
   PromotionsRoute: PromotionsRoute,
   ServicesRoute: ServicesRoute,
+  ProduitIdRoute: ProduitIdRoute,
   ApiPublicMediaSplatRoute: ApiPublicMediaSplatRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
