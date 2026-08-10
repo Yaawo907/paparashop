@@ -18,6 +18,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PanierRouteImport } from './routes/panier'
 import { Route as PromotionsRouteImport } from './routes/promotions'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as ProduitIdRouteImport } from './routes/produit.$id'
@@ -69,6 +70,11 @@ const PromotionsRoute = PromotionsRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/panier': typeof PanierRoute
   '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/produit/$id': typeof ProduitIdRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/panier': typeof PanierRoute
   '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/produit/$id': typeof ProduitIdRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/panier': typeof PanierRoute
   '/promotions': typeof PromotionsRoute
   '/services': typeof ServicesRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/produit/$id': typeof ProduitIdRoute
@@ -182,6 +191,7 @@ export interface FileRouteTypes {
     | '/panier'
     | '/promotions'
     | '/services'
+    | '/unsubscribe'
     | '/admin'
     | '/email/unsubscribe'
     | '/produit/$id'
@@ -200,6 +210,7 @@ export interface FileRouteTypes {
     | '/panier'
     | '/promotions'
     | '/services'
+    | '/unsubscribe'
     | '/admin'
     | '/email/unsubscribe'
     | '/produit/$id'
@@ -219,6 +230,7 @@ export interface FileRouteTypes {
     | '/panier'
     | '/promotions'
     | '/services'
+    | '/unsubscribe'
     | '/_authenticated/admin'
     | '/email/unsubscribe'
     | '/produit/$id'
@@ -239,6 +251,7 @@ export interface RootRouteChildren {
   PanierRoute: typeof PanierRoute
   PromotionsRoute: typeof PromotionsRoute
   ServicesRoute: typeof ServicesRoute
+  UnsubscribeRoute: typeof UnsubscribeRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   ProduitIdRoute: typeof ProduitIdRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
@@ -311,6 +324,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -393,6 +413,7 @@ const rootRouteChildren: RootRouteChildren = {
   PanierRoute: PanierRoute,
   PromotionsRoute: PromotionsRoute,
   ServicesRoute: ServicesRoute,
+  UnsubscribeRoute: UnsubscribeRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   ProduitIdRoute: ProduitIdRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
