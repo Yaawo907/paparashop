@@ -28,8 +28,9 @@ export function buildReceiptText(order: Order, items: OrderItem[]) {
 }
 
 /** Lien WhatsApp pré-rempli vers le service clientèle. */
-export function buildStaffWhatsAppLink(order: Order, items: OrderItem[]) {
-  const number = (process.env["ORDER_ALERT_WHATSAPP"] ?? "").replace(/\D/g, "");
+export async function buildStaffWhatsAppLink(order: Order, items: OrderItem[]) {
+  const { getSetting } = await import("@/lib/app-settings.server");
+  const number = (await getSetting("ORDER_ALERT_WHATSAPP")).replace(/\D/g, "");
   if (!number) return null;
   return `https://wa.me/${number}?text=${encodeURIComponent(
     `NOUVELLE COMMANDE PAYÉE\n\n${buildReceiptText(order, items)}`,
@@ -43,9 +44,11 @@ export function buildStaffWhatsAppLink(order: Order, items: OrderItem[]) {
  * la confirmation de la commande.
  */
 export async function notifyOrderPaid(order: Order, items: OrderItem[], baseUrl = "") {
-  const waLink = buildStaffWhatsAppLink(order, items);
-  const staffEmail = process.env["ORDER_ALERT_EMAIL"];
+  const { getSetting } = await import("@/lib/app-settings.server");
+  const waLink = await buildStaffWhatsAppLink(order, items);
+  const staffEmail = await getSetting("ORDER_ALERT_EMAIL");
   const receipt = buildReceiptText(order, items);
+
 
   console.log(`[order-paid] ${order.order_number}\n${receipt}\nWhatsApp: ${waLink ?? "n/a"}`);
 
