@@ -4,6 +4,7 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
 import { CategorySection } from "@/components/catalog/CategorySection";
 import { FeaturedProductsTabs } from "@/components/catalog/FeaturedProductsTabs";
+import { CatalogueSidebar } from "@/components/catalog/CatalogueSidebar";
 import { Commitments } from "@/components/home/Commitments";
 
 import { categoriesQuery, productsQuery } from "@/lib/cms.queries";
@@ -97,9 +98,16 @@ function CataloguePage() {
         </div>
       </section>
 
-      {CATEGORIES.map((cat, idx) => (
-        <CategorySection key={cat.slug} category={cat} index={idx} />
-      ))}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-start gap-8">
+          <CatalogueSidebar categories={CATEGORIES} className="hidden lg:block lg:w-64 shrink-0" />
+          <div className="min-w-0 flex-1">
+            {CATEGORIES.map((cat, idx) => (
+              <CategorySection key={cat.slug} category={cat} index={idx} />
+            ))}
+          </div>
+        </div>
+      </div>
 
       <FeaturedProductsTabs />
 
