@@ -19,6 +19,7 @@ import { ProductsAdmin } from "@/components/admin/ProductsAdmin";
 import { PromotionsAdmin } from "@/components/admin/PromotionsAdmin";
 import { TestimonialsAdmin } from "@/components/admin/TestimonialsAdmin";
 import { OrdersAdmin } from "@/components/admin/OrdersAdmin";
+import { EmailLogAdmin } from "@/components/admin/EmailLogAdmin";
 import { ContentAdmin } from "@/components/admin/ContentAdmin";
 import { UsersAdmin } from "@/components/admin/UsersAdmin";
 import { SystemAdmin } from "@/components/admin/SystemAdmin";
@@ -75,6 +76,7 @@ function AdminPage() {
     { value: "hero", label: "Carrousel accueil" },
     { value: "clients", label: "Clients" },
     { value: "orders", label: "Commandes" },
+    { value: "emails", label: "E-mails" },
     ...(isEditor
       ? [
           { value: "testimonials", label: "Témoignages" },
@@ -167,6 +169,9 @@ function AdminPage() {
             </TabsContent>
             <TabsContent value="orders" className="pt-6">
               <OrdersAdmin />
+            </TabsContent>
+            <TabsContent value="emails" className="pt-6">
+              <EmailLogAdmin />
             </TabsContent>
             {isEditor && (
               <TabsContent value="testimonials" className="pt-6">
