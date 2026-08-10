@@ -59,7 +59,7 @@ export function HeroCarousel() {
   }, [playing, next]);
 
   return (
-    <section className="relative h-[42vh] min-h-[300px] max-h-[420px] w-full overflow-hidden bg-primary-dark">
+    <section className="relative h-[52vh] min-h-[340px] max-h-[520px] w-full overflow-hidden bg-primary-dark">
       {slides.map((slide, i) => (
         <div
           key={`${slide.title}-${i}`}
@@ -71,26 +71,27 @@ export function HeroCarousel() {
           <img
             src={slide.image}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ filter: "brightness(0.45) blur(2px)" }}
+            className="absolute inset-0 h-full w-full object-cover object-center"
             loading={i === 0 ? "eager" : "lazy"}
             fetchPriority={i === 0 ? "high" : "auto"}
             width={1920}
             height={1280}
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-dark/60 via-primary-dark/50 to-black/80" />
-          <div className="absolute -right-32 -top-32 h-[500px] w-[500px] rounded-full bg-accent/10 blur-3xl" />
-          <div className="absolute -bottom-24 -left-24 h-[400px] w-[400px] rounded-full bg-white/5 blur-3xl" />
+          {/* Léger voile bas uniquement, l'image reste au premier plan */}
+          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-primary-dark/85 via-primary-dark/35 to-transparent" />
         </div>
       ))}
 
       {/* Content (positioned by current slide) */}
-      <div className="relative z-10 flex h-full items-center justify-center px-6">
-        <div key={index} className="max-w-3xl text-center text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h1 className="font-display text-2xl font-bold leading-tight text-accent sm:text-3xl md:text-4xl text-balance">
+      <div className="relative z-10 flex h-full items-end px-4 pb-14 sm:px-8 sm:pb-16">
+        <div
+          key={index}
+          className="max-w-xl text-left text-white animate-in fade-in slide-in-from-bottom-4 duration-700"
+        >
+          <h1 className="font-display text-xl font-bold leading-tight text-accent drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] sm:text-2xl md:text-3xl text-balance">
             {active.title}
           </h1>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-white/85 sm:text-base">
+          <p className="mt-1.5 max-w-md text-xs text-white/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)] sm:text-sm">
             {active.subtitle}
           </p>
           {active.ctaUrl.startsWith("http") ? (
@@ -98,7 +99,7 @@ export function HeroCarousel() {
               href={active.ctaUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50"
+              className="mt-3 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50 sm:text-sm"
             >
               {active.ctaLabel}
               <ArrowRight className="h-4 w-4" />
@@ -106,7 +107,7 @@ export function HeroCarousel() {
           ) : (
             <Link
               to={active.ctaUrl}
-              className="mt-5 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50"
+              className="mt-3 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50 sm:text-sm"
             >
               {active.ctaLabel}
               <ArrowRight className="h-4 w-4" />
@@ -115,6 +116,7 @@ export function HeroCarousel() {
 
         </div>
       </div>
+
 
       {/* Prev/Next */}
       <button
@@ -138,7 +140,8 @@ export function HeroCarousel() {
       </div>
 
       {/* Indicators */}
-      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-3">
+      <div className="absolute bottom-4 left-4 z-20 flex gap-2 sm:left-8">
+
         {slides.map((s, i) => (
           <button
             key={`${s.title}-${i}`}
