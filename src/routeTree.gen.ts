@@ -22,6 +22,7 @@ import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as ProduitIdRouteImport } from './routes/produit.$id'
+import { Route as ApiPublicKkiapayWebhookRouteImport } from './routes/api/public/kkiapay-webhook'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicMediaSplatRouteImport } from './routes/api/public/media/$'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -92,6 +93,11 @@ const ProduitIdRoute = ProduitIdRouteImport.update({
   path: '/produit/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicKkiapayWebhookRoute = ApiPublicKkiapayWebhookRouteImport.update({
+  id: '/api/public/kkiapay-webhook',
+  path: '/api/public/kkiapay-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/produit/$id': typeof ProduitIdRoute
+  '/api/public/kkiapay-webhook': typeof ApiPublicKkiapayWebhookRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/produit/$id': typeof ProduitIdRoute
+  '/api/public/kkiapay-webhook': typeof ApiPublicKkiapayWebhookRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -174,6 +182,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/produit/$id': typeof ProduitIdRoute
+  '/api/public/kkiapay-webhook': typeof ApiPublicKkiapayWebhookRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/email/unsubscribe'
     | '/produit/$id'
+    | '/api/public/kkiapay-webhook'
     | '/lovable/email/suppression'
     | '/api/public/media/$'
     | '/lovable/email/queue/process'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/email/unsubscribe'
     | '/produit/$id'
+    | '/api/public/kkiapay-webhook'
     | '/lovable/email/suppression'
     | '/api/public/media/$'
     | '/lovable/email/queue/process'
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/email/unsubscribe'
     | '/produit/$id'
+    | '/api/public/kkiapay-webhook'
     | '/lovable/email/suppression'
     | '/api/public/media/$'
     | '/lovable/email/queue/process'
@@ -254,6 +266,7 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   ProduitIdRoute: typeof ProduitIdRoute
+  ApiPublicKkiapayWebhookRoute: typeof ApiPublicKkiapayWebhookRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicMediaSplatRoute: typeof ApiPublicMediaSplatRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -354,6 +367,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProduitIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/kkiapay-webhook': {
+      id: '/api/public/kkiapay-webhook'
+      path: '/api/public/kkiapay-webhook'
+      fullPath: '/api/public/kkiapay-webhook'
+      preLoaderRoute: typeof ApiPublicKkiapayWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
@@ -416,6 +436,7 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   ProduitIdRoute: ProduitIdRoute,
+  ApiPublicKkiapayWebhookRoute: ApiPublicKkiapayWebhookRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicMediaSplatRoute: ApiPublicMediaSplatRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
@@ -425,3 +446,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
