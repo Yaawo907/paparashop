@@ -105,6 +105,9 @@ export function OrdersAdmin() {
               <p className="mt-1 text-xs text-muted-foreground">
                 {[o.address, o.city, o.country].filter(Boolean).join(", ")}
               </p>
+              <div className="mt-2 rounded-lg bg-muted/40 p-2">
+                <ItemList orderId={o.id} />
+              </div>
               <div className="mt-2 flex items-center justify-between gap-2">
                 <span className="font-semibold text-primary">{formatXOF(Number(o.total))}</span>
                 <span className="text-[11px] text-muted-foreground">
