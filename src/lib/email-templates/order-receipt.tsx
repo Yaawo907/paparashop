@@ -5,6 +5,7 @@ import {
   Heading,
   Hr,
   Html,
+  Link,
   Preview,
   Section,
   Text,
@@ -25,6 +26,8 @@ export interface OrderReceiptProps {
   transactionId?: string;
   delivery?: string;
   lines?: OrderLine[];
+  supportEmail?: string;
+  whatsappUrl?: string;
 }
 
 const teal = "#0d9488";
@@ -36,6 +39,8 @@ export function OrderReceiptEmail({
   transactionId = "-",
   delivery = "",
   lines = [],
+  supportEmail = "paparashop26@gmail.com",
+  whatsappUrl = "https://wa.me/2290162447474",
 }: OrderReceiptProps) {
   return (
     <Html lang="fr">
@@ -73,7 +78,15 @@ export function OrderReceiptEmail({
 
           <Hr />
           <Text style={{ color: "#64748b", fontSize: 12 }}>
-            Une question ? Répondez simplement à cet e-mail ou contactez-nous sur WhatsApp.
+            Une question ? Écrivez-nous à{" "}
+            <Link href={`mailto:${supportEmail}`} style={{ color: teal }}>
+              {supportEmail}
+            </Link>{" "}
+            ou contactez-nous sur{" "}
+            <Link href={whatsappUrl} style={{ color: teal }}>
+              WhatsApp
+            </Link>
+            .
           </Text>
         </Container>
       </Body>

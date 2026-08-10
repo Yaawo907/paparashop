@@ -116,9 +116,13 @@ export async function notifyOrderPaid(order: Order, items: OrderItem[], baseUrl 
     }
   };
 
+  const { SITE, LOCATIONS } = await import("@/lib/site");
+  const hq = LOCATIONS.find((l) => l.isHQ) ?? LOCATIONS[0];
   await send(order.customer_email, "order-receipt", {
     ...common,
     customerName: order.customer_name,
+    supportEmail: SITE.email,
+    whatsappUrl: hq?.whatsappHref ?? SITE.emailHref,
   });
   if (staffEmail) {
     await send(staffEmail, "order-alert", {
