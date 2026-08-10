@@ -20,9 +20,10 @@ const KIND_META: Record<
 type Props = {
   className?: string;
   compact?: boolean;
+  variant?: "dark" | "light";
 };
 
-export function GlobalSearch({ className, compact = false }: Props) {
+export function GlobalSearch({ className, compact = false, variant = "dark" }: Props) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
