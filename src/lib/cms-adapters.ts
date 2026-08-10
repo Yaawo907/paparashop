@@ -27,6 +27,9 @@ export function toFeatured(products: CmsProduct[], group: string): FeaturedItem[
   return products
     .filter((p) => p.group_key === group)
     .map((p) => ({
+      id: p.id,
+      price: p.price === null || p.price === undefined ? null : Number(p.price),
+      stock: p.stock ?? null,
       name: p.name,
       category: p.subtitle,
       note: p.note,

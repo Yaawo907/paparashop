@@ -32,6 +32,10 @@ export type CmsProduct = {
   note: string;
   image_url: string | null;
   url: string | null;
+  price: number | null;
+  currency: string | null;
+  stock: number | null;
+  sku: string | null;
   group_key: string;
   position: number;
   is_active: boolean;
