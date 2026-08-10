@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { List, X } from "lucide-react";
+import { List } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -97,7 +97,7 @@ export function CatalogueSidebar({ categories, className }: CatalogueSidebarProp
   return (
     <>
       {/* Mobile / tablet: floating trigger that opens a sheet */}
-      <div className={cn("lg:hidden", className)}>
+      <div className="lg:hidden">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button
@@ -135,4 +135,3 @@ export function CatalogueSidebar({ categories, className }: CatalogueSidebarProp
     </>
   );
 }
-
