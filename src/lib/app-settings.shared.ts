@@ -4,6 +4,8 @@ export const EDITABLE_SETTINGS = [
   { key: "KKIAPAY_PUBLIC_KEY", label: "KKiaPay — clé publique", secret: false },
   { key: "KKIAPAY_PRIVATE_KEY", label: "KKiaPay — clé privée", secret: true },
   { key: "KKIAPAY_SECRET", label: "KKiaPay — secret", secret: true },
+  { key: "KKIAPAY_WEBHOOK_SECRET", label: "KKiaPay — secret du webhook", secret: true },
+
   { key: "ORDER_ALERT_EMAIL", label: "E-mail d'alerte commandes", secret: false },
   { key: "ORDER_ALERT_WHATSAPP", label: "WhatsApp d'alerte commandes", secret: false },
 ] as const;

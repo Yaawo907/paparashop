@@ -205,7 +205,7 @@ function PanierPage() {
         name: form.name,
         email: form.email,
         phone: form.phone,
-        data: order.orderNumber,
+        data: JSON.stringify({ orderId: order.orderId, orderNumber: order.orderNumber }),
         callback: `${window.location.origin}/panier`,
       });
     } catch (err) {

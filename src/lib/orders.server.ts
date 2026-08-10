@@ -181,3 +181,15 @@ export async function markOrderFailed(orderId: string, transactionId: string | n
     .update({ payment_status: "failed", transaction_id: transactionId })
     .eq("id", orderId);
 }
+
+/** Retrouve une commande par son identifiant ou son numéro (référence transmise à KKiaPay). */
+export async function findOrderByReference(ref: string) {
+  const supabase = adminClient();
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(ref);
+  const { data } = await supabase
+    .from("orders")
+    .select("id,order_number,payment_status,total")
+    .eq(isUuid ? "id" : "order_number", ref)
+    .maybeSingle();
+  return data ?? null;
+}
