@@ -71,15 +71,14 @@ export function HeroCarousel() {
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/85 sm:text-base">
             {slides[index].subtitle}
           </p>
-          <a
-            href={SITE.catalogUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/catalogue"
             className="mt-5 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary shadow-2xl shadow-accent/30 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/50"
           >
             Découvrir le catalogue
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
+
         </div>
       </div>
 
