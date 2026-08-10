@@ -5,10 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 type ContentRow = {
-  id: string;
   key: string;
+  label?: string;
   value: Record<string, string>;
 };
+
 
 export function ContentAdmin() {
   const { data: rows = [], isLoading } = useRows<ContentRow>("site_content", "key");
