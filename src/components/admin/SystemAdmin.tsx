@@ -5,11 +5,15 @@ import { toast } from "sonner";
 import { Pencil, Trash2 } from "lucide-react";
 import {
   deleteSystemRow,
+  getAppSettings,
   getSecretNames,
   getSystemTables,
+  setAppSetting,
   updateSystemRow,
+  type SettingEntry,
 } from "@/lib/system.functions";
 import { READONLY_COLUMNS, type SystemTable } from "@/lib/system.shared";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
