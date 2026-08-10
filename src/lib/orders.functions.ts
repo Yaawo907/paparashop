@@ -46,7 +46,14 @@ export const confirmPayment = createServerFn({ method: "POST" })
     } = await import("@/lib/orders.server");
 
     const { order, items } = await loadOrder(data.orderId);
+
+    // Le webhook KKiaPay a déjà pu confirmer la commande : on ne renotifie pas.
+    if (order.payment_status === "paid") {
+      return { ok: true as const, orderNumber: order.order_number, total: Number(order.total) };
+    }
+
     const verification = await verifyKkiapayTransaction(data.transactionId);
+
 
     if (verification.verified) {
       const success = String(verification.status.status ?? "").toUpperCase() === "SUCCESS";
