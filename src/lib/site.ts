@@ -11,8 +11,8 @@ export const SITE = {
   country: "Bénin",
   phone: "+229 01 62 44 74 74",
   phoneHref: "tel:+2290162447474",
-  email: "contact@paparashop.bj",
-  emailHref: "mailto:contact@paparashop.bj",
+  email: "paparashop26@gmail.com",
+  emailHref: "mailto:paparashop26@gmail.com",
   catalogUrl: "https://www.lesagecom.net/catalogue/paparashop/",
   socials: {
     facebook: "https://www.facebook.com/share/1DqnXkij9t/",
@@ -158,4 +158,3 @@ export const INSTITUTIONAL_CLIENTS: InstitutionalClient[] = [
   { name: "ESGIS", sector: "Éducation supérieure", logo: esgisLogo.url },
   { name: "Magic Partner", sector: "Partenaire technique", logo: magicPartnersLogo.url },
 ];
-
