@@ -4,6 +4,7 @@ import { Menu, X, LogIn } from "lucide-react";
 import logoAsset from "@/assets/papara-logo.png.asset.json";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { CartButton } from "@/components/shop/CartSheet";
 
 const nav = [
   { to: "/", label: "Accueil" },
@@ -64,6 +65,7 @@ export function Header() {
         </ul>
 
         <div className="flex items-center gap-1 lg:gap-3">
+          <CartButton />
           <Link
             to="/auth"
             className="hidden items-center gap-1.5 rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white/85 transition-colors hover:text-accent lg:inline-flex"
