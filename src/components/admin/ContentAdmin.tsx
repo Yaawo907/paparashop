@@ -5,10 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 type ContentRow = {
-  id: string;
   key: string;
+  label?: string;
   value: Record<string, string>;
 };
+
 
 export function ContentAdmin() {
   const { data: rows = [], isLoading } = useRows<ContentRow>("site_content", "key");
@@ -20,7 +21,7 @@ export function ContentAdmin() {
     <div className="space-y-6">
       <h2 className="font-display text-xl font-bold text-primary">Textes du site</h2>
       {rows.map((row) => (
-        <ContentBlock key={row.id} row={row} onSave={(v) => save.mutate(v)} />
+        <ContentBlock key={row.key} row={row} onSave={(v) => save.mutate(v)} />
       ))}
     </div>
   );
@@ -50,7 +51,7 @@ function ContentBlock({
           />
         </div>
       ))}
-      <Button size="sm" onClick={() => onSave({ id: row.id, value })}>
+      <Button size="sm" onClick={() => onSave({ key: row.key, value })}>
         Enregistrer
       </Button>
     </div>

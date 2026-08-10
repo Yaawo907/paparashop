@@ -13,6 +13,15 @@ export type CrudTable =
 
 type Row = Record<string, unknown> & { id?: string };
 
+/** Certaines tables n'ont pas de colonne "id" : leur clé primaire est différente. */
+const PRIMARY_KEY: Partial<Record<CrudTable, string>> = {
+  site_content: "key",
+};
+
+function pkOf(table: CrudTable) {
+  return PRIMARY_KEY[table] ?? "id";
+}
+
 const db = supabase as unknown as { from: (table: string) => any };
 
 export function useRows<T extends Row>(table: CrudTable, orderBy = "position") {
@@ -28,11 +37,14 @@ export function useRows<T extends Row>(table: CrudTable, orderBy = "position") {
 
 export function useSaveRow(table: CrudTable) {
   const qc = useQueryClient();
+  const pk = pkOf(table);
   return useMutation({
     mutationFn: async (row: Row) => {
-      const { id, ...rest } = row;
-      const { error } = id
-        ? await db.from(table).update(rest).eq("id", id)
+      const keyValue = row[pk] as string | undefined;
+      const rest = { ...row };
+      delete rest[pk];
+      const { error } = keyValue
+        ? await db.from(table).update(rest).eq(pk, keyValue)
         : await db.from(table).insert(rest);
       if (error) throw error;
     },
@@ -47,11 +59,13 @@ export function useSaveRow(table: CrudTable) {
 
 export function useDeleteRow(table: CrudTable) {
   const qc = useQueryClient();
+  const pk = pkOf(table);
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await db.from(table).delete().eq("id", id);
+      const { error } = await db.from(table).delete().eq(pk, id);
       if (error) throw error;
     },
+
     onSuccess: () => {
       toast.success("Supprimé");
       qc.invalidateQueries({ queryKey: ["admin", table] });
