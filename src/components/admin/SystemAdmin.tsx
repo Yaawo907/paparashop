@@ -80,8 +80,11 @@ export function SystemAdmin() {
       <div>
         <h2 className="font-display text-xl font-bold text-primary">Secrets configurés</h2>
         <p className="mt-1 text-xs text-muted-foreground">
-          Les valeurs ne sont jamais affichées ni transmises au navigateur.
+          Les valeurs ne sont jamais affichées ni transmises au navigateur. Pour en modifier une
+          (clé KKiaPay, email/WhatsApp d'alerte…), la mise à jour se fait via le formulaire sécurisé
+          de la plateforme — demandez-le dans le chat de l'éditeur.
         </p>
+
         <div className="mt-3 flex flex-wrap gap-2">
           {secrets.isLoading && <p className="text-sm text-muted-foreground">Chargement…</p>}
           {(secrets.data ?? []).map((name) => (
