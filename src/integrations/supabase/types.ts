@@ -193,6 +193,45 @@ export type Database = {
         }
         Relationships: []
       }
+      hero_slides: {
+        Row: {
+          created_at: string
+          cta_label: string
+          cta_url: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          position: number
+          subtitle: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          cta_label?: string
+          cta_url?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          position?: number
+          subtitle?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          cta_label?: string
+          cta_url?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          position?: number
+          subtitle?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           created_at: string
@@ -504,6 +543,42 @@ export type Database = {
           rating?: number
           role?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      trusted_clients: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          position: number
+          sector: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          position?: number
+          sector?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          position?: number
+          sector?: string
+          updated_at?: string
+          url?: string | null
         }
         Relationships: []
       }
