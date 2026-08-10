@@ -73,7 +73,15 @@ export function OrderReceiptEmail({
 
           <Hr />
           <Text style={{ color: "#64748b", fontSize: 12 }}>
-            Une question ? Répondez simplement à cet e-mail ou contactez-nous sur WhatsApp.
+            Une question ? Écrivez-nous à{" "}
+            <Link href={`mailto:${supportEmail}`} style={{ color: teal }}>
+              {supportEmail}
+            </Link>{" "}
+            ou contactez-nous sur{" "}
+            <Link href={whatsappUrl} style={{ color: teal }}>
+              WhatsApp
+            </Link>
+            .
           </Text>
         </Container>
       </Body>
