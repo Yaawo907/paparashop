@@ -195,9 +195,38 @@ export function SystemAdmin() {
         </div>
       </div>
 
+      <div>
+        <h2 className="font-display text-xl font-bold text-primary">Test d’e-mail</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Envoyez un e-mail de test depuis <strong>notify.paparashop.net</strong> pour vérifier la
+          délivrabilité. L’e-mail partira depuis <code>noreply@paparashop.net</code>.
+        </p>
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <Label htmlFor="test-email" className="text-xs">
+              Adresse de test
+            </Label>
+            <Input
+              id="test-email"
+              type="email"
+              placeholder="vous@exemple.com"
+              value={testEmail}
+              onChange={(e) => setTestEmail(e.target.value)}
+            />
+          </div>
+          <Button
+            onClick={() => testEmailMutation.mutate(testEmail.trim())}
+            disabled={!testEmail.trim() || testEmailMutation.isPending}
+          >
+            <Send className="mr-2 h-4 w-4" />
+            {testEmailMutation.isPending ? "Envoi…" : "Envoyer un test"}
+          </Button>
+        </div>
+      </div>
 
       <div className="space-y-6">
         <h2 className="font-display text-xl font-bold text-primary">Tables techniques</h2>
+
         <p className="-mt-4 text-xs text-muted-foreground">
           Modification directe en base : à utiliser avec prudence. Les colonnes techniques (id, dates,
           liens) restent en lecture seule.
