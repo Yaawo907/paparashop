@@ -7,7 +7,7 @@ import heroVideo from "@/assets/hero-video.jpg";
 import heroStudio from "@/assets/hero-studio.jpg";
 import heroLenses from "@/assets/hero-lenses.jpg";
 import heroGear from "@/assets/hero-gear.jpg";
-import { SITE } from "@/lib/site";
+
 
 type Slide = {
   title: string;
