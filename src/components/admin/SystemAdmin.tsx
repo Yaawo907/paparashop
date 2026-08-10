@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { getSecretNames, getSystemTables } from "@/lib/system.functions";
+import { getSecretNames, getSystemTables, type SystemTable } from "@/lib/system.functions";
 
 export function SystemAdmin() {
   const fetchTables = useServerFn(getSystemTables);
   const fetchSecrets = useServerFn(getSecretNames);
 
-  const tables = useQuery({ queryKey: ["admin", "system-tables"], queryFn: () => fetchTables({}) });
-  const secrets = useQuery({ queryKey: ["admin", "secrets"], queryFn: () => fetchSecrets({}) });
+  const tables = useQuery({ queryKey: ["admin", "system-tables"], queryFn: () => fetchTables({}) as Promise<SystemTable[]> });
+  const secrets = useQuery({ queryKey: ["admin", "secrets"], queryFn: () => fetchSecrets({}) as Promise<string[]> });
 
   return (
     <div className="space-y-8">
@@ -62,9 +62,9 @@ export function SystemAdmin() {
                           <td
                             key={c}
                             className="max-w-[220px] truncate px-2 py-1 text-muted-foreground"
-                            title={fmt(row[c])}
+                            title={row[c]}
                           >
-                            {fmt(row[c])}
+                            {row[c]}
                           </td>
                         ))}
                       </tr>
@@ -78,10 +78,4 @@ export function SystemAdmin() {
       </div>
     </div>
   );
-}
-
-function fmt(v: unknown) {
-  if (v === null || v === undefined) return "—";
-  if (typeof v === "object") return JSON.stringify(v);
-  return String(v);
 }

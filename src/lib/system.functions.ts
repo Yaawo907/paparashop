@@ -5,7 +5,7 @@ export type SystemTable = {
   name: string;
   label: string;
   count: number;
-  rows: Record<string, unknown>[];
+  rows: Record<string, string>[];
   error?: string;
 };
 
@@ -59,7 +59,7 @@ export const getSystemTables = createServerFn({ method: "GET" })
           name: t.name,
           label: t.label,
           count: count ?? (Array.isArray(data) ? data.length : 0),
-          rows: (data as Record<string, unknown>[]) ?? [],
+          rows: ((data as Record<string, unknown>[]) ?? []).map(stringify),
           ...(error ? { error: String((error as { message?: string }).message ?? error) } : {}),
         });
       } catch (e) {
@@ -68,6 +68,14 @@ export const getSystemTables = createServerFn({ method: "GET" })
     }
     return out;
   });
+
+function stringify(row: Record<string, unknown>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(row)) {
+    out[k] = v === null || v === undefined ? "—" : typeof v === "object" ? JSON.stringify(v) : String(v);
+  }
+  return out;
+}
 
 /** Liste des noms de secrets configurés (jamais les valeurs). */
 export const getSecretNames = createServerFn({ method: "GET" })
