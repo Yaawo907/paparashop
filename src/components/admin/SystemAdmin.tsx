@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Send } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
 import {
   deleteSystemRow,
   getAppSettings,
@@ -51,6 +53,41 @@ export function SystemAdmin() {
   const [edit, setEdit] = useState<EditState>(null);
   const [confirmDelete, setConfirmDelete] = useState<DeleteState>(null);
   const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const [testEmail, setTestEmail] = useState("");
+
+  const testEmailMutation = useMutation({
+    mutationFn: async (recipientEmail: string) => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) throw new Error("Session expirée");
+      const res = await fetch("/lovable/email/transactional/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          templateName: "email-test",
+          recipientEmail,
+          idempotencyKey: `admin-test-${crypto.randomUUID()}`,
+          templateData: {
+            recipientName: "",
+            sentAt: new Date().toLocaleString("fr-FR"),
+          },
+        }),
+      });
+      const json = await res.json().catch(() => ({ error: "Réponse invalide" }));
+      if (!res.ok) throw new Error(json.error || `Erreur ${res.status}`);
+      return json;
+    },
+    onSuccess: () => {
+      toast.success("E-mail de test envoyé — vérifiez la boîte de réception");
+      setTestEmail("");
+    },
+    onError: (e: Error) => toast.error(e.message || "Échec de l'envoi"),
+  });
+
 
 
   const tables = useQuery({
@@ -158,9 +195,38 @@ export function SystemAdmin() {
         </div>
       </div>
 
+      <div>
+        <h2 className="font-display text-xl font-bold text-primary">Test d’e-mail</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Envoyez un e-mail de test depuis <strong>notify.paparashop.net</strong> pour vérifier la
+          délivrabilité. L’e-mail partira depuis <code>noreply@paparashop.net</code>.
+        </p>
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <Label htmlFor="test-email" className="text-xs">
+              Adresse de test
+            </Label>
+            <Input
+              id="test-email"
+              type="email"
+              placeholder="vous@exemple.com"
+              value={testEmail}
+              onChange={(e) => setTestEmail(e.target.value)}
+            />
+          </div>
+          <Button
+            onClick={() => testEmailMutation.mutate(testEmail.trim())}
+            disabled={!testEmail.trim() || testEmailMutation.isPending}
+          >
+            <Send className="mr-2 h-4 w-4" />
+            {testEmailMutation.isPending ? "Envoi…" : "Envoyer un test"}
+          </Button>
+        </div>
+      </div>
 
       <div className="space-y-6">
         <h2 className="font-display text-xl font-bold text-primary">Tables techniques</h2>
+
         <p className="-mt-4 text-xs text-muted-foreground">
           Modification directe en base : à utiliser avec prudence. Les colonnes techniques (id, dates,
           liens) restent en lecture seule.

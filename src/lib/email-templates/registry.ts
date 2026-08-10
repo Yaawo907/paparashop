@@ -19,9 +19,12 @@ export interface TemplateEntry {
  */
 import { template as orderReceiptTemplate } from './order-receipt'
 import { template as orderAlertTemplate } from './order-alert'
+import { template as emailTestTemplate } from './email-test'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'order-receipt': orderReceiptTemplate,
   'order-alert': orderAlertTemplate,
+  'email-test': emailTestTemplate,
 }
+
 
