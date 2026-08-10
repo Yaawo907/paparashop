@@ -8,6 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const GROUPS = [
@@ -74,6 +81,8 @@ export function ProductsAdmin() {
   );
 }
 
+const NEW_CATEGORY = "__new__";
+
 function ProductForm({
   value,
   onSave,
@@ -88,6 +97,23 @@ function ProductForm({
   const [form, setForm] = useState<Partial<CmsProduct>>(value);
   const set = (patch: Partial<CmsProduct>) => setForm((f) => ({ ...f, ...patch }));
 
+  const { data: categories = [] } = useRows<{ id: string; title: string }>("categories");
+  const { data: allProducts = [] } = useRows<CmsProduct>("products");
+  const options = Array.from(
+    new Set([
+      ...categories.map((c) => c.title),
+      ...allProducts.map((p) => p.subtitle).filter((s): s is string => !!s),
+    ]),
+  ).sort((a, b) => a.localeCompare(b));
+
+  const current = form.subtitle ?? "";
+  const [custom, setCustom] = useState(!!current && !options.includes(current));
+
+  const pickCategory = (title: string) => {
+    const match = categories.find((c) => c.title === title);
+    set({ subtitle: title, category_id: match ? match.id : null });
+  };
+
   return (
     <div className="space-y-4 rounded-xl border border-border bg-card p-4">
       <div className="grid gap-4 sm:grid-cols-2">
@@ -96,9 +122,41 @@ function ProductForm({
           <Input value={form.name ?? ""} onChange={(e) => set({ name: e.target.value })} />
         </div>
         <div className="space-y-2">
-          <Label>Catégorie affichée</Label>
-          <Input value={form.subtitle ?? ""} onChange={(e) => set({ subtitle: e.target.value })} />
+          <Label>Catégorie</Label>
+          <Select
+            value={custom ? NEW_CATEGORY : current}
+            onValueChange={(v) => {
+              if (v === NEW_CATEGORY) {
+                setCustom(true);
+                set({ subtitle: "", category_id: null });
+              } else {
+                setCustom(false);
+                pickCategory(v);
+              }
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Choisir une catégorie" />
+            </SelectTrigger>
+            <SelectContent>
+              {options.map((o) => (
+                <SelectItem key={o} value={o}>
+                  {o}
+                </SelectItem>
+              ))}
+              <SelectItem value={NEW_CATEGORY}>＋ Nouvelle catégorie…</SelectItem>
+            </SelectContent>
+          </Select>
+          {custom && (
+            <Input
+              autoFocus
+              placeholder="Nom de la nouvelle catégorie"
+              value={current}
+              onChange={(e) => set({ subtitle: e.target.value, category_id: null })}
+            />
+          )}
         </div>
+
       </div>
       <div className="space-y-2">
         <Label>Description courte</Label>
