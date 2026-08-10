@@ -115,9 +115,41 @@ function ProductForm({
           <Input value={form.name ?? ""} onChange={(e) => set({ name: e.target.value })} />
         </div>
         <div className="space-y-2">
-          <Label>Catégorie affichée</Label>
-          <Input value={form.subtitle ?? ""} onChange={(e) => set({ subtitle: e.target.value })} />
+          <Label>Catégorie</Label>
+          <Select
+            value={custom ? NEW_CATEGORY : current}
+            onValueChange={(v) => {
+              if (v === NEW_CATEGORY) {
+                setCustom(true);
+                set({ subtitle: "", category_id: null });
+              } else {
+                setCustom(false);
+                pickCategory(v);
+              }
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Choisir une catégorie" />
+            </SelectTrigger>
+            <SelectContent>
+              {options.map((o) => (
+                <SelectItem key={o} value={o}>
+                  {o}
+                </SelectItem>
+              ))}
+              <SelectItem value={NEW_CATEGORY}>＋ Nouvelle catégorie…</SelectItem>
+            </SelectContent>
+          </Select>
+          {custom && (
+            <Input
+              autoFocus
+              placeholder="Nom de la nouvelle catégorie"
+              value={current}
+              onChange={(e) => set({ subtitle: e.target.value, category_id: null })}
+            />
+          )}
         </div>
+
       </div>
       <div className="space-y-2">
         <Label>Description courte</Label>
