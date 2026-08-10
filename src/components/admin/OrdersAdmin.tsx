@@ -18,6 +18,14 @@ type OrderRow = {
   created_at: string;
 };
 
+type ItemRow = {
+  id: string;
+  order_id: string;
+  name: string;
+  quantity: number;
+  unit_price: number;
+};
+
 export function OrdersAdmin() {
   const { data: orders = [], isLoading } = useQuery({
     queryKey: ["admin", "orders"],
@@ -31,7 +39,41 @@ export function OrdersAdmin() {
     },
   });
 
+  const { data: items = [] } = useQuery({
+    queryKey: ["admin", "order-items"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("order_items")
+        .select("id,order_id,name,quantity,unit_price");
+      if (error) throw error;
+      return data as ItemRow[];
+    },
+  });
+
+  const itemsOf = (orderId: string) => items.filter((i) => i.order_id === orderId);
+
+  const ItemList = ({ orderId }: { orderId: string }) => {
+    const list = itemsOf(orderId);
+    if (list.length === 0)
+      return <p className="text-xs text-muted-foreground">Articles non enregistrés.</p>;
+    return (
+      <ul className="space-y-1 text-xs">
+        {list.map((i) => (
+          <li key={i.id} className="flex justify-between gap-2">
+            <span className="truncate">
+              {i.name} × {i.quantity}
+            </span>
+            <span className="shrink-0 font-medium">
+              {formatXOF(Number(i.unit_price) * i.quantity)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   if (isLoading) return <p className="text-sm text-muted-foreground">Chargement…</p>;
+
 
   return (
     <div className="space-y-4">
