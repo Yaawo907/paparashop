@@ -37,6 +37,7 @@ export type CmsProduct = {
   stock: number | null;
   sku: string | null;
   group_key: string;
+  category_id: string | null;
   position: number;
   is_active: boolean;
 };
