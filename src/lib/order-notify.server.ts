@@ -66,46 +66,69 @@ export async function notifyOrderPaid(order: Order, items: OrderItem[], baseUrl 
     lines,
   };
 
+  /** Trace un échec dans le journal des e-mails pour qu'il soit visible en admin. */
+  const logFailure = async (to: string, templateName: string, message: string) => {
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      await (supabaseAdmin as any).from("email_send_log").insert({
+        message_id: `${order.id}-${templateName}`,
+        template_name: templateName,
+        recipient_email: to,
+        status: "failed",
+        error_message: message.slice(0, 1000),
+        metadata: { order_number: order.order_number },
+      });
+    } catch (e) {
+      console.error("[order-email] journalisation impossible", e);
+    }
+  };
+
   const send = async (
     to: string,
     templateName: string,
     templateData: Record<string, unknown>,
   ) => {
-    const base = baseUrl || process.env["SITE_URL"] || "";
-    if (!base) return;
-    const res = await fetch(`${base}/lovable/email/transactional/send`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env["SUPABASE_SERVICE_ROLE_KEY"] ?? ""}`,
-      },
-      body: JSON.stringify({
-        templateName,
-        recipientEmail: to,
-        idempotencyKey: `${order.id}-${templateName}`,
-        templateData,
-      }),
-    });
-    if (!res.ok) console.error(`[order-email] ${res.status} ${await res.text()}`);
+    const base =
+      baseUrl || process.env["SITE_URL"] || "https://paparashop.net";
+    try {
+      const res = await fetch(`${base}/lovable/email/transactional/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env["SUPABASE_SERVICE_ROLE_KEY"] ?? ""}`,
+        },
+        body: JSON.stringify({
+          templateName,
+          recipientEmail: to,
+          idempotencyKey: `${order.id}-${templateName}`,
+          templateData,
+        }),
+      });
+      if (!res.ok) {
+        const body = await res.text();
+        console.error(`[order-email] ${res.status} ${body}`);
+        await logFailure(to, templateName, `HTTP ${res.status} — ${body}`);
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error("[order-email] envoi impossible", message);
+      await logFailure(to, templateName, message);
+    }
   };
 
-  try {
-    await send(order.customer_email, "order-receipt", {
+  await send(order.customer_email, "order-receipt", {
+    ...common,
+    customerName: order.customer_name,
+  });
+  if (staffEmail) {
+    await send(staffEmail, "order-alert", {
       ...common,
       customerName: order.customer_name,
+      customerPhone: order.customer_phone,
+      customerEmail: order.customer_email,
+      notes: order.notes ?? "",
+      whatsappLink: waLink ?? "",
     });
-    if (staffEmail) {
-      await send(staffEmail, "order-alert", {
-        ...common,
-        customerName: order.customer_name,
-        customerPhone: order.customer_phone,
-        customerEmail: order.customer_email,
-        notes: order.notes ?? "",
-        whatsappLink: waLink ?? "",
-      });
-    }
-  } catch (err) {
-    console.error("[order-email] envoi impossible", err);
   }
 
   return { whatsappLink: waLink };
