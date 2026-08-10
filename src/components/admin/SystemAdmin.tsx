@@ -53,6 +53,21 @@ export function SystemAdmin() {
     queryKey: ["admin", "secrets"],
     queryFn: () => fetchSecrets({}) as Promise<string[]>,
   });
+  const settings = useQuery({
+    queryKey: ["admin", "app-settings"],
+    queryFn: () => fetchSettings({}) as Promise<SettingEntry[]>,
+  });
+
+  const settingMutation = useMutation({
+    mutationFn: (v: { key: string; value: string }) => saveSetting({ data: v }),
+    onSuccess: (_r, v) => {
+      toast.success("Paramètre enregistré");
+      setDrafts((d) => ({ ...d, [v.key]: "" }));
+      qc.invalidateQueries({ queryKey: ["admin", "app-settings"] });
+    },
+    onError: (e: Error) => toast.error(e.message || "Échec de l'enregistrement"),
+  });
+
 
   const updateMutation = useMutation({
     mutationFn: (v: { table: string; id: string; patch: Record<string, string> }) =>
