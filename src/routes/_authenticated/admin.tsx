@@ -12,6 +12,8 @@ import { TestimonialsAdmin } from "@/components/admin/TestimonialsAdmin";
 import { OrdersAdmin } from "@/components/admin/OrdersAdmin";
 import { ContentAdmin } from "@/components/admin/ContentAdmin";
 import { UsersAdmin } from "@/components/admin/UsersAdmin";
+import { SystemAdmin } from "@/components/admin/SystemAdmin";
+
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
