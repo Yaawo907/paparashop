@@ -67,7 +67,7 @@ export function buildIndex(
       image: item.image,
       // Lien externe seulement s'il est renseigné ; sinon on ouvre la fiche interne.
       url: item.url && item.url !== SITE.catalogUrl ? item.url : undefined,
-      to: item.id ? `/produit/${item.id}` : undefined,
+      to: item.id ? `/produit/${item.id}` : "/catalogue",
       keywords: `${item.name} ${item.category} ${item.note}`.toLowerCase(),
     });
   }
