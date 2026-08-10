@@ -74,6 +74,8 @@ export function ProductsAdmin() {
   );
 }
 
+const NEW_CATEGORY = "__new__";
+
 function ProductForm({
   value,
   onSave,
@@ -87,6 +89,23 @@ function ProductForm({
 }) {
   const [form, setForm] = useState<Partial<CmsProduct>>(value);
   const set = (patch: Partial<CmsProduct>) => setForm((f) => ({ ...f, ...patch }));
+
+  const { data: categories = [] } = useRows<{ id: string; title: string }>("categories");
+  const { data: allProducts = [] } = useRows<CmsProduct>("products");
+  const options = Array.from(
+    new Set([
+      ...categories.map((c) => c.title),
+      ...allProducts.map((p) => p.subtitle).filter((s): s is string => !!s),
+    ]),
+  ).sort((a, b) => a.localeCompare(b));
+
+  const current = form.subtitle ?? "";
+  const [custom, setCustom] = useState(!!current && !options.includes(current));
+
+  const pickCategory = (title: string) => {
+    const match = categories.find((c) => c.title === title);
+    set({ subtitle: title, category_id: match ? match.id : null });
+  };
 
   return (
     <div className="space-y-4 rounded-xl border border-border bg-card p-4">
