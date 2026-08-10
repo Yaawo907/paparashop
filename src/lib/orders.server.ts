@@ -101,16 +101,24 @@ export async function verifyKkiapayTransaction(
 ): Promise<KkiapayVerification> {
   let lastError = "";
 
+  const { getSetting } = await import("@/lib/app-settings.server");
+  const [publicKey, privateKey, secret] = await Promise.all([
+    getSetting("KKIAPAY_PUBLIC_KEY"),
+    getSetting("KKIAPAY_PRIVATE_KEY"),
+    getSetting("KKIAPAY_SECRET"),
+  ]);
+
   for (const host of KKIAPAY_HOSTS) {
     try {
       const res = await fetch(`${host}/api/v1/transactions/status`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": (process.env["KKIAPAY_PUBLIC_KEY"] ?? "").trim(),
-          "x-private-key": (process.env["KKIAPAY_PRIVATE_KEY"] ?? "").trim(),
-          "x-secret-key": (process.env["KKIAPAY_SECRET"] ?? "").trim(),
+          "x-api-key": publicKey,
+          "x-private-key": privateKey,
+          "x-secret-key": secret,
         },
+
         body: JSON.stringify({ transactionId }),
       });
       const text = await res.text();
