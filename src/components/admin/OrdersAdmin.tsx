@@ -125,6 +125,7 @@ export function OrdersAdmin() {
                 <th className="p-3">N°</th>
                 <th className="p-3">Client</th>
                 <th className="p-3">Contact</th>
+                <th className="p-3">Articles</th>
                 <th className="p-3">Livraison</th>
                 <th className="p-3">Total</th>
                 <th className="p-3">Paiement</th>
