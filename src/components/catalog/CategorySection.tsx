@@ -31,7 +31,7 @@ export function CategorySection({
           : "scroll-mt-24 bg-secondary/40 py-16 sm:py-20"
       }
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="max-w-none">
         <header className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-4">
             <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
