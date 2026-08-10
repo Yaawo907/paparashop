@@ -30,6 +30,7 @@ function AdminPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [staff, setStaff] = useState<boolean | null>(null);
+  const [roles, setRoles] = useState<string[]>([]);
   const [email, setEmail] = useState("");
 
   useEffect(() => {
@@ -43,12 +44,21 @@ function AdminPage() {
         .select("role")
         .eq("user_id", userData.user?.id ?? "");
       if (!active) return;
-      setStaff((data ?? []).length > 0);
+      const list = (data ?? []).map((r) => r.role as string);
+      setRoles(list);
+      setStaff(list.length > 0);
     })();
     return () => {
       active = false;
     };
   }, []);
+
+  const isAdmin = roles.includes("admin");
+  const isEditor = isAdmin || roles.includes("editor");
+  // commercial : catalogue, produits, promotions, images, commandes
+  // éditeur : + textes et témoignages
+  // admin : + utilisateurs et tables techniques
+
 
   async function signOut() {
     await qc.cancelQueries();
