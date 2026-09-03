@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -253,9 +253,8 @@ export function AdminDataTable<T>({
               const id = getId(row);
               const open = openId === id;
               return (
-                <>
+                <Fragment key={id}>
                   <tr
-                    key={id}
                     className="cursor-pointer border-b border-border transition-colors hover:bg-secondary/40"
                     onClick={() => setOpenId(open ? null : id)}
                   >
@@ -282,13 +281,13 @@ export function AdminDataTable<T>({
                     ))}
                   </tr>
                   {open && (
-                    <tr key={`${id}-x`} className="border-b border-border bg-secondary/20">
+                    <tr className="border-b border-border bg-secondary/20">
                       <td colSpan={columns.length + 2} className="px-3 py-4">
                         {renderExpanded(row)}
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               );
             })}
           </tbody>
