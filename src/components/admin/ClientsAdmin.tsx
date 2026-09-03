@@ -1,39 +1,72 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import type { CmsTrustedClient } from "@/lib/cms-types";
-import { useDeleteRow, useRows, useSaveRow } from "@/components/admin/useCrud";
+import {
+  useBulkDelete,
+  useBulkUpdate,
+  useDeleteRow,
+  useRows,
+  useSaveRow,
+} from "@/components/admin/useCrud";
 import { ImageField } from "@/components/admin/ImageField";
-import { AdminSearch } from "@/components/admin/AdminSearch";
+import { AdminDataTable, type AdminColumn } from "@/components/admin/AdminDataTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 export function ClientsAdmin() {
   const { data: clients = [], isLoading } = useRows<CmsTrustedClient>("trusted_clients");
   const save = useSaveRow("trusted_clients");
   const remove = useDeleteRow("trusted_clients");
+  const bulkUpdate = useBulkUpdate("trusted_clients");
+  const bulkDelete = useBulkDelete("trusted_clients");
   const [draft, setDraft] = useState<Partial<CmsTrustedClient> | null>(null);
-  const [search, setSearch] = useState("");
 
-  const rows = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return clients;
-    return clients.filter((c) =>
-      [c.name, c.sector, c.url].some((v) => (v ?? "").toLowerCase().includes(q)),
-    );
-  }, [clients, search]);
+  const columns: AdminColumn<CmsTrustedClient>[] = useMemo(
+    () => [
+      {
+        key: "name",
+        header: "Client",
+        value: (c) => c.name,
+        render: (c) => (
+          <div className="flex items-center gap-3">
+            {c.logo_url && (
+              <img src={c.logo_url} alt="" className="h-9 w-9 rounded object-contain" loading="lazy" />
+            )}
+            <span className="font-medium text-primary">{c.name}</span>
+          </div>
+        ),
+      },
+      {
+        key: "sector",
+        header: "Secteur",
+        value: (c) => c.sector || "",
+        className: "hidden md:table-cell text-muted-foreground",
+      },
+      {
+        key: "position",
+        header: "Ordre",
+        value: (c) => c.position,
+        className: "hidden sm:table-cell text-right",
+      },
+      {
+        key: "is_active",
+        header: "Visible",
+        value: (c) => (c.is_active ? "Oui" : "Non"),
+        render: (c) => (c.is_active ? "✓" : "—"),
+        className: "text-center",
+      },
+    ],
+    [],
+  );
+
+  const searchFields = useCallback((c: CmsTrustedClient) => [c.name, c.sector, c.url], []);
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Chargement…</p>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <h2 className="font-display text-xl font-bold text-primary">Ils nous font confiance</h2>
         <Button
@@ -46,14 +79,6 @@ export function ClientsAdmin() {
         </Button>
       </div>
 
-      <AdminSearch
-        value={search}
-        onChange={setSearch}
-        placeholder="Rechercher un client (nom, secteur)…"
-        count={rows.length}
-        noun="client"
-      />
-
       {draft && (
         <ClientForm
           value={draft}
@@ -62,38 +87,27 @@ export function ClientsAdmin() {
         />
       )}
 
-      {rows.length === 0 && <p className="text-sm text-muted-foreground">Aucun client trouvé.</p>}
-
-      <Accordion type="multiple" className="space-y-3">
-        {rows.map((c) => (
-          <AccordionItem
-            key={c.id}
-            value={c.id}
-            className="rounded-xl border border-border bg-card px-4"
-          >
-            <AccordionTrigger className="text-left">
-              <span className="flex min-w-0 items-center gap-3">
-                {c.logo_url && (
-                  <img src={c.logo_url} alt="" className="h-9 w-9 shrink-0 rounded object-contain" />
-                )}
-                <span className="truncate font-semibold text-primary">{c.name}</span>
-              </span>
-              <span className="ml-auto mr-3 truncate text-xs text-muted-foreground">
-                {c.sector || "—"} · {c.is_active ? "Visible" : "Masqué"}
-              </span>
-            </AccordionTrigger>
-            <AccordionContent className="pb-6">
-              <ClientForm
-                value={c}
-                onSave={(v) => save.mutate(v)}
-                onDelete={() => {
-                  if (confirm(`Supprimer « ${c.name} » ?`)) remove.mutate(c.id);
-                }}
-              />
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <AdminDataTable
+        rows={clients}
+        columns={columns}
+        getId={(c) => c.id}
+        searchFields={searchFields}
+        searchPlaceholder="Rechercher un client (nom, secteur)…"
+        noun="client"
+        csvName="clients"
+        onBulkVisibility={(ids, visible) => bulkUpdate.mutate({ ids, patch: { is_active: visible } })}
+        onBulkDelete={(ids) => bulkDelete.mutate(ids)}
+        emptyLabel="Aucun client trouvé."
+        renderExpanded={(c) => (
+          <ClientForm
+            value={c}
+            onSave={(v) => save.mutate(v)}
+            onDelete={() => {
+              if (confirm(`Supprimer « ${c.name} » ?`)) remove.mutate(c.id);
+            }}
+          />
+        )}
+      />
     </div>
   );
 }
