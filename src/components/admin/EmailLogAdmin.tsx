@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getEmailLog, type EmailLogRow } from "@/lib/email-log.functions";
 import { Button } from "@/components/ui/button";
+import { AdminSearch } from "@/components/admin/AdminSearch";
 
 const LABELS: Record<string, string> = {
   sent: "Envoyé",
@@ -39,6 +40,7 @@ const FILTERS = [
 export function EmailLogAdmin() {
   const fetchLog = useServerFn(getEmailLog);
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
 
   const { data = [], isLoading, error, refetch, isFetching } = useQuery({
     queryKey: ["admin", "email-log"],
@@ -46,12 +48,19 @@ export function EmailLogAdmin() {
   });
 
   const rows = useMemo(() => {
-    if (filter === "all") return data;
-    if (filter === "orders") return data.filter((r) => r.templateName.startsWith("order-"));
-    if (filter === "failed")
-      return data.filter((r) => ["failed", "dlq", "bounced", "complained"].includes(r.status));
-    return data.filter((r) => r.status === filter);
-  }, [data, filter]);
+    let list = data;
+    if (filter === "orders") list = list.filter((r) => r.templateName.startsWith("order-"));
+    else if (filter === "failed")
+      list = list.filter((r) => ["failed", "dlq", "bounced", "complained"].includes(r.status));
+    else if (filter !== "all") list = list.filter((r) => r.status === filter);
+    const q = search.trim().toLowerCase();
+    if (!q) return list;
+    return list.filter((r) =>
+      [r.recipientEmail, r.templateName, r.status, r.errorMessage].some((v) =>
+        (v ?? "").toLowerCase().includes(q),
+      ),
+    );
+  }, [data, filter, search]);
 
   return (
     <div className="space-y-4">
@@ -66,6 +75,14 @@ export function EmailLogAdmin() {
           Actualiser
         </Button>
       </div>
+
+      <AdminSearch
+        value={search}
+        onChange={setSearch}
+        placeholder="Rechercher un envoi (destinataire, type, erreur)…"
+        count={rows.length}
+        noun="envoi"
+      />
 
       <div className="flex flex-wrap gap-2">
         {FILTERS.map((f) => (
