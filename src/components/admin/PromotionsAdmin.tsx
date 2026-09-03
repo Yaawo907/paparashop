@@ -1,40 +1,76 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import type { CmsPromotion } from "@/lib/cms-types";
-import { useDeleteRow, useRows, useSaveRow } from "@/components/admin/useCrud";
+import {
+  useBulkDelete,
+  useBulkUpdate,
+  useDeleteRow,
+  useRows,
+  useSaveRow,
+} from "@/components/admin/useCrud";
 import { ImageField } from "@/components/admin/ImageField";
-import { AdminSearch } from "@/components/admin/AdminSearch";
+import { AdminDataTable, type AdminColumn } from "@/components/admin/AdminDataTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 export function PromotionsAdmin() {
   const { data: promos = [], isLoading } = useRows<CmsPromotion>("promotions");
   const save = useSaveRow("promotions");
   const remove = useDeleteRow("promotions");
+  const bulkUpdate = useBulkUpdate("promotions");
+  const bulkDelete = useBulkDelete("promotions");
   const [draft, setDraft] = useState<Partial<CmsPromotion> | null>(null);
-  const [search, setSearch] = useState("");
 
-  const rows = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return promos;
-    return promos.filter((p) =>
-      [p.title, p.description, p.url].some((v) => (v ?? "").toLowerCase().includes(q)),
-    );
-  }, [promos, search]);
+  const columns: AdminColumn<CmsPromotion>[] = useMemo(
+    () => [
+      {
+        key: "title",
+        header: "Promotion",
+        value: (p) => p.title || "Sans titre",
+        render: (p) => (
+          <div className="flex items-center gap-3">
+            {p.image_url && (
+              <img src={p.image_url} alt="" className="h-9 w-9 rounded object-cover" loading="lazy" />
+            )}
+            <span className="font-medium text-primary">{p.title || "Sans titre"}</span>
+          </div>
+        ),
+      },
+      {
+        key: "description",
+        header: "Description",
+        value: (p) => p.description,
+        className: "hidden md:table-cell max-w-xs truncate text-muted-foreground",
+      },
+      {
+        key: "position",
+        header: "Ordre",
+        value: (p) => p.position,
+        className: "hidden sm:table-cell text-right",
+      },
+      {
+        key: "is_active",
+        header: "Visible",
+        value: (p) => (p.is_active ? "Oui" : "Non"),
+        render: (p) => (p.is_active ? "✓" : "—"),
+        className: "text-center",
+      },
+    ],
+    [],
+  );
+
+  const searchFields = useCallback(
+    (p: CmsPromotion) => [p.title, p.description, p.url],
+    [],
+  );
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Chargement…</p>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="font-display text-xl font-bold text-primary">Promotions</h2>
         <Button
@@ -47,14 +83,6 @@ export function PromotionsAdmin() {
         </Button>
       </div>
 
-      <AdminSearch
-        value={search}
-        onChange={setSearch}
-        placeholder="Rechercher une promotion…"
-        count={rows.length}
-        noun="promotion"
-      />
-
       {draft && (
         <PromoForm
           value={draft}
@@ -63,44 +91,27 @@ export function PromotionsAdmin() {
         />
       )}
 
-      {rows.length === 0 && (
-        <p className="text-sm text-muted-foreground">Aucune promotion trouvée.</p>
-      )}
-
-      <Accordion type="multiple" className="space-y-3">
-        {rows.map((p) => (
-          <AccordionItem
-            key={p.id}
-            value={p.id}
-            className="rounded-xl border border-border bg-card px-4"
-          >
-            <AccordionTrigger className="text-left">
-              <span className="flex min-w-0 items-center gap-3">
-                {p.image_url && (
-                  <img
-                    src={p.image_url}
-                    alt=""
-                    className="h-9 w-9 shrink-0 rounded object-cover"
-                  />
-                )}
-                <span className="truncate font-semibold text-primary">{p.title || "Sans titre"}</span>
-              </span>
-              <span className="ml-auto mr-3 text-xs text-muted-foreground">
-                {p.is_active ? "Visible" : "Masquée"} · #{p.position}
-              </span>
-            </AccordionTrigger>
-            <AccordionContent className="pb-6">
-              <PromoForm
-                value={p}
-                onSave={(v) => save.mutate(v)}
-                onDelete={() => {
-                  if (confirm("Supprimer cette promotion ?")) remove.mutate(p.id);
-                }}
-              />
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <AdminDataTable
+        rows={promos}
+        columns={columns}
+        getId={(p) => p.id}
+        searchFields={searchFields}
+        searchPlaceholder="Rechercher une promotion…"
+        noun="promotion"
+        csvName="promotions"
+        onBulkVisibility={(ids, visible) => bulkUpdate.mutate({ ids, patch: { is_active: visible } })}
+        onBulkDelete={(ids) => bulkDelete.mutate(ids)}
+        emptyLabel="Aucune promotion trouvée."
+        renderExpanded={(p) => (
+          <PromoForm
+            value={p}
+            onSave={(v) => save.mutate(v)}
+            onDelete={() => {
+              if (confirm("Supprimer cette promotion ?")) remove.mutate(p.id);
+            }}
+          />
+        )}
+      />
     </div>
   );
 }

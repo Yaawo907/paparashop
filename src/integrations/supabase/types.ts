@@ -401,6 +401,7 @@ export type Database = {
           category_id: string | null
           created_at: string
           currency: string
+          gallery_urls: string[]
           group_key: string
           id: string
           image_url: string | null
@@ -414,11 +415,13 @@ export type Database = {
           subtitle: string
           updated_at: string
           url: string | null
+          video_url: string | null
         }
         Insert: {
           category_id?: string | null
           created_at?: string
           currency?: string
+          gallery_urls?: string[]
           group_key?: string
           id?: string
           image_url?: string | null
@@ -432,11 +435,13 @@ export type Database = {
           subtitle?: string
           updated_at?: string
           url?: string | null
+          video_url?: string | null
         }
         Update: {
           category_id?: string | null
           created_at?: string
           currency?: string
+          gallery_urls?: string[]
           group_key?: string
           id?: string
           image_url?: string | null
@@ -450,6 +455,7 @@ export type Database = {
           subtitle?: string
           updated_at?: string
           url?: string | null
+          video_url?: string | null
         }
         Relationships: [
           {
