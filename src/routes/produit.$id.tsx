@@ -75,21 +75,13 @@ function ProductPage() {
           </div>
         ) : (
           <div className="mt-6 grid gap-8 md:grid-cols-2">
-            <div className="overflow-hidden rounded-2xl border border-border bg-secondary/40">
-              {product.image_url ? (
-                <img
-                  src={product.image_url}
-                  alt={`${product.name} — ${product.subtitle}`}
-                  className="h-full w-full object-cover"
-                  width={1024}
-                  height={768}
-                />
-              ) : (
-                <div className="flex aspect-[4/3] items-center justify-center text-sm text-muted-foreground">
-                  Image indisponible
-                </div>
-              )}
-            </div>
+            <ProductMedia
+              name={product.name}
+              subtitle={product.subtitle}
+              image={product.image_url}
+              gallery={product.gallery_urls ?? []}
+              video={product.video_url}
+            />>
 
             <div className="flex flex-col">
               <p className="font-display text-[11px] font-semibold uppercase tracking-widest text-accent-foreground/70">
