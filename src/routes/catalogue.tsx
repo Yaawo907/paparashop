@@ -6,6 +6,7 @@ import { CategorySection } from "@/components/catalog/CategorySection";
 import { FeaturedProductsTabs } from "@/components/catalog/FeaturedProductsTabs";
 import { CatalogueSidebar } from "@/components/catalog/CatalogueSidebar";
 import { Commitments } from "@/components/home/Commitments";
+import { GlobalSearch } from "@/components/layout/GlobalSearch";
 
 import { categoriesQuery, productsQuery } from "@/lib/cms.queries";
 import { toCategories } from "@/lib/cms-adapters";
