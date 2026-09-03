@@ -31,7 +31,7 @@ export function Footer() {
             </div>
           </div>
           <p className="mb-4 max-w-xs text-sm leading-relaxed text-white/75">
-            Depuis {SITE.foundedYear} : {SITE.tagline.toUpperCase()} professionnels en Afrique de l'Ouest francophone.
+            Équipementier audiovisuel N°1 en Afrique de l'Ouest francophone depuis {SITE.foundedYear}.
           </p>
           <p className="mb-6 flex items-center gap-2 text-xs text-white/60">
             <Globe2 className="h-3.5 w-3.5 text-accent" /> Bénin • Burkina Faso • Togo
