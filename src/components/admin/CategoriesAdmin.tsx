@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Trash2, Plus } from "lucide-react";
 import type { CmsBrand, CmsCategory } from "@/lib/cms-types";
 import { ICON_NAMES } from "@/lib/icons";
 import { useDeleteRow, useRows, useSaveRow } from "@/components/admin/useCrud";
 import { ImageField } from "@/components/admin/ImageField";
+import { AdminSearch } from "@/components/admin/AdminSearch";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,6 +37,21 @@ export function CategoriesAdmin() {
   const saveCategory = useSaveRow("categories");
   const deleteCategory = useDeleteRow("categories");
   const [draft, setDraft] = useState<Partial<CategoryRow> | null>(null);
+  const [search, setSearch] = useState("");
+
+  const rows = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return categories;
+    return categories.filter((c) => {
+      const brandNames = brands
+        .filter((b) => b.category_id === c.id)
+        .map((b) => b.name)
+        .join(" ");
+      return [c.title, c.slug, c.tagline, c.description, brandNames].some((v) =>
+        (v ?? "").toLowerCase().includes(q),
+      );
+    });
+  }, [categories, brands, search]);
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Chargement…</p>;
 
@@ -47,6 +64,14 @@ export function CategoriesAdmin() {
         </Button>
       </div>
 
+      <AdminSearch
+        value={search}
+        onChange={setSearch}
+        placeholder="Rechercher une catégorie ou une marque…"
+        count={rows.length}
+        noun="catégorie"
+      />
+
       {draft && (
         <CategoryForm
           value={draft}
@@ -57,8 +82,13 @@ export function CategoriesAdmin() {
         />
       )}
 
+      {rows.length === 0 && (
+        <p className="text-sm text-muted-foreground">Aucune catégorie trouvée.</p>
+      )}
+
       <Accordion type="multiple" className="space-y-3">
-        {categories.map((c) => (
+        {rows.map((c) => (
+
           <AccordionItem
             key={c.id}
             value={c.id}
