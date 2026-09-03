@@ -1,8 +1,16 @@
-import { useMemo, useState } from "react";
-import { ChevronDown, ChevronRight, Plus, Search, Trash2 } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { Plus, Trash2 } from "lucide-react";
 import type { CmsProduct } from "@/lib/cms-types";
-import { useDeleteRow, useRows, useSaveRow } from "@/components/admin/useCrud";
+import {
+  useBulkDelete,
+  useBulkUpdate,
+  useDeleteRow,
+  useRows,
+  useSaveRow,
+} from "@/components/admin/useCrud";
 import { ImageField } from "@/components/admin/ImageField";
+import { GalleryField } from "@/components/admin/GalleryField";
+import { AdminDataTable, type AdminColumn } from "@/components/admin/AdminDataTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,21 +39,76 @@ export function ProductsAdmin() {
   const { data: products = [], isLoading } = useRows<CmsProduct>("products");
   const save = useSaveRow("products");
   const remove = useDeleteRow("products");
-  const [search, setSearch] = useState("");
+  const bulkUpdate = useBulkUpdate("products");
+  const bulkDelete = useBulkDelete("products");
   const [group, setGroup] = useState("all");
-  const [openId, setOpenId] = useState<string | null>(null);
   const [draftGroup, setDraftGroup] = useState<string | null>(null);
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return products.filter((p) => {
-      if (group !== "all" && p.group_key !== group) return false;
-      if (!q) return true;
-      return [p.name, p.subtitle, p.note, p.sku]
-        .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(q));
-    });
-  }, [products, search, group]);
+  const rows = useMemo(
+    () => (group === "all" ? products : products.filter((p) => p.group_key === group)),
+    [products, group],
+  );
+
+  const columns: AdminColumn<CmsProduct>[] = useMemo(
+    () => [
+      {
+        key: "name",
+        header: "Produit",
+        value: (p) => p.name,
+        render: (p) => (
+          <div className="flex items-center gap-3">
+            {p.image_url && (
+              <img
+                src={p.image_url}
+                alt=""
+                className="h-9 w-9 rounded-md object-cover"
+                loading="lazy"
+              />
+            )}
+            <span className="font-medium text-primary">{p.name}</span>
+          </div>
+        ),
+      },
+      {
+        key: "subtitle",
+        header: "Catégorie",
+        value: (p) => p.subtitle || "",
+        className: "hidden md:table-cell text-muted-foreground",
+      },
+      {
+        key: "group",
+        header: "Groupe",
+        value: (p) => groupLabel(p.group_key),
+        className: "hidden lg:table-cell text-muted-foreground",
+      },
+      {
+        key: "price",
+        header: "Prix",
+        value: (p) => Number(p.price ?? 0),
+        render: (p) => (p.price ? `${Number(p.price).toLocaleString("fr-FR")} F` : "—"),
+        className: "hidden sm:table-cell text-right",
+      },
+      {
+        key: "stock",
+        header: "Stock",
+        value: (p) => Number(p.stock ?? 0),
+        className: "hidden sm:table-cell text-right",
+      },
+      {
+        key: "is_active",
+        header: "Visible",
+        value: (p) => (p.is_active ? "Oui" : "Non"),
+        render: (p) => (p.is_active ? "✓" : "—"),
+        className: "hidden md:table-cell text-center",
+      },
+    ],
+    [],
+  );
+
+  const searchFields = useCallback(
+    (p: CmsProduct) => [p.name, p.subtitle, p.note, p.sku, p.price, groupLabel(p.group_key)],
+    [],
+  );
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Chargement…</p>;
 
@@ -56,31 +119,6 @@ export function ProductsAdmin() {
         <Button size="sm" onClick={() => setDraftGroup("new")}>
           <Plus className="mr-1 h-4 w-4" /> Ajouter un produit
         </Button>
-      </div>
-
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            className="pl-9"
-            placeholder="Rechercher par nom, catégorie, description, référence…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <Select value={group} onValueChange={setGroup}>
-          <SelectTrigger className="w-full sm:w-52">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous les groupes</SelectItem>
-            {GROUPS.map((g) => (
-              <SelectItem key={g.key} value={g.key}>
-                {g.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
 
       {draftGroup && (
@@ -98,107 +136,43 @@ export function ProductsAdmin() {
         />
       )}
 
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-border bg-secondary/50 text-left text-xs text-muted-foreground">
-              <th className="w-8 px-2 py-2" />
-              <th className="px-3 py-2">Produit</th>
-              <th className="hidden px-3 py-2 md:table-cell">Catégorie</th>
-              <th className="hidden px-3 py-2 lg:table-cell">Groupe</th>
-              <th className="hidden px-3 py-2 text-right sm:table-cell">Prix</th>
-              <th className="hidden px-3 py-2 text-right sm:table-cell">Stock</th>
-              <th className="hidden px-3 py-2 text-center md:table-cell">Visible</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 && (
-              <tr>
-                <td colSpan={7} className="px-3 py-8 text-center text-muted-foreground">
-                  Aucun produit ne correspond à la recherche.
-                </td>
-              </tr>
-            )}
-            {filtered.map((p) => (
-              <ProductRow
-                key={p.id}
-                product={p}
-                open={openId === p.id}
-                onToggle={() => setOpenId(openId === p.id ? null : p.id)}
-                onSave={(v) => save.mutate(v, { onSuccess: () => setOpenId(null) })}
-                onDelete={() => {
-                  if (confirm(`Supprimer « ${p.name} » ?`)) remove.mutate(p.id);
-                }}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p className="text-xs text-muted-foreground">
-        {filtered.length} produit{filtered.length > 1 ? "s" : ""} affiché
-        {filtered.length > 1 ? "s" : ""} sur {products.length}.
-      </p>
+      <AdminDataTable
+        rows={rows}
+        columns={columns}
+        getId={(p) => p.id}
+        searchFields={searchFields}
+        searchPlaceholder="Rechercher par nom, catégorie, description, référence…"
+        noun="produit"
+        csvName="produits"
+        onBulkVisibility={(ids, visible) => bulkUpdate.mutate({ ids, patch: { is_active: visible } })}
+        onBulkDelete={(ids) => bulkDelete.mutate(ids)}
+        toolbar={
+          <Select value={group} onValueChange={setGroup}>
+            <SelectTrigger className="w-full sm:w-52">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les groupes</SelectItem>
+              {GROUPS.map((g) => (
+                <SelectItem key={g.key} value={g.key}>
+                  {g.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        }
+        emptyLabel="Aucun produit ne correspond à la recherche."
+        renderExpanded={(p) => (
+          <ProductForm
+            value={p}
+            onSave={(v) => save.mutate(v)}
+            onDelete={() => {
+              if (confirm(`Supprimer « ${p.name} » ?`)) remove.mutate(p.id);
+            }}
+          />
+        )}
+      />
     </div>
-  );
-}
-
-function ProductRow({
-  product,
-  open,
-  onToggle,
-  onSave,
-  onDelete,
-}: {
-  product: CmsProduct;
-  open: boolean;
-  onToggle: () => void;
-  onSave: (v: Partial<CmsProduct>) => void;
-  onDelete: () => void;
-}) {
-  return (
-    <>
-      <tr
-        onClick={onToggle}
-        className="cursor-pointer border-b border-border transition-colors hover:bg-secondary/40"
-      >
-        <td className="px-2 py-2 text-muted-foreground">
-          {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-        </td>
-        <td className="px-3 py-2">
-          <div className="flex items-center gap-3">
-            {product.image_url && (
-              <img
-                src={product.image_url}
-                alt=""
-                className="h-9 w-9 rounded-md object-cover"
-                loading="lazy"
-              />
-            )}
-            <span className="font-medium text-primary">{product.name}</span>
-          </div>
-        </td>
-        <td className="hidden px-3 py-2 text-muted-foreground md:table-cell">
-          {product.subtitle || "—"}
-        </td>
-        <td className="hidden px-3 py-2 text-muted-foreground lg:table-cell">
-          {groupLabel(product.group_key)}
-        </td>
-        <td className="hidden px-3 py-2 text-right sm:table-cell">
-          {product.price ? `${product.price.toLocaleString("fr-FR")} F` : "—"}
-        </td>
-        <td className="hidden px-3 py-2 text-right sm:table-cell">{product.stock ?? 0}</td>
-        <td className="hidden px-3 py-2 text-center md:table-cell">
-          {product.is_active ? "✓" : "—"}
-        </td>
-      </tr>
-      {open && (
-        <tr className="border-b border-border bg-secondary/20">
-          <td colSpan={7} className="px-3 py-4">
-            <ProductForm value={product} onSave={onSave} onDelete={onDelete} />
-          </td>
-        </tr>
-      )}
-    </>
   );
 }
 
@@ -298,10 +272,23 @@ function ProductForm({
         <Textarea rows={2} value={form.note ?? ""} onChange={(e) => set({ note: e.target.value })} />
       </div>
       <ImageField
+        label="Image principale"
         folder="products"
         value={form.image_url ?? ""}
         onChange={(url) => set({ image_url: url })}
       />
+      <GalleryField
+        value={form.gallery_urls ?? []}
+        onChange={(urls) => set({ gallery_urls: urls })}
+      />
+      <div className="space-y-2">
+        <Label>Vidéo de présentation (YouTube, Vimeo ou lien MP4)</Label>
+        <Input
+          value={form.video_url ?? ""}
+          onChange={(e) => set({ video_url: e.target.value })}
+          placeholder="https://www.youtube.com/watch?v=…"
+        />
+      </div>
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-2">
           <Label>Prix (FCFA) — 0 = non vendable en ligne</Label>
@@ -360,11 +347,20 @@ function ProductForm({
               <Trash2 className="h-4 w-4" />
             </Button>
           )}
-          <Button size="sm" onClick={() => onSave(form)}>
+          <Button size="sm" onClick={() => onSave(cleanProduct(form))}>
             Enregistrer
           </Button>
         </div>
       </div>
     </div>
   );
+}
+
+/** Retire les entrées vides de la galerie avant enregistrement. */
+function cleanProduct(form: Partial<CmsProduct>): Partial<CmsProduct> {
+  return {
+    ...form,
+    gallery_urls: (form.gallery_urls ?? []).filter((u) => !!u && u.trim() !== ""),
+    video_url: form.video_url?.trim() ? form.video_url.trim() : null,
+  };
 }
