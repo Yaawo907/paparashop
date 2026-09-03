@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ArrowUpRight, PackageCheck, PackageX } from "lucide-react";
@@ -81,7 +82,7 @@ function ProductPage() {
               image={product.image_url}
               gallery={product.gallery_urls ?? []}
               video={product.video_url}
-            />>
+            />
 
             <div className="flex flex-col">
               <p className="font-display text-[11px] font-semibold uppercase tracking-widest text-accent-foreground/70">
@@ -156,4 +157,86 @@ function ProductPage() {
       </div>
     </SiteLayout>
   );
+}
+
+/** Galerie multi-images + vidéo de présentation de l'article. */
+function ProductMedia({
+  name,
+  subtitle,
+  image,
+  gallery,
+  video,
+}: {
+  name: string;
+  subtitle: string;
+  image: string | null;
+  gallery: string[];
+  video: string | null;
+}) {
+  const images = [image, ...gallery].filter((u): u is string => !!u);
+  const [active, setActive] = useState(0);
+  const embed = toEmbedUrl(video);
+
+  return (
+    <div className="space-y-3">
+      <div className="overflow-hidden rounded-2xl border border-border bg-secondary/40">
+        {images[active] ? (
+          <img
+            src={images[active]}
+            alt={`${name} — ${subtitle}`}
+            className="h-full w-full object-cover"
+            width={1024}
+            height={768}
+          />
+        ) : (
+          <div className="flex aspect-[4/3] items-center justify-center text-sm text-muted-foreground">
+            Image indisponible
+          </div>
+        )}
+      </div>
+
+      {images.length > 1 && (
+        <div className="flex flex-wrap gap-2">
+          {images.map((src, i) => (
+            <button
+              key={src + i}
+              type="button"
+              onClick={() => setActive(i)}
+              className={`h-16 w-16 overflow-hidden rounded-lg border ${
+                i === active ? "border-primary" : "border-border"
+              }`}
+              aria-label={`Voir l'image ${i + 1}`}
+            >
+              <img src={src} alt="" className="h-full w-full object-cover" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {video ? (
+        <div className="overflow-hidden rounded-2xl border border-border bg-black">
+          {embed ? (
+            <iframe
+              src={embed}
+              title={`Vidéo de présentation — ${name}`}
+              className="aspect-video w-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <video src={video} controls className="aspect-video w-full" />
+          )}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function toEmbedUrl(url: string | null) {
+  if (!url) return null;
+  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([\w-]{6,})/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  const vimeo = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`;
+  return null;
 }
