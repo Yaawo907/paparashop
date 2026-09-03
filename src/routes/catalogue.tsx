@@ -66,6 +66,13 @@ function CataloguePage() {
         </div>
       </section>
 
+      {/* Recherche produit */}
+      <section className="border-b border-border bg-muted/50 py-6">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <GlobalSearch variant="light" className="w-full" />
+        </div>
+      </section>
+
       {/* Grille des catégories (navigation rapide) */}
       <section className="bg-secondary/40 py-14 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

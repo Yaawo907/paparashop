@@ -26,7 +26,13 @@ export const Route = createFileRoute("/promotions")({
       { property: "og:type", content: "website" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(promotionsQuery),
+  loader: async ({ context }) => {
+    await Promise.all([
+      context.queryClient.ensureQueryData(promotionsQuery),
+      context.queryClient.ensureQueryData(categoriesQuery),
+      context.queryClient.ensureQueryData(productsQuery),
+    ]);
+  },
   errorComponent: ({ error }) => (
     <div role="alert" className="p-10 text-center text-sm text-muted-foreground">
       Impossible de charger les promotions : {error.message}
