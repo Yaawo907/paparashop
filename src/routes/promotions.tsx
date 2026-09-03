@@ -63,6 +63,11 @@ function PromotionsPage() {
             </p>
           </div>
 
+          {/* Recherche produit */}
+          <div className="mx-auto mb-12 max-w-3xl">
+            <GlobalSearch className="w-full" />
+          </div>
+
           {promos.length === 0 ? (
             <div className="mx-auto max-w-xl rounded-xl border border-white/10 bg-white/5 p-10 text-center">
               <p className="text-sm text-white/80">
