@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Wrench, PackageSearch, Clock, ShieldCheck, Send } from "lucide-react";
+import { Wrench, PackageSearch, Clock, ShieldCheck, Send, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,10 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SITE } from "@/lib/site";
+import { toast } from "sonner";
+import { sendServiceRequest } from "@/lib/service-request.functions";
 
 export function SavAndSpecialOrder() {
   const [type, setType] = useState<"sav" | "commande">("commande");
+  const [sending, setSending] = useState(false);
   const [form, setForm] = useState({
     name: "",
     contact: "",
@@ -39,12 +41,19 @@ Détails : ${form.message}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  const openMail = () => {
-    const subject =
-      type === "sav" ? "Demande SAV — PaparaShop" : "Commande spéciale — PaparaShop";
-    window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(buildMessage())}`;
+  const sendByEmail = async () => {
+    setSending(true);
+    try {
+      await sendServiceRequest({ data: { type, ...form } });
+      toast.success("Demande envoyée", {
+        description: "Notre équipe vous répondra dans les 24 h.",
+      });
+      setForm({ name: "", contact: "", product: "", message: "" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "L'envoi a échoué. Réessayez ou utilisez WhatsApp.");
+    } finally {
+      setSending(false);
+    }
   };
 
   const canSubmit = form.name.trim() && form.contact.trim() && form.product.trim();
@@ -188,20 +197,20 @@ Détails : ${form.message}`;
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Button
               type="button"
-              onClick={openWhatsApp}
-              disabled={!canSubmit}
+              onClick={sendByEmail}
+              disabled={!canSubmit || sending}
               className="flex-1 bg-accent text-primary hover:bg-accent/90"
             >
-              <Send className="h-4 w-4" /> Envoyer via WhatsApp
+              <Mail className="h-4 w-4" /> {sending ? "Envoi en cours…" : "Envoyer par email"}
             </Button>
             <Button
               type="button"
               variant="outline"
-              onClick={openMail}
+              onClick={openWhatsApp}
               disabled={!canSubmit}
               className="flex-1"
             >
-              Envoyer par email
+              <Send className="h-4 w-4" /> Envoyer via WhatsApp
             </Button>
           </div>
         </div>

@@ -67,7 +67,7 @@ function ServicesPage() {
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg">
             De la vente à l'accompagnement, PaparaShop vous apporte une expertise complète
-            sur l'ensemble de votre EQUIPEMENTIER AUDIOVISUEL.
+            sur l'ensemble de votre équipement audiovisuel professionnel.
           </p>
         </div>
       </section>

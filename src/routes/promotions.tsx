@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { X, ArrowUpRight, Sparkles } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
+import { GlobalSearch } from "@/components/layout/GlobalSearch";
 import { SITE } from "@/lib/site";
-import { promotionsQuery } from "@/lib/cms.queries";
+import { promotionsQuery, categoriesQuery, productsQuery } from "@/lib/cms.queries";
 import type { CmsPromotion } from "@/lib/cms-types";
 
 export const Route = createFileRoute("/promotions")({
@@ -25,7 +26,13 @@ export const Route = createFileRoute("/promotions")({
       { property: "og:type", content: "website" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(promotionsQuery),
+  loader: async ({ context }) => {
+    await Promise.all([
+      context.queryClient.ensureQueryData(promotionsQuery),
+      context.queryClient.ensureQueryData(categoriesQuery),
+      context.queryClient.ensureQueryData(productsQuery),
+    ]);
+  },
   errorComponent: ({ error }) => (
     <div role="alert" className="p-10 text-center text-sm text-muted-foreground">
       Impossible de charger les promotions : {error.message}
@@ -54,6 +61,11 @@ function PromotionsPage() {
               Retrouvez toutes nos offres spéciales, packs et prix cassés. Cliquez sur un visuel
               pour l'agrandir, puis commandez directement via WhatsApp ou notre catalogue.
             </p>
+          </div>
+
+          {/* Recherche produit */}
+          <div className="mx-auto mb-12 max-w-3xl">
+            <GlobalSearch className="w-full" />
           </div>
 
           {promos.length === 0 ? (

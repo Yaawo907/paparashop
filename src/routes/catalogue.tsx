@@ -6,6 +6,7 @@ import { CategorySection } from "@/components/catalog/CategorySection";
 import { FeaturedProductsTabs } from "@/components/catalog/FeaturedProductsTabs";
 import { CatalogueSidebar } from "@/components/catalog/CatalogueSidebar";
 import { Commitments } from "@/components/home/Commitments";
+import { GlobalSearch } from "@/components/layout/GlobalSearch";
 
 import { categoriesQuery, productsQuery } from "@/lib/cms.queries";
 import { toCategories } from "@/lib/cms-adapters";
@@ -62,6 +63,13 @@ function CataloguePage() {
           <div className="mt-8">
             <ExternalCatalogCTA label="Consulter les prix et commander" />
           </div>
+        </div>
+      </section>
+
+      {/* Recherche produit */}
+      <section className="border-b border-border bg-muted/50 py-6">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <GlobalSearch variant="light" className="w-full" />
         </div>
       </section>
 
