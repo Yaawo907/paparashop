@@ -27,6 +27,7 @@ import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe
 import { Route as ProduitIdRouteImport } from './routes/produit.$id'
 import { Route as ApiPublicKkiapayWebhookRouteImport } from './routes/api/public/kkiapay-webhook'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as MarqueCategoryBrandRouteImport } from './routes/marque.$category.$brand'
 import { Route as ApiPublicMediaSplatRouteImport } from './routes/api/public/media/$'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -121,6 +122,11 @@ const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   path: '/lovable/email/suppression',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MarqueCategoryBrandRoute = MarqueCategoryBrandRouteImport.update({
+  id: '/marque/$category/$brand',
+  path: '/marque/$category/$brand',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicMediaSplatRoute = ApiPublicMediaSplatRouteImport.update({
   id: '/api/public/media/$',
   path: '/api/public/media/$',
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/produit/$id': typeof ProduitIdRoute
   '/api/public/kkiapay-webhook': typeof ApiPublicKkiapayWebhookRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/marque/$category/$brand': typeof MarqueCategoryBrandRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/produit/$id': typeof ProduitIdRoute
   '/api/public/kkiapay-webhook': typeof ApiPublicKkiapayWebhookRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/marque/$category/$brand': typeof MarqueCategoryBrandRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/produit/$id': typeof ProduitIdRoute
   '/api/public/kkiapay-webhook': typeof ApiPublicKkiapayWebhookRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/marque/$category/$brand': typeof MarqueCategoryBrandRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -236,6 +245,7 @@ export interface FileRouteTypes {
     | '/produit/$id'
     | '/api/public/kkiapay-webhook'
     | '/lovable/email/suppression'
+    | '/marque/$category/$brand'
     | '/api/public/media/$'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -259,6 +269,7 @@ export interface FileRouteTypes {
     | '/produit/$id'
     | '/api/public/kkiapay-webhook'
     | '/lovable/email/suppression'
+    | '/marque/$category/$brand'
     | '/api/public/media/$'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -283,6 +294,7 @@ export interface FileRouteTypes {
     | '/produit/$id'
     | '/api/public/kkiapay-webhook'
     | '/lovable/email/suppression'
+    | '/marque/$category/$brand'
     | '/api/public/media/$'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -306,6 +318,7 @@ export interface RootRouteChildren {
   ProduitIdRoute: typeof ProduitIdRoute
   ApiPublicKkiapayWebhookRoute: typeof ApiPublicKkiapayWebhookRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  MarqueCategoryBrandRoute: typeof MarqueCategoryBrandRoute
   ApiPublicMediaSplatRoute: typeof ApiPublicMediaSplatRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -440,6 +453,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/marque/$category/$brand': {
+      id: '/marque/$category/$brand'
+      path: '/marque/$category/$brand'
+      fullPath: '/marque/$category/$brand'
+      preLoaderRoute: typeof MarqueCategoryBrandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/media/$': {
       id: '/api/public/media/$'
       path: '/api/public/media/$'
@@ -501,6 +521,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProduitIdRoute: ProduitIdRoute,
   ApiPublicKkiapayWebhookRoute: ApiPublicKkiapayWebhookRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  MarqueCategoryBrandRoute: MarqueCategoryBrandRoute,
   ApiPublicMediaSplatRoute: ApiPublicMediaSplatRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
