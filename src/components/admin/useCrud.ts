@@ -59,6 +59,41 @@ export function useSaveRow(table: CrudTable) {
   });
 }
 
+/** Actions en lot : visibilité et suppression multiple. */
+export function useBulkUpdate(table: CrudTable) {
+  const qc = useQueryClient();
+  const pk = pkOf(table);
+  return useMutation({
+    mutationFn: async ({ ids, patch }: { ids: string[]; patch: Record<string, unknown> }) => {
+      const { error } = await db.from(table).update(patch).in(pk, ids);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Mise à jour effectuée");
+      qc.invalidateQueries({ queryKey: ["admin", table] });
+      qc.invalidateQueries({ queryKey: ["cms"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+}
+
+export function useBulkDelete(table: CrudTable) {
+  const qc = useQueryClient();
+  const pk = pkOf(table);
+  return useMutation({
+    mutationFn: async (ids: string[]) => {
+      const { error } = await db.from(table).delete().in(pk, ids);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Suppression effectuée");
+      qc.invalidateQueries({ queryKey: ["admin", table] });
+      qc.invalidateQueries({ queryKey: ["cms"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+}
+
 export function useDeleteRow(table: CrudTable) {
   const qc = useQueryClient();
   const pk = pkOf(table);
