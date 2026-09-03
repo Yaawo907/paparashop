@@ -1,18 +1,34 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import type { CmsTrustedClient } from "@/lib/cms-types";
 import { useDeleteRow, useRows, useSaveRow } from "@/components/admin/useCrud";
 import { ImageField } from "@/components/admin/ImageField";
+import { AdminSearch } from "@/components/admin/AdminSearch";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export function ClientsAdmin() {
   const { data: clients = [], isLoading } = useRows<CmsTrustedClient>("trusted_clients");
   const save = useSaveRow("trusted_clients");
   const remove = useDeleteRow("trusted_clients");
   const [draft, setDraft] = useState<Partial<CmsTrustedClient> | null>(null);
+  const [search, setSearch] = useState("");
+
+  const rows = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return clients;
+    return clients.filter((c) =>
+      [c.name, c.sector, c.url].some((v) => (v ?? "").toLowerCase().includes(q)),
+    );
+  }, [clients, search]);
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Chargement…</p>;
 
@@ -30,6 +46,14 @@ export function ClientsAdmin() {
         </Button>
       </div>
 
+      <AdminSearch
+        value={search}
+        onChange={setSearch}
+        placeholder="Rechercher un client (nom, secteur)…"
+        count={rows.length}
+        noun="client"
+      />
+
       {draft && (
         <ClientForm
           value={draft}
@@ -38,18 +62,38 @@ export function ClientsAdmin() {
         />
       )}
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {clients.map((c) => (
-          <ClientForm
+      {rows.length === 0 && <p className="text-sm text-muted-foreground">Aucun client trouvé.</p>}
+
+      <Accordion type="multiple" className="space-y-3">
+        {rows.map((c) => (
+          <AccordionItem
             key={c.id}
-            value={c}
-            onSave={(v) => save.mutate(v)}
-            onDelete={() => {
-              if (confirm(`Supprimer « ${c.name} » ?`)) remove.mutate(c.id);
-            }}
-          />
+            value={c.id}
+            className="rounded-xl border border-border bg-card px-4"
+          >
+            <AccordionTrigger className="text-left">
+              <span className="flex min-w-0 items-center gap-3">
+                {c.logo_url && (
+                  <img src={c.logo_url} alt="" className="h-9 w-9 shrink-0 rounded object-contain" />
+                )}
+                <span className="truncate font-semibold text-primary">{c.name}</span>
+              </span>
+              <span className="ml-auto mr-3 truncate text-xs text-muted-foreground">
+                {c.sector || "—"} · {c.is_active ? "Visible" : "Masqué"}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent className="pb-6">
+              <ClientForm
+                value={c}
+                onSave={(v) => save.mutate(v)}
+                onDelete={() => {
+                  if (confirm(`Supprimer « ${c.name} » ?`)) remove.mutate(c.id);
+                }}
+              />
+            </AccordionContent>
+          </AccordionItem>
         ))}
-      </div>
+      </Accordion>
     </div>
   );
 }
@@ -69,7 +113,7 @@ function ClientForm({
   const set = (patch: Partial<CmsTrustedClient>) => setForm((f) => ({ ...f, ...patch }));
 
   return (
-    <div className="space-y-4 rounded-xl border border-border bg-card p-4">
+    <div className="space-y-4 rounded-xl border border-border bg-background p-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label>Nom</Label>

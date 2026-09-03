@@ -1,23 +1,74 @@
+import { useMemo, useState } from "react";
 import { Check, Trash2, X } from "lucide-react";
 import type { CmsTestimonial } from "@/lib/cms-types";
 import { useDeleteRow, useRows, useSaveRow } from "@/components/admin/useCrud";
+import { AdminSearch } from "@/components/admin/AdminSearch";
 import { Button } from "@/components/ui/button";
+
+const FILTERS = [
+  { value: "all", label: "Tous" },
+  { value: "pending", label: "En attente" },
+  { value: "approved", label: "Publiés" },
+];
 
 export function TestimonialsAdmin() {
   const { data: items = [], isLoading } = useRows<CmsTestimonial>("testimonials", "created_at");
   const save = useSaveRow("testimonials");
   const remove = useDeleteRow("testimonials");
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
+
+  const rows = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return items
+      .filter((t) =>
+        filter === "all" ? true : filter === "approved" ? t.is_approved : !t.is_approved,
+      )
+      .filter((t) =>
+        q
+          ? [t.name, t.role, t.location, t.content].some((v) =>
+              (v ?? "").toLowerCase().includes(q),
+            )
+          : true,
+      );
+  }, [items, search, filter]);
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Chargement…</p>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <h2 className="font-display text-xl font-bold text-primary">Témoignages</h2>
+
+      <AdminSearch
+        value={search}
+        onChange={setSearch}
+        placeholder="Rechercher un témoignage (nom, contenu)…"
+        count={rows.length}
+        noun="témoignage"
+      />
+
+      <div className="flex flex-wrap gap-2">
+        {FILTERS.map((f) => (
+          <button
+            key={f.value}
+            type="button"
+            onClick={() => setFilter(f.value)}
+            className={
+              filter === f.value
+                ? "rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground"
+                : "rounded-full border border-border px-3 py-1 text-xs font-semibold text-muted-foreground"
+            }
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
       <div className="space-y-3">
-        {items.length === 0 && (
-          <p className="text-sm text-muted-foreground">Aucun témoignage pour le moment.</p>
+        {rows.length === 0 && (
+          <p className="text-sm text-muted-foreground">Aucun témoignage pour ce filtre.</p>
         )}
-        {items.map((t) => (
+        {rows.map((t) => (
           <div
             key={t.id}
             className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 sm:flex-row sm:items-start"
