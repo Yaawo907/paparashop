@@ -31,6 +31,8 @@ export type CmsProduct = {
   subtitle: string;
   note: string;
   image_url: string | null;
+  gallery_urls: string[] | null;
+  video_url: string | null;
   url: string | null;
   price: number | null;
   currency: string | null;
