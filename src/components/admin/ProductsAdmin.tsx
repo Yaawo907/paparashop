@@ -1,6 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import type { CmsProduct } from "@/lib/cms-types";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import {
   useBulkDelete,
   useBulkUpdate,
@@ -41,6 +44,11 @@ export function ProductsAdmin() {
   const remove = useDeleteRow("products");
   const bulkUpdate = useBulkUpdate("products");
   const bulkDelete = useBulkDelete("products");
+  const { data: cats = [] } = useRows<{ id: string; title: string }>("categories");
+  const catTitle = useCallback(
+    (id?: string | null) => cats.find((c) => c.id === id)?.title ?? "—",
+    [cats],
+  );
   const [group, setGroup] = useState("all");
   const [draftGroup, setDraftGroup] = useState<string | null>(null);
 
@@ -70,9 +78,9 @@ export function ProductsAdmin() {
         ),
       },
       {
-        key: "subtitle",
+        key: "category_id",
         header: "Catégorie",
-        value: (p) => p.subtitle || "",
+        value: (p) => catTitle(p.category_id),
         className: "hidden md:table-cell text-muted-foreground",
       },
       {
@@ -102,7 +110,7 @@ export function ProductsAdmin() {
         className: "hidden md:table-cell text-center",
       },
     ],
-    [],
+    [catTitle],
   );
 
   const searchFields = useCallback(
@@ -193,20 +201,50 @@ function ProductForm({
   const set = (patch: Partial<CmsProduct>) => setForm((f) => ({ ...f, ...patch }));
 
   const { data: categories = [] } = useRows<{ id: string; title: string }>("categories");
-  const { data: allProducts = [] } = useRows<CmsProduct>("products");
-  const options = Array.from(
-    new Set([
-      ...categories.map((c) => c.title),
-      ...allProducts.map((p) => p.subtitle).filter((s): s is string => !!s),
-    ]),
-  ).sort((a, b) => a.localeCompare(b));
+  const qc = useQueryClient();
+  const options = categories.map((c) => c.title).sort((a, b) => a.localeCompare(b));
 
-  const current = form.subtitle ?? "";
-  const [custom, setCustom] = useState(!!current && !options.includes(current));
+  const linked = categories.find((c) => c.id === form.category_id);
+  const [newTitle, setNewTitle] = useState("");
+  const [custom, setCustom] = useState(false);
+  const current = linked?.title ?? "";
 
   const pickCategory = (title: string) => {
     const match = categories.find((c) => c.title === title);
-    set({ subtitle: title, category_id: match ? match.id : null });
+    set({ category_id: match ? match.id : null });
+  };
+
+  const submit = async () => {
+    if (custom && newTitle.trim()) {
+      const title = newTitle.trim();
+      const existing = categories.find((c) => c.title.toLowerCase() === title.toLowerCase());
+      let id = existing?.id;
+      if (!id) {
+        const slug = title
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
+        const { data, error } = await supabase
+          .from("categories")
+          .insert({ title, slug: `${slug}-${Date.now().toString(36).slice(-4)}`, position: 99 })
+          .select("id")
+          .single();
+        if (error) {
+          toast.error("Impossible de créer la catégorie : " + error.message);
+          return;
+        }
+        id = data.id;
+        toast.success(`Catégorie « ${title} » créée`);
+        qc.invalidateQueries();
+      }
+      setCustom(false);
+      setNewTitle("");
+      onSave(cleanProduct({ ...form, category_id: id }));
+      return;
+    }
+    onSave(cleanProduct(form));
   };
 
   return (
@@ -223,7 +261,6 @@ function ProductForm({
             onValueChange={(v) => {
               if (v === NEW_CATEGORY) {
                 setCustom(true);
-                set({ subtitle: "", category_id: null });
               } else {
                 setCustom(false);
                 pickCategory(v);
@@ -246,8 +283,8 @@ function ProductForm({
             <Input
               autoFocus
               placeholder="Nom de la nouvelle catégorie"
-              value={current}
-              onChange={(e) => set({ subtitle: e.target.value, category_id: null })}
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
             />
           )}
         </div>
@@ -347,7 +384,7 @@ function ProductForm({
               <Trash2 className="h-4 w-4" />
             </Button>
           )}
-          <Button size="sm" onClick={() => onSave(cleanProduct(form))}>
+          <Button size="sm" onClick={() => void submit()}>
             Enregistrer
           </Button>
         </div>
