@@ -6,9 +6,11 @@ import { slugify } from "@/lib/slug";
 export function CategorySection({
   category,
   index,
+  productCount,
 }: {
   category: Category;
   index: number;
+  productCount: number;
 }) {
   const Icon = category.icon;
 

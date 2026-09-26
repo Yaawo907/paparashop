@@ -136,7 +136,7 @@ function CataloguePage() {
           <CatalogueSidebar categories={CATEGORIES} className="lg:w-64 shrink-0" />
           <div className="min-w-0 flex-1">
             {CATEGORIES.map((cat, idx) => (
-              <CategorySection key={cat.slug} category={cat} index={idx} />
+              <CategorySection key={cat.slug} category={cat} index={idx} productCount={productCounts[cat.id] ?? 0} />
             ))}
           </div>
         </div>
