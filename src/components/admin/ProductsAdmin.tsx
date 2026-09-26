@@ -1,6 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import type { CmsProduct } from "@/lib/cms-types";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import {
   useBulkDelete,
   useBulkUpdate,
@@ -233,10 +236,10 @@ function ProductForm({
       }
       setCustom(false);
       setNewTitle("");
-      onSave({ ...form, category_id: id });
+      onSave(cleanProduct({ ...form, category_id: id }));
       return;
     }
-    onSave(form);
+    onSave(cleanProduct(form));
   };
 
   return (
@@ -253,7 +256,6 @@ function ProductForm({
             onValueChange={(v) => {
               if (v === NEW_CATEGORY) {
                 setCustom(true);
-                set({ subtitle: "", category_id: null });
               } else {
                 setCustom(false);
                 pickCategory(v);
@@ -276,8 +278,8 @@ function ProductForm({
             <Input
               autoFocus
               placeholder="Nom de la nouvelle catégorie"
-              value={current}
-              onChange={(e) => set({ subtitle: e.target.value, category_id: null })}
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
             />
           )}
         </div>
@@ -377,7 +379,7 @@ function ProductForm({
               <Trash2 className="h-4 w-4" />
             </Button>
           )}
-          <Button size="sm" onClick={() => onSave(cleanProduct(form))}>
+          <Button size="sm" onClick={() => void submit()}>
             Enregistrer
           </Button>
         </div>
