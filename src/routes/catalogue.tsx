@@ -53,12 +53,13 @@ function CataloguePage() {
   // Nombre d'articles actifs par catégorie (via category_id des produits)
   const productCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    for (const p of products) {
-      if (!p.is_active || !p.category_id) continue;
-      counts[p.category_id] = (counts[p.category_id] ?? 0) + 1;
+    for (const cat of data) {
+      counts[cat.slug] = products.filter(
+        (p) => p.is_active && p.category_id === cat.id,
+      ).length;
     }
     return counts;
-  }, [products]);
+  }, [data, products]);
 
   return (
     <SiteLayout>
