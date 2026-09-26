@@ -7,10 +7,12 @@ export function CategorySection({
   category,
   index,
   productCount,
+  brandCounts = {},
 }: {
   category: Category;
   index: number;
   productCount: number;
+  brandCounts?: Record<string, number>;
 }) {
   const Icon = category.icon;
 
@@ -52,7 +54,9 @@ export function CategorySection({
         </header>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {category.brands.map((brand) => (
+          {category.brands.map((brand) => {
+            const brandCount = brandCounts[`${category.slug}::${brand.name}`] ?? 0;
+            return (
             <Link
               key={brand.name}
               to="/marque/$category/$brand"
@@ -77,13 +81,19 @@ export function CategorySection({
                   {brand.models.slice(0, 3).map(getModelName).join(" • ")}
                   {brand.models.length > 3 && "…"}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary transition-colors group-hover:text-accent-foreground">
-                  Voir les articles
-                  <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                </span>
+                <div className="mt-4 flex items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary transition-colors group-hover:text-accent-foreground">
+                    <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm">
+                      {brandCount} article{brandCount > 1 ? "s" : ""}
+                    </span>
+                    Voir les articles
+                    <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
