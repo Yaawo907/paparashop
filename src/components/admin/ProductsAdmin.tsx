@@ -44,6 +44,11 @@ export function ProductsAdmin() {
   const remove = useDeleteRow("products");
   const bulkUpdate = useBulkUpdate("products");
   const bulkDelete = useBulkDelete("products");
+  const { data: cats = [] } = useRows<{ id: string; title: string }>("categories");
+  const catTitle = useCallback(
+    (id?: string | null) => cats.find((c) => c.id === id)?.title ?? "—",
+    [cats],
+  );
   const [group, setGroup] = useState("all");
   const [draftGroup, setDraftGroup] = useState<string | null>(null);
 
@@ -73,9 +78,9 @@ export function ProductsAdmin() {
         ),
       },
       {
-        key: "subtitle",
+        key: "category_id",
         header: "Catégorie",
-        value: (p) => p.subtitle || "",
+        value: (p) => catTitle(p.category_id),
         className: "hidden md:table-cell text-muted-foreground",
       },
       {
