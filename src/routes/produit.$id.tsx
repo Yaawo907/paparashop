@@ -6,7 +6,7 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { formatXOF } from "@/lib/cart";
 import { productsQuery } from "@/lib/cms.queries";
-import { LOCATIONS, SITE } from "@/lib/site";
+import { LOCATIONS } from "@/lib/site";
 
 export const Route = createFileRoute("/produit/$id")({
   component: ProductPage,
@@ -132,7 +132,7 @@ function ProductPage() {
               />
 
               <a
-                href={LOCATIONS[0]?.whatsappHref ?? SITE.catalogUrl}
+                href={LOCATIONS[0]?.whatsappHref ?? "https://wa.me/2290162447474"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-primary hover:bg-secondary/60"

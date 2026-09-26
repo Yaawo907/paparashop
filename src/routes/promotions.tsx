@@ -1,10 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { X, ArrowUpRight, Sparkles } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { GlobalSearch } from "@/components/layout/GlobalSearch";
-import { SITE } from "@/lib/site";
 import { promotionsQuery, categoriesQuery, productsQuery } from "@/lib/cms.queries";
 import type { CmsPromotion } from "@/lib/cms-types";
 
@@ -103,15 +102,13 @@ function PromotionsPage() {
           )}
 
           <div className="mt-14 text-center">
-            <a
-              href={SITE.catalogUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/catalogue"
               className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-display text-sm font-semibold text-primary shadow-lg transition-all hover:-translate-y-0.5"
             >
               Voir le catalogue complet
               <ArrowUpRight className="h-4 w-4" />
-            </a>
+            </Link>
           </div>
         </div>
       </section>
