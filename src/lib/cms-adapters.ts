@@ -2,7 +2,6 @@ import type { Category } from "@/lib/catalog";
 import type { FeaturedItem } from "@/lib/featured";
 import type { CmsCategory, CmsProduct } from "@/lib/cms-types";
 import { getIcon } from "@/lib/icons";
-import { SITE } from "@/lib/site";
 
 /** Convertit les catégories de la base au format attendu par les composants du site. */
 export function toCategories(cms: CmsCategory[]): Category[] {
@@ -34,6 +33,6 @@ export function toFeatured(products: CmsProduct[], group: string): FeaturedItem[
       category: p.subtitle,
       note: p.note,
       image: p.image_url ?? "",
-      url: p.url ?? SITE.catalogUrl,
+      url: p.url ?? undefined,
     }));
 }

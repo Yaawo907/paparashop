@@ -54,7 +54,7 @@ function Index() {
     image: "/og.jpg",
     telephone: SITE.phone,
     email: SITE.email,
-    url: SITE.catalogUrl,
+    url: SITE.url,
     foundingDate: `${SITE.foundedYear}-01-01`,
     address: LOCATIONS.map((l) => ({
       "@type": "PostalAddress",

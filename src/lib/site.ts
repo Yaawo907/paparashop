@@ -13,7 +13,7 @@ export const SITE = {
   phoneHref: "tel:+2290162447474",
   email: "paparashop26@gmail.com",
   emailHref: "mailto:paparashop26@gmail.com",
-  catalogUrl: "https://www.lesagecom.net/catalogue/paparashop/",
+  url: "https://paparashop.net",
   socials: {
     facebook: "https://www.facebook.com/share/1DqnXkij9t/",
     instagram: "https://www.instagram.com/paparashop_bj?igsh=dTR3YjQycjExcGFk",

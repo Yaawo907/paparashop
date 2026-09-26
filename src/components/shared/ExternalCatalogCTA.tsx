@@ -1,7 +1,8 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
-import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
+/** Bouton d'accès au catalogue interne du site (plus de lien externe). */
 export function ExternalCatalogCTA({
   label = "Voir le catalogue complet",
   variant = "accent",
@@ -12,10 +13,8 @@ export function ExternalCatalogCTA({
   className?: string;
 }) {
   return (
-    <a
-      href={SITE.catalogUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      to="/catalogue"
       className={cn(
         "inline-flex items-center gap-2 rounded-md px-7 py-3 font-display text-sm font-semibold tracking-wide transition-all hover:-translate-y-0.5",
         variant === "accent"
@@ -26,6 +25,6 @@ export function ExternalCatalogCTA({
     >
       {label}
       <ArrowUpRight className="h-4 w-4" />
-    </a>
+    </Link>
   );
 }
