@@ -41,9 +41,14 @@ export function CategorySection({
               </p>
             </div>
           </div>
-          <span className="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
-            {category.brands.length} marques référencées
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-white shadow-sm">
+              {productCount} article{productCount > 1 ? "s" : ""}
+            </span>
+            <span className="rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
+              {category.brands.length} marques référencées
+            </span>
+          </div>
         </header>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
