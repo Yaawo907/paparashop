@@ -61,6 +61,30 @@ function CataloguePage() {
     return counts;
   }, [data, products]);
 
+  // Nombre d'articles actifs par marque (produits rattachés à la catégorie
+  // dont le nom mentionne la marque — ex. "Sony A7 IV" pour la marque Sony)
+  const brandCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    const norm = (s: string) =>
+      s
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+    for (const cat of data) {
+      const catProducts = products.filter(
+        (p) => p.is_active && p.category_id === cat.id,
+      );
+      for (const brand of cat.brands) {
+        const nb = norm(brand.name);
+        counts[`${cat.slug}::${brand.name}`] = nb
+          ? catProducts.filter((p) => norm(p.name).includes(nb)).length
+          : 0;
+      }
+    }
+    return counts;
+  }, [data, products]);
+
   return (
     <SiteLayout>
       <section className="bg-primary py-20 text-white sm:py-24">
@@ -137,7 +161,13 @@ function CataloguePage() {
           <CatalogueSidebar categories={CATEGORIES} className="lg:w-64 shrink-0" />
           <div className="min-w-0 flex-1">
             {CATEGORIES.map((cat, idx) => (
-              <CategorySection key={cat.slug} category={cat} index={idx} productCount={productCounts[cat.slug] ?? 0} />
+              <CategorySection
+                key={cat.slug}
+                category={cat}
+                index={idx}
+                productCount={productCounts[cat.slug] ?? 0}
+                brandCounts={brandCounts}
+              />
             ))}
           </div>
         </div>
