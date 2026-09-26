@@ -103,6 +103,7 @@ function CataloguePage() {
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
             {CATEGORIES.map((c) => {
               const Icon = c.icon;
+              const count = productCounts[c.id] ?? 0;
               return (
                 <a
                   key={c.slug}
@@ -112,7 +113,7 @@ function CataloguePage() {
                   <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-accent/20">
                     <Icon className="h-5 w-5" strokeWidth={1.75} />
                   </span>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <p className="truncate font-display text-sm font-bold text-primary">
                       {c.title}
                     </p>
@@ -120,6 +121,9 @@ function CataloguePage() {
                       {c.brands.length} marques
                     </p>
                   </div>
+                  <span className="ml-auto inline-flex shrink-0 items-center rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">
+                    {count} article{count > 1 ? "s" : ""}
+                  </span>
                 </a>
               );
             })}
