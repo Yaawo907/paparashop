@@ -72,14 +72,12 @@ export function Header() {
           >
             <LogIn className="h-4 w-4" /> Connexion
           </Link>
-          <a
-            href={SITE.catalogUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/catalogue"
             className="hidden rounded-md border-2 border-accent px-5 py-2 font-display text-xs font-semibold text-accent transition-all hover:-translate-y-0.5 hover:bg-accent hover:text-primary hover:shadow-lg hover:shadow-accent/30 lg:inline-flex"
           >
             EXPLORER
-          </a>
+          </Link>
 
           <button
             type="button"
@@ -117,14 +115,13 @@ export function Header() {
               </Link>
             </li>
             <li className="pt-2">
-              <a
-                href={SITE.catalogUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/catalogue"
+                onClick={() => setOpen(false)}
                 className="block rounded-md border-2 border-accent px-4 py-2 text-center font-display text-xs font-semibold text-accent"
               >
                 EXPLORER LE CATALOGUE
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Package } from "lucide-react";
 import { SectionTitle } from "@/components/shared/SectionTitle";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
-import { SITE } from "@/lib/site";
 import { productsQuery } from "@/lib/cms.queries";
 import { toFeatured } from "@/lib/cms-adapters";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
@@ -21,11 +21,10 @@ export function Accessories() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {accessories.map((item) => (
-            <a
+            <Link
               key={item.name}
-              href={item.url || SITE.catalogUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              to="/produit/$id"
+              params={{ id: item.id ?? "" }}
               className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10"
             >
               {item.image ? (
@@ -59,11 +58,11 @@ export function Accessories() {
                 ) : null}
                 <AddToCartButton id={item.id} name={item.name} price={item.price} image={item.image} className="mt-3 w-full" />
                 <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary transition-colors group-hover:text-accent-foreground">
-                  Voir sur le catalogue
+                  Voir le détail
                   <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 

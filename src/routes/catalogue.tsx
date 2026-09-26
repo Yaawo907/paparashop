@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { MessageCircle } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
-import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
 import { CategorySection } from "@/components/catalog/CategorySection";
 import { FeaturedProductsTabs } from "@/components/catalog/FeaturedProductsTabs";
 import { CatalogueSidebar } from "@/components/catalog/CatalogueSidebar";
@@ -10,6 +10,7 @@ import { GlobalSearch } from "@/components/layout/GlobalSearch";
 
 import { categoriesQuery, productsQuery } from "@/lib/cms.queries";
 import { toCategories } from "@/lib/cms-adapters";
+import { LOCATIONS } from "@/lib/site";
 
 export const Route = createFileRoute("/catalogue")({
   component: CataloguePage,
@@ -61,7 +62,15 @@ function CataloguePage() {
             Seule boutique spécialisée d'Afrique de l'Ouest francophone en EQUIPEMENTIER AUDIOVISUEL professionnel — sourcé en circuit officiel, garanti jusqu'à 2 ans.
           </p>
           <div className="mt-8">
-            <ExternalCatalogCTA label="Consulter les prix et commander" />
+            <a
+              href={LOCATIONS[0]?.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-md bg-accent px-7 py-3 font-display text-sm font-semibold tracking-wide text-primary shadow-lg shadow-accent/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-accent/40"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Consulter les prix et commander
+            </a>
           </div>
         </div>
       </section>
@@ -126,15 +135,22 @@ function CataloguePage() {
       <section className="gradient-hero py-20 text-center text-white">
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="font-display text-3xl font-bold sm:text-4xl">
-            Prêt à passer commande sur notre{" "}
-            <span className="text-accent">plateforme</span> ?
+            Prêt à passer <span className="text-accent">commande</span> ?
           </h2>
           <p className="mt-4 text-white/75">
-            Consultez les prix actualisés, la disponibilité en temps réel et commandez en ligne
-            avec livraison Bénin / Burkina Faso / Togo.
+            Ajoutez vos articles au panier et commandez en ligne — livraison Bénin / Burkina Faso / Togo.
+            Une question ? Notre équipe vous répond sur WhatsApp.
           </p>
           <div className="mt-8">
-            <ExternalCatalogCTA />
+            <a
+              href={LOCATIONS[0]?.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-md bg-accent px-7 py-3 font-display text-sm font-semibold tracking-wide text-primary shadow-lg shadow-accent/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-accent/40"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Discuter avec un conseiller
+            </a>
           </div>
         </div>
       </section>

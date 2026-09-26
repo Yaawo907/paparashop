@@ -6,7 +6,6 @@ import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { formatXOF } from "@/lib/cart";
 import { categoriesQuery, productsQuery } from "@/lib/cms.queries";
 import { slugify } from "@/lib/slug";
-import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/marque/$category/$brand")({
   component: BrandPage,
@@ -226,15 +225,17 @@ function BrandPage() {
           ) : null}
 
           <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row">
-            <a
-              href={brand.url || SITE.catalogUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-5 py-2.5 font-display text-sm font-semibold text-primary shadow-md transition-all hover:-translate-y-0.5"
-            >
-              Commander sur la plateforme
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
+            {brand.url ? (
+              <a
+                href={brand.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-5 py-2.5 font-display text-sm font-semibold text-primary shadow-md transition-all hover:-translate-y-0.5"
+              >
+                Commander sur la plateforme
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            ) : null}
             <a
               href={`https://wa.me/2290162447474?text=${encodeURIComponent(
                 `Bonjour PaparaShop, je souhaite un devis pour ${brand.name} (${category.title}).`,
