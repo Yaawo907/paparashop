@@ -84,7 +84,7 @@ function Index() {
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="font-display text-3xl font-bold sm:text-4xl">
             Prix, stock et commande sur notre{" "}
-            <span className="text-accent">plateforme</span>
+            <span className="text-accent">boutique en ligne</span>
           </h2>
           <p className="mt-4 text-white/75">
             Consultez les prix actualisés et commandez en ligne — livraison Bénin, Burkina Faso et Togo.
