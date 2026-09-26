@@ -110,7 +110,7 @@ export function ProductsAdmin() {
         className: "hidden md:table-cell text-center",
       },
     ],
-    [],
+    [catTitle],
   );
 
   const searchFields = useCallback(
