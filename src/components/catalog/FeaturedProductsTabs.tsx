@@ -1,4 +1,5 @@
 import { Sparkles, Flame, Tag, ArrowUpRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   Tabs,
@@ -6,7 +7,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { SITE } from "@/lib/site";
 import { type FeaturedItem } from "@/lib/featured";
 import { productsQuery } from "@/lib/cms.queries";
 import { toFeatured } from "@/lib/cms-adapters";
@@ -41,15 +41,16 @@ function Grid({ items }: { items: FeaturedItem[] }) {
               <p className="mt-3 font-display text-lg font-bold text-primary">{formatXOF(it.price)}</p>
             ) : null}
             <AddToCartButton id={it.id} name={it.name} price={it.price} image={it.image} className="mt-3 w-full" />
-            <a
-              href={it.url || SITE.catalogUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary hover:text-accent-foreground"
-            >
-              Voir sur la plateforme
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
+            {it.id ? (
+              <Link
+                to="/produit/$id"
+                params={{ id: it.id }}
+                className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary hover:text-accent-foreground"
+              >
+                Voir le détail
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            ) : null}
           </div>
         </article>
       ))}

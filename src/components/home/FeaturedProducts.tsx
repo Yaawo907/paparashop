@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Eye, X } from "lucide-react";
 import {
   Dialog,
@@ -9,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { SectionTitle } from "@/components/shared/SectionTitle";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
-import { SITE } from "@/lib/site";
 import productCanon from "@/assets/product-canon.jpg";
 import productSony from "@/assets/product-sony.jpg";
 import productNikon from "@/assets/product-nikon.jpg";
@@ -148,14 +148,12 @@ export function FeaturedProducts() {
                     <Eye className="h-3.5 w-3.5" />
                     Voir les caractéristiques
                   </button>
-                  <a
-                    href={SITE.catalogUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    to="/catalogue"
                     className="inline-flex items-center justify-center gap-1 text-xs text-white/70 transition-colors hover:text-accent"
                   >
                     Commander <ArrowUpRight className="h-3 w-3" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </article>
@@ -219,14 +217,12 @@ export function FeaturedProducts() {
 
                 <div className="mt-6 flex items-center justify-between border-t border-border pt-5">
                   <p className="font-display text-lg font-bold text-primary">{active.price}</p>
-                  <a
-                    href={SITE.catalogUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    to="/catalogue"
                     className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-primary shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
                   >
                     Commander <ArrowUpRight className="h-4 w-4" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
