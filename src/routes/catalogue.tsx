@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { MessageCircle } from "lucide-react";
@@ -46,7 +47,18 @@ export const Route = createFileRoute("/catalogue")({
 
 function CataloguePage() {
   const { data } = useSuspenseQuery(categoriesQuery);
+  const { data: products } = useSuspenseQuery(productsQuery);
   const CATEGORIES = toCategories(data);
+
+  // Nombre d'articles actifs par catégorie (via category_id des produits)
+  const productCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const p of products) {
+      if (!p.is_active || !p.category_id) continue;
+      counts[p.category_id] = (counts[p.category_id] ?? 0) + 1;
+    }
+    return counts;
+  }, [products]);
 
   return (
     <SiteLayout>
