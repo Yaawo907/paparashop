@@ -104,7 +104,7 @@ function CataloguePage() {
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
             {CATEGORIES.map((c) => {
               const Icon = c.icon;
-              const count = productCounts[c.id] ?? 0;
+              const count = productCounts[c.slug] ?? 0;
               return (
                 <a
                   key={c.slug}
@@ -137,7 +137,7 @@ function CataloguePage() {
           <CatalogueSidebar categories={CATEGORIES} className="lg:w-64 shrink-0" />
           <div className="min-w-0 flex-1">
             {CATEGORIES.map((cat, idx) => (
-              <CategorySection key={cat.slug} category={cat} index={idx} productCount={productCounts[cat.id] ?? 0} />
+              <CategorySection key={cat.slug} category={cat} index={idx} productCount={productCounts[cat.slug] ?? 0} />
             ))}
           </div>
         </div>
