@@ -71,14 +71,15 @@ function CataloguePage() {
         .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase()
         .trim();
+    // Même règle que la page /marque : nom OU sous-titre contient la marque
     for (const cat of data) {
-      const catProducts = products.filter(
-        (p) => p.is_active && p.category_id === cat.id,
-      );
       for (const brand of cat.brands) {
         const nb = norm(brand.name);
         counts[`${cat.slug}::${brand.name}`] = nb
-          ? catProducts.filter((p) => norm(p.name).includes(nb)).length
+          ? products.filter(
+              (p) =>
+                norm(p.name).includes(nb) || norm(p.subtitle ?? "").includes(nb),
+            ).length
           : 0;
       }
     }
