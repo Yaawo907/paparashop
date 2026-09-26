@@ -193,20 +193,50 @@ function ProductForm({
   const set = (patch: Partial<CmsProduct>) => setForm((f) => ({ ...f, ...patch }));
 
   const { data: categories = [] } = useRows<{ id: string; title: string }>("categories");
-  const { data: allProducts = [] } = useRows<CmsProduct>("products");
-  const options = Array.from(
-    new Set([
-      ...categories.map((c) => c.title),
-      ...allProducts.map((p) => p.subtitle).filter((s): s is string => !!s),
-    ]),
-  ).sort((a, b) => a.localeCompare(b));
+  const qc = useQueryClient();
+  const options = categories.map((c) => c.title).sort((a, b) => a.localeCompare(b));
 
-  const current = form.subtitle ?? "";
-  const [custom, setCustom] = useState(!!current && !options.includes(current));
+  const linked = categories.find((c) => c.id === form.category_id);
+  const [newTitle, setNewTitle] = useState("");
+  const [custom, setCustom] = useState(false);
+  const current = linked?.title ?? "";
 
   const pickCategory = (title: string) => {
     const match = categories.find((c) => c.title === title);
-    set({ subtitle: title, category_id: match ? match.id : null });
+    set({ category_id: match ? match.id : null });
+  };
+
+  const submit = async () => {
+    if (custom && newTitle.trim()) {
+      const title = newTitle.trim();
+      const existing = categories.find((c) => c.title.toLowerCase() === title.toLowerCase());
+      let id = existing?.id;
+      if (!id) {
+        const slug = title
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
+        const { data, error } = await supabase
+          .from("categories")
+          .insert({ title, slug: `${slug}-${Date.now().toString(36).slice(-4)}`, position: 99 })
+          .select("id")
+          .single();
+        if (error) {
+          toast.error("Impossible de créer la catégorie : " + error.message);
+          return;
+        }
+        id = data.id;
+        toast.success(`Catégorie « ${title} » créée`);
+        qc.invalidateQueries();
+      }
+      setCustom(false);
+      setNewTitle("");
+      onSave({ ...form, category_id: id });
+      return;
+    }
+    onSave(form);
   };
 
   return (
