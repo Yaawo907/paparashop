@@ -133,8 +133,9 @@ function ProductPage() {
 
               <a
                 href={
-                  (LOCATIONS[0]?.whatsappHref ?? "https://wa.me/2290162447474").split("?")[0] +
-                  "?text=" +
+                  "whatsapp://send?phone=" +
+                  (LOCATIONS[0]?.whatsappHref ?? "https://wa.me/2290162447474").split("?")[0].replace(/[^0-9]/g, "") +
+                  "&text=" +
                   encodeURIComponent(
                     `Bonjour, je souhaite un conseil sur le produit : ${product.name}` +
                       (product.sku ? ` (Réf. ${product.sku})` : "")
