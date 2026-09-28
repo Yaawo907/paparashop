@@ -132,7 +132,14 @@ function ProductPage() {
               />
 
               <a
-                href={LOCATIONS[0]?.whatsappHref ?? "https://wa.me/2290162447474"}
+                href={
+                  (LOCATIONS[0]?.whatsappHref ?? "https://wa.me/2290162447474").split("?")[0] +
+                  "?text=" +
+                  encodeURIComponent(
+                    `Bonjour, je souhaite un conseil sur le produit : ${product.name}` +
+                      (product.sku ? ` (Réf. ${product.sku})` : "")
+                  )
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-primary hover:bg-secondary/60"
