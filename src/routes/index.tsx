@@ -2,8 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { HeroCarousel } from "@/components/home/HeroCarousel";
 import { ShopByCategory } from "@/components/home/ShopByCategory";
-import { FeaturedProductsTabs } from "@/components/catalog/FeaturedProductsTabs";
-import { FeaturedProducts } from "@/components/home/FeaturedProducts";
+import { ProductsList } from "@/components/catalog/ProductsList";
 import { Accessories } from "@/components/home/Accessories";
 import { Stats } from "@/components/home/Stats";
 import { TrustedBy } from "@/components/home/TrustedBy";
@@ -69,8 +68,7 @@ function Index() {
     <SiteLayout studio>
       <HeroCarousel />
       <ShopByCategory />
-      <FeaturedProductsTabs />
-      <FeaturedProducts />
+      <ProductsList />
       <Accessories />
 
       <section className="gradient-hero py-16 text-center text-white">
