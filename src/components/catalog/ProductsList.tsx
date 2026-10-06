@@ -5,10 +5,11 @@ import type { CmsProduct } from "@/lib/cms-types";
 import { productsQuery } from "@/lib/cms.queries";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { formatXOF } from "@/lib/cart";
+import { Reveal } from "@/components/shared/Reveal";
 
 function ProductCard({ product }: { product: CmsProduct }) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg">
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg">
       <Link
         to="/produit/$id"
         params={{ id: product.id }}
@@ -99,8 +100,10 @@ export function ProductsList() {
           </p>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {products.map((p, i) => (
+              <Reveal key={p.id} delay={(i % 9) * 60} className="h-full">
+                <ProductCard product={p} />
+              </Reveal>
             ))}
           </div>
         )}
