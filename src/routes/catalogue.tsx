@@ -175,7 +175,7 @@ function CataloguePage() {
       </div>
 
 
-      <FeaturedProductsTabs />
+      <ProductsList />
 
       <Commitments />
 

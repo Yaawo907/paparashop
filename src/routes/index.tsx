@@ -68,8 +68,7 @@ function Index() {
     <SiteLayout studio>
       <HeroCarousel />
       <ShopByCategory />
-      <FeaturedProductsTabs />
-      <FeaturedProducts />
+      <ProductsList />
       <Accessories />
 
       <section className="gradient-hero py-16 text-center text-white">
