@@ -23,7 +23,7 @@ export const Route = createFileRoute("/catalogue")({
   },
   errorComponent: ({ error }) => (
     <div role="alert" className="p-10 text-center text-sm text-muted-foreground">
-      Impossible de charger le catalogue : {error.message}
+      Impossible de charger le catalogue : {error instanceof Error ? error.message : "Veuillez réessayer."}
     </div>
   ),
   notFoundComponent: () => <div className="p-10 text-center">Catalogue introuvable.</div>,

@@ -79,7 +79,7 @@ export function GlobalSearch({ className, compact = false, variant = "dark" }: P
         className={cn(
           "flex items-center gap-2 rounded-md border px-3 focus-within:border-accent",
           isLight
-            ? "border-input bg-white shadow-sm focus-within:ring-1 focus-within:ring-accent"
+             ? "border-input bg-card shadow-sm focus-within:ring-1 focus-within:ring-accent"
             : "border-white/20 bg-white/10",
         )}
       >

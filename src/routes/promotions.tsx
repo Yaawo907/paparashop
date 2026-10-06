@@ -34,7 +34,7 @@ export const Route = createFileRoute("/promotions")({
   },
   errorComponent: ({ error }) => (
     <div role="alert" className="p-10 text-center text-sm text-muted-foreground">
-      Impossible de charger les promotions : {error.message}
+      Impossible de charger les promotions : {error instanceof Error ? error.message : "Veuillez réessayer."}
     </div>
   ),
   notFoundComponent: () => <div className="p-10 text-center">Page introuvable.</div>,
