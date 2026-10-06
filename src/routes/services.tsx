@@ -11,10 +11,6 @@ export const Route = createFileRoute("/services")({
   component: ServicesPage,
   head: () => ({
     meta: [
-      { property: "og:title", content: "Nos services — PaparaShop" },
-      { property: "og:description", content: "Vente, conseil et service après-vente pour votre matériel audiovisuel professionnel chez PaparaShop." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
       { title: "Nos services — PaparaShop" },
       {
         name: "description",

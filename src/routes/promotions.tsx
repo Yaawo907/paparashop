@@ -10,7 +10,6 @@ import type { CmsPromotion } from "@/lib/cms-types";
 export const Route = createFileRoute("/promotions")({
   head: () => ({
     meta: [
-      { name: "twitter:card", content: "summary_large_image" },
       { title: "Promotions — PaparaShop" },
       {
         name: "description",

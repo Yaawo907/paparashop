@@ -29,8 +29,6 @@ export const Route = createFileRoute("/catalogue")({
   notFoundComponent: () => <div className="p-10 text-center">Catalogue introuvable.</div>,
   head: () => ({
     meta: [
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
       { title: "Catalogue — PaparaShop | 8 catégories, 40+ marques" },
       {
         name: "description",
