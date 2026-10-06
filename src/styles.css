@@ -30,12 +30,24 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
-  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-studio: var(--studio);
+  --color-studio-foreground: var(--studio-foreground);
+  --color-studio-muted: var(--studio-muted);
+  --color-studio-line: var(--studio-line);
+  --color-studio-search: var(--studio-search);
+  --color-studio-ink: var(--studio-ink);
 }
 
 :root {
   --radius: 0.5rem;
+  --studio: #181818;
+  --studio-foreground: #F5F5F5;
+  --studio-muted: oklch(0.75 0 0);
+  --studio-line: oklch(1 0 0 / 14%);
+  --studio-search: #F5F5F5;
+  --studio-ink: #181818;
 
   /* Brand: Teal + Gold */
   --background: oklch(0.97 0 0);            /* #F5F5F5 */
@@ -47,7 +59,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.22 0.02 220);
 
-  --primary: oklch(0.55 0.07 195);           /* teal #1B8A8A */
+  --primary: #168A8A;
   --primary-foreground: oklch(0.99 0 0);
   --primary-dark: oklch(0.45 0.06 195);      /* #0F6F6F */
 
@@ -57,7 +69,7 @@
   --muted: oklch(0.95 0.005 220);
   --muted-foreground: oklch(0.50 0.02 220);
 
-  --accent: oklch(0.88 0.17 95);             /* gold #FFD700 */
+  --accent: #FFD700;
   --accent-foreground: oklch(0.30 0.05 195);
 
   --destructive: oklch(0.58 0.24 27);
@@ -106,8 +118,24 @@
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
   }
+}
+
+.studio-home { background: var(--studio); }
+.studio-home header a { letter-spacing: 0; }
+.studio-showcase { grid-template-rows: 260px 260px 180px; }
+.studio-search-panel { --foreground: var(--studio-ink); --muted-foreground: oklch(0.5 0 0); }
+.studio-hero-photo { object-position: center; }
+@media (max-width: 1023px) and (min-width: 768px) {
+  .studio-showcase { grid-template-rows: 230px 230px auto; }
+}
+@media (max-width: 767px) {
+  .studio-showcase { grid-template-rows: auto; }
+  .studio-hero-photo { object-position: 60% center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
 @layer utilities {

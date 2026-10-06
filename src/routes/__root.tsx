@@ -100,8 +100,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "PaparaShop — EQUIPEMENTIER AUDIOVISUEL professionnel" },
       { name: "twitter:description", content: "Spécialiste EQUIPEMENTIER AUDIOVISUEL professionnel au Bénin, Burkina Faso et Togo." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/972c7840-4466-4157-961b-992dcd55fd9c/id-preview-7d90117e--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1780051119509.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/972c7840-4466-4157-961b-992dcd55fd9c/id-preview-7d90117e--925f96ac-e26b-4636-ba75-50f820bd4f95.lovable.app-1780051119509.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -112,7 +110,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap",
       },
     ],
   }),

@@ -5,6 +5,7 @@ import logoAsset from "@/assets/papara-logo.png.asset.json";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { CartButton } from "@/components/shop/CartSheet";
+import { Button } from "@/components/ui/button";
 
 const nav = [
   { to: "/", label: "Accueil" },
@@ -15,7 +16,7 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ];
 
-export function Header() {
+export function Header({ studio = false }: { studio?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -30,7 +31,7 @@ export function Header() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled
+        studio ? "bg-studio/95 text-studio-foreground backdrop-blur-md border-b border-studio-line" : scrolled
           ? "bg-primary/95 backdrop-blur-md shadow-lg shadow-primary/20"
           : "bg-primary",
       )}
@@ -79,14 +80,16 @@ export function Header() {
             EXPLORER
           </Link>
 
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             type="button"
             onClick={() => setOpen((s) => !s)}
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
             className="rounded-md p-2 text-white lg:hidden"
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          </Button>
         </div>
       </nav>
 

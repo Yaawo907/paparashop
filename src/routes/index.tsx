@@ -9,7 +9,6 @@ import { Stats } from "@/components/home/Stats";
 import { TrustedBy } from "@/components/home/TrustedBy";
 import { Testimonials } from "@/components/home/Testimonials";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
-import { GlobalSearch } from "@/components/layout/GlobalSearch";
 import { SITE, LOCATIONS } from "@/lib/site";
 import { categoriesQuery, productsQuery, testimonialsQuery } from "@/lib/cms.queries";
 
@@ -30,6 +29,8 @@ export const Route = createFileRoute("/")({
   notFoundComponent: () => <div className="p-10 text-center">Page introuvable.</div>,
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "PaparaShop — EQUIPEMENTIER AUDIOVISUEL pro | Bénin, Burkina, Togo" },
       {
         name: "description",
@@ -65,16 +66,8 @@ function Index() {
     sameAs: [SITE.socials.facebook, SITE.socials.instagram, SITE.socials.tiktok],
   };
   return (
-    <SiteLayout>
+    <SiteLayout studio>
       <HeroCarousel />
-      <section className="bg-muted/50 border-b border-border py-6">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <label htmlFor="landing-search" className="sr-only">
-            Rechercher un article
-          </label>
-          <GlobalSearch variant="light" className="w-full" />
-        </div>
-      </section>
       <ShopByCategory />
       <FeaturedProductsTabs />
       <FeaturedProducts />
