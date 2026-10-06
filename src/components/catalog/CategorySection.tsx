@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { type Category, getModelName } from "@/lib/catalog";
 import { slugify } from "@/lib/slug";
+import { Reveal } from "@/components/shared/Reveal";
 
 export function CategorySection({
   category,
@@ -54,14 +55,14 @@ export function CategorySection({
         </header>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {category.brands.map((brand) => {
+          {category.brands.map((brand, brandIdx) => {
             const brandCount = brandCounts[`${category.slug}::${brand.name}`] ?? 0;
             return (
+            <Reveal key={brand.name} delay={(brandIdx % 9) * 60} className="h-full">
             <Link
-              key={brand.name}
               to="/marque/$category/$brand"
               params={{ category: category.slug, brand: slugify(brand.name) }}
-              className="group flex flex-col overflow-hidden rounded-xl border-2 border-primary/15 bg-white text-left transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg"
+              className="group flex h-full flex-col overflow-hidden rounded-xl border-2 border-primary/15 bg-white text-left transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg"
             >
               {brand.image ? (
                 <div className="aspect-[4/3] w-full overflow-hidden bg-secondary/50">
