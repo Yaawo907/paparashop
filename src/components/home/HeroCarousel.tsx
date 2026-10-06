@@ -43,7 +43,7 @@ export function HeroCarousel() {
       ? rows.map((r, i) => ({
           title: r.title,
           subtitle: r.subtitle,
-          image: r.image_url || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
+          image: r.image_url?.includes("741c1546-b609-4ce2-af16-8cd5f548d2b8") ? studioShowcase : r.image_url || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
           ctaLabel: r.cta_label || "Découvrir le catalogue",
           ctaUrl: r.cta_url || "/catalogue",
         }))

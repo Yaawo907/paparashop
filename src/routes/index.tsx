@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
   },
   errorComponent: ({ error }) => (
     <div role="alert" className="p-10 text-center text-sm text-muted-foreground">
-      Impossible de charger la page : {error.message}
+      Impossible de charger la page : {error instanceof Error ? error.message : "Veuillez réessayer."}
     </div>
   ),
   notFoundComponent: () => <div className="p-10 text-center">Page introuvable.</div>,

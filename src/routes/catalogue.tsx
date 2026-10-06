@@ -23,12 +23,14 @@ export const Route = createFileRoute("/catalogue")({
   },
   errorComponent: ({ error }) => (
     <div role="alert" className="p-10 text-center text-sm text-muted-foreground">
-      Impossible de charger le catalogue : {error.message}
+      Impossible de charger le catalogue : {error instanceof Error ? error.message : "Veuillez réessayer."}
     </div>
   ),
   notFoundComponent: () => <div className="p-10 text-center">Catalogue introuvable.</div>,
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Catalogue — PaparaShop | 8 catégories, 40+ marques" },
       {
         name: "description",

@@ -14,6 +14,8 @@ export const Route = createFileRoute("/a-propos")({
   component: AboutPage,
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "À propos — PaparaShop | Depuis 2017 au Bénin, Burkina & Togo" },
       {
         name: "description",
