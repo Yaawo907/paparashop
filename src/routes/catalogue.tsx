@@ -4,7 +4,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { MessageCircle } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { CategorySection } from "@/components/catalog/CategorySection";
-import { FeaturedProductsTabs } from "@/components/catalog/FeaturedProductsTabs";
+import { ProductsList } from "@/components/catalog/ProductsList";
 import { CatalogueSidebar } from "@/components/catalog/CatalogueSidebar";
 import { Commitments } from "@/components/home/Commitments";
 import { GlobalSearch } from "@/components/layout/GlobalSearch";
