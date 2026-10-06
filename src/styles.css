@@ -138,6 +138,20 @@
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
+/* Apparition en fondu (catalogue) */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
 @layer utilities {
   .gradient-hero {
     background: linear-gradient(135deg, var(--primary-dark) 0%, oklch(0.15 0.03 220) 100%);
