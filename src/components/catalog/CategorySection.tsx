@@ -93,6 +93,7 @@ export function CategorySection({
                 </div>
               </div>
             </Link>
+            </Reveal>
             );
           })}
         </div>
