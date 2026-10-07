@@ -22,8 +22,9 @@ export function Stats() {
   return (
     <section className="bg-primary py-16">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:grid-cols-2 lg:grid-cols-4 sm:px-6 lg:px-8">
-        {stats.map(({ icon: Icon, value, label }) => (
-          <div key={label} className="flex flex-col items-center text-center text-white">
+        {stats.map(({ icon: Icon, value, label }, i) => (
+          <Reveal key={label} delay={i * 90}>
+          <div className="flex flex-col items-center text-center text-white">
             <Icon className="mb-3 h-8 w-8 text-accent" strokeWidth={1.75} />
             <div
               className="font-display text-3xl font-bold text-accent sm:text-4xl"

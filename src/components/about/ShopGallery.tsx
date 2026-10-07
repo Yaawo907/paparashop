@@ -86,7 +86,8 @@ export function ShopGallery() {
               <span className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
                 <Expand className="h-4 w-4" aria-hidden />
               </span>
-            </button>
+              </button>
+            </Reveal>
           ))}
         </div>
       </div>
