@@ -76,6 +76,7 @@ export function Timeline() {
                     {s.text}
                   </p>
                 </div>
+                </Reveal>
               </li>
             ))}
           </ol>
