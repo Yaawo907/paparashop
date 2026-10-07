@@ -61,15 +61,17 @@ export function ShopGallery() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PHOTOS.map((photo, i) => (
-            <button
+            <Reveal
               key={photo.src}
-              type="button"
-              onClick={() => setSelected(photo)}
-              aria-label={photo.caption || "Agrandir la photo de la boutique"}
-              className={`group relative overflow-hidden rounded-2xl border border-border bg-white text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-primary ${
-                i === 0 ? "sm:col-span-2 sm:row-span-2 lg:col-span-2" : ""
-              }`}
+              delay={(i % 3) * 70}
+              className={`h-full${i === 0 ? " sm:col-span-2 sm:row-span-2 lg:col-span-2" : ""}`}
             >
+              <button
+                type="button"
+                onClick={() => setSelected(photo)}
+                aria-label={photo.caption || "Agrandir la photo de la boutique"}
+                className="group relative h-full w-full overflow-hidden rounded-2xl border border-border bg-white text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-primary"
+              >
               <img
                 src={photo.src}
                 alt={photo.caption || "Intérieur de la boutique PaparaShop"}
