@@ -96,29 +96,31 @@ function AboutPage() {
 
       <section className="bg-primary py-16 text-center text-white">
         <div className="mx-auto max-w-2xl px-4">
-          <h2 className="font-display text-2xl font-bold sm:text-3xl">Suivez-nous</h2>
-          <p className="mt-3 text-white/75">
-            Rejoignez la communauté PaparaShop pour découvrir nos nouveautés, tutos et
-            inspirations photo/vidéo.
-          </p>
-          <div className="mt-6 flex justify-center gap-4">
-            <a
-              href={SITE.socials.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md border-2 border-accent px-5 py-2 text-sm font-semibold text-accent transition-all hover:bg-accent hover:text-primary"
-            >
-              <Facebook className="h-4 w-4" /> Facebook
-            </a>
-            <a
-              href={SITE.socials.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md border-2 border-accent px-5 py-2 text-sm font-semibold text-accent transition-all hover:bg-accent hover:text-primary"
-            >
-              <Instagram className="h-4 w-4" /> Instagram
-            </a>
-          </div>
+          <Reveal>
+            <h2 className="font-display text-2xl font-bold sm:text-3xl">Suivez-nous</h2>
+            <p className="mt-3 text-white/75">
+              Rejoignez la communauté PaparaShop pour découvrir nos nouveautés, tutos et
+              inspirations photo/vidéo.
+            </p>
+            <div className="mt-6 flex justify-center gap-4">
+              <a
+                href={SITE.socials.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-md border-2 border-accent px-5 py-2 text-sm font-semibold text-accent transition-all hover:bg-accent hover:text-primary"
+              >
+                <Facebook className="h-4 w-4" /> Facebook
+              </a>
+              <a
+                href={SITE.socials.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-md border-2 border-accent px-5 py-2 text-sm font-semibold text-accent transition-all hover:bg-accent hover:text-primary"
+              >
+                <Instagram className="h-4 w-4" /> Instagram
+              </a>
+            </div>
+          </Reveal>
         </div>
       </section>
     </SiteLayout>
