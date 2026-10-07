@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Expand } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { SectionTitle } from "@/components/shared/SectionTitle";
+import { Reveal } from "@/components/shared/Reveal";
 
 // Charge automatiquement toutes les images du dossier boutique
 const modules = import.meta.glob(
@@ -60,15 +61,17 @@ export function ShopGallery() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PHOTOS.map((photo, i) => (
-            <button
+            <Reveal
               key={photo.src}
-              type="button"
-              onClick={() => setSelected(photo)}
-              aria-label={photo.caption || "Agrandir la photo de la boutique"}
-              className={`group relative overflow-hidden rounded-2xl border border-border bg-white text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-primary ${
-                i === 0 ? "sm:col-span-2 sm:row-span-2 lg:col-span-2" : ""
-              }`}
+              delay={(i % 3) * 70}
+              className={`h-full${i === 0 ? " sm:col-span-2 sm:row-span-2 lg:col-span-2" : ""}`}
             >
+              <button
+                type="button"
+                onClick={() => setSelected(photo)}
+                aria-label={photo.caption || "Agrandir la photo de la boutique"}
+                className="group relative h-full w-full overflow-hidden rounded-2xl border border-border bg-white text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-primary"
+              >
               <img
                 src={photo.src}
                 alt={photo.caption || "Intérieur de la boutique PaparaShop"}
@@ -83,7 +86,8 @@ export function ShopGallery() {
               <span className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
                 <Expand className="h-4 w-4" aria-hidden />
               </span>
-            </button>
+              </button>
+            </Reveal>
           ))}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { SectionTitle } from "@/components/shared/SectionTitle";
+import { Reveal } from "@/components/shared/Reveal";
 import { INSTITUTIONAL_CLIENTS } from "@/lib/site";
 
 export function InstitutionalClients() {
@@ -11,10 +12,10 @@ export function InstitutionalClients() {
           subtitle="Des entreprises, ONG et institutions qui équipent leurs équipes chez PaparaShop."
         />
         <div className="grid gap-5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-          {INSTITUTIONAL_CLIENTS.map((c) => (
+          {INSTITUTIONAL_CLIENTS.map((c, i) => (
+            <Reveal key={c.name} delay={(i % 5) * 60} className="h-full">
             <article
-              key={c.name}
-              className="group flex flex-col items-center rounded-xl border-2 border-primary/15 bg-white p-6 text-center transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg"
+              className="group flex h-full flex-col items-center rounded-xl border-2 border-primary/15 bg-white p-6 text-center transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg"
               title={c.name}
             >
               <div className="flex h-20 w-full items-center justify-center">
@@ -30,6 +31,7 @@ export function InstitutionalClients() {
               </p>
               <p className="mt-1 text-xs text-muted-foreground">{c.sector}</p>
             </article>
+            </Reveal>
           ))}
         </div>
       </div>

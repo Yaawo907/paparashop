@@ -1,4 +1,5 @@
 import { MapPin } from "lucide-react";
+import { Reveal } from "@/components/shared/Reveal";
 import { LOCATIONS } from "@/lib/site";
 
 const STORY = [
@@ -56,10 +57,14 @@ export function Timeline() {
                 >
                   <MapPin className="h-4 w-4" strokeWidth={2.5} />
                 </span>
-                <div
-                  className={`rounded-xl border border-border bg-card p-6 shadow-sm ${
+                <Reveal
+                  delay={i * 120}
+                  className={`h-full ${
                     i % 2 === 1 ? "md:col-start-1 md:row-start-1 md:text-right" : ""
                   }`}
+                >
+                <div
+                  className={`h-full rounded-xl border border-border bg-card p-6 shadow-sm`}
                 >
                   <p className="font-display text-xs font-semibold uppercase tracking-widest text-accent-foreground/70">
                     {s.year} — {s.country}
@@ -71,6 +76,7 @@ export function Timeline() {
                     {s.text}
                   </p>
                 </div>
+                </Reveal>
               </li>
             ))}
           </ol>

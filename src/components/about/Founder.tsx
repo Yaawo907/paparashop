@@ -9,6 +9,7 @@
 // ============================================================
 import { Quote, MapPin, Calendar } from "lucide-react";
 import founderImg from "@/assets/fondateur.jpg";
+import { Reveal } from "@/components/shared/Reveal";
 import { SITE } from "@/lib/site";
 
 // ⬇️ À REMPLACER par les vraies informations du client
@@ -20,6 +21,7 @@ export function Founder() {
     <section className="bg-background py-20 sm:py-24">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[420px_1fr] lg:gap-16 lg:px-8">
         {/* --- Photo du fondateur --- */}
+        <Reveal>
         <div className="relative mx-auto w-full max-w-md lg:mx-0">
           {/* Cadre décoratif or, décalé derrière la photo */}
           <div
@@ -38,8 +40,10 @@ export function Founder() {
             <p className="text-xs uppercase tracking-wider text-primary">{FOUNDER_TITLE}</p>
           </div>
         </div>
+        </Reveal>
 
         {/* --- Texte + citation --- */}
+        <Reveal delay={150}>
         <div>
           <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-primary">
             Le fondateur
@@ -78,9 +82,10 @@ export function Founder() {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 text-primary" aria-hidden />
               Godomey, Abomey-Calavi — Bénin
-            </div>
           </div>
         </div>
+      </div>
+      </Reveal>
       </div>
     </section>
   );

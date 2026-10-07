@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Users, Globe2, Award, Calendar } from "lucide-react";
+import { Reveal } from "@/components/shared/Reveal";
 import { SITE } from "@/lib/site";
 
 const FALLBACK_YEARS = 9; // 2026 - 2017
@@ -21,8 +22,9 @@ export function Stats() {
   return (
     <section className="bg-primary py-16">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:grid-cols-2 lg:grid-cols-4 sm:px-6 lg:px-8">
-        {stats.map(({ icon: Icon, value, label }) => (
-          <div key={label} className="flex flex-col items-center text-center text-white">
+        {stats.map(({ icon: Icon, value, label }, i) => (
+          <Reveal key={label} delay={i * 90}>
+          <div className="flex flex-col items-center text-center text-white">
             <Icon className="mb-3 h-8 w-8 text-accent" strokeWidth={1.75} />
             <div
               className="font-display text-3xl font-bold text-accent sm:text-4xl"
@@ -32,6 +34,7 @@ export function Stats() {
             </div>
             <div className="mt-1 text-sm uppercase tracking-wider text-white/75">{label}</div>
           </div>
+          </Reveal>
         ))}
       </div>
     </section>
