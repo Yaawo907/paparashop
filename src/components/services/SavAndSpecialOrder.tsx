@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { sendServiceRequest } from "@/lib/service-request.functions";
+import { Reveal } from "@/components/shared/Reveal";
 
 export function SavAndSpecialOrder() {
   const [type, setType] = useState<"sav" | "commande">("commande");
@@ -76,7 +77,8 @@ Détails : ${form.message}`;
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          <article className="rounded-xl border-2 border-primary/15 bg-white p-6">
+          <Reveal className="h-full">
+          <article className="flex h-full flex-col rounded-xl border-2 border-primary/15 bg-white p-6">
             <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <PackageSearch className="h-6 w-6" strokeWidth={1.75} />
             </div>
@@ -99,8 +101,9 @@ Détails : ${form.message}`;
               </li>
             </ul>
           </article>
-
-          <article className="rounded-xl border-2 border-primary/15 bg-white p-6">
+          </Reveal>
+          <Reveal className="h-full">
+          <article className="flex h-full flex-col rounded-xl border-2 border-primary/15 bg-white p-6">
             <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Wrench className="h-6 w-6" strokeWidth={1.75} />
             </div>
@@ -122,8 +125,10 @@ Détails : ${form.message}`;
               </li>
             </ul>
           </article>
+          </Reveal>
         </div>
 
+        <Reveal>
         <div className="mt-10 rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-8">
           <h3 className="font-display text-xl font-bold text-primary">
             Formuler votre demande
@@ -214,6 +219,7 @@ Détails : ${form.message}`;
             </Button>
           </div>
         </div>
+        </Reveal>
       </div>
     </section>
   );
