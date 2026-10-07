@@ -34,6 +34,7 @@ export function Stats() {
             </div>
             <div className="mt-1 text-sm uppercase tracking-wider text-white/75">{label}</div>
           </div>
+          </Reveal>
         ))}
       </div>
     </section>
