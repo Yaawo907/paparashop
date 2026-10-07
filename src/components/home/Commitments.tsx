@@ -25,14 +25,14 @@ export function Commitments({ variant = "light" }: { variant?: "light" | "dark" 
           {COMMITMENTS.map((c, i) => {
             const Icon = ICONS[i % ICONS.length];
             return (
-              <article
-                key={c.title}
-                className={
-                  dark
-                    ? "rounded-xl border border-white/15 bg-white/5 p-7 backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-accent/60"
-                    : "rounded-xl border-2 border-primary/15 bg-white p-7 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl"
-                }
-              >
+              <Reveal key={c.title} delay={(i % 3) * 80} className="h-full">
+                <article
+                  className={
+                    dark
+                      ? "flex h-full flex-col rounded-xl border border-white/15 bg-white/5 p-7 backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-accent/60"
+                      : "flex h-full flex-col rounded-xl border-2 border-primary/15 bg-white p-7 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl"
+                  }
+                >
                 <div
                   className={
                     dark
