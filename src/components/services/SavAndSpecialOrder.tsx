@@ -219,6 +219,7 @@ Détails : ${form.message}`;
             </Button>
           </div>
         </div>
+        </Reveal>
       </div>
     </section>
   );
