@@ -1,4 +1,5 @@
 import { MapPin } from "lucide-react";
+import { Reveal } from "@/components/shared/Reveal";
 import { LOCATIONS } from "@/lib/site";
 
 const STORY = [

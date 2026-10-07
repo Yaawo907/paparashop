@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Users, Globe2, Award, Calendar } from "lucide-react";
+import { Reveal } from "@/components/shared/Reveal";
 import { SITE } from "@/lib/site";
 
 const FALLBACK_YEARS = 9; // 2026 - 2017

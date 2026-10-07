@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Expand } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { SectionTitle } from "@/components/shared/SectionTitle";
+import { Reveal } from "@/components/shared/Reveal";
 
 // Charge automatiquement toutes les images du dossier boutique
 const modules = import.meta.glob(

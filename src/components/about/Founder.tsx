@@ -9,6 +9,7 @@
 // ============================================================
 import { Quote, MapPin, Calendar } from "lucide-react";
 import founderImg from "@/assets/fondateur.jpg";
+import { Reveal } from "@/components/shared/Reveal";
 import { SITE } from "@/lib/site";
 
 // ⬇️ À REMPLACER par les vraies informations du client

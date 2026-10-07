@@ -1,4 +1,5 @@
 import { SectionTitle } from "@/components/shared/SectionTitle";
+import { Reveal } from "@/components/shared/Reveal";
 import { INSTITUTIONAL_CLIENTS } from "@/lib/site";
 
 export function InstitutionalClients() {
