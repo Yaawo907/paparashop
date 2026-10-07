@@ -31,6 +31,7 @@ export function InstitutionalClients() {
               </p>
               <p className="mt-1 text-xs text-muted-foreground">{c.sector}</p>
             </article>
+            </Reveal>
           ))}
         </div>
       </div>
