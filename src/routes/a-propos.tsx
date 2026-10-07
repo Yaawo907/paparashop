@@ -56,26 +56,28 @@ function AboutPage() {
       {/* Mission */}
       <section className="bg-background py-20 sm:py-24">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-            Notre mission
-          </p>
-          <h2 className="font-display text-3xl font-bold sm:text-4xl">
-            Rendre accessible du matériel <span className="text-primary">authentique et garanti</span>
-          </h2>
-          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-primary" />
-          <div className="mt-8 space-y-4 text-base leading-relaxed text-muted-foreground">
-            <p>
-              Le marché ouest-africain a longtemps été inondé de matériel reconditionné importé
-              du Nigeria, revendu au prix du neuf, sans garantie ni service après-vente.
-              PaparaShop est né du refus de cette réalité.
+          <Reveal>
+            <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+              Notre mission
             </p>
-            <p>
-              Nous sélectionnons chaque produit en circuit officiel, appliquons les standards
-              qualité européens et offrons une garantie pouvant aller jusqu'à 2 ans.
-              Notre équipe conseille aussi bien un particulier qu'une agence, une chaîne
-              de télévision ou une ONG internationale.
-            </p>
-          </div>
+            <h2 className="font-display text-3xl font-bold sm:text-4xl">
+              Rendre accessible du matériel <span className="text-primary">authentique et garanti</span>
+            </h2>
+            <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-primary" />
+            <div className="mt-8 space-y-4 text-base leading-relaxed text-muted-foreground">
+              <p>
+                Le marché ouest-africain a longtemps été inondé de matériel reconditionné importé
+                du Nigeria, revendu au prix du neuf, sans garantie ni service après-vente.
+                PaparaShop est né du refus de cette réalité.
+              </p>
+              <p>
+                Nous sélectionnons chaque produit en circuit officiel, appliquons les standards
+                qualité européens et offrons une garantie pouvant aller jusqu'à 2 ans.
+                Notre équipe conseille aussi bien un particulier qu'une agence, une chaîne
+                de télévision ou une ONG internationale.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
