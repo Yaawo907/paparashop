@@ -100,15 +100,17 @@ function ServicesPage() {
 
       <section className="gradient-hero py-16 text-center text-white">
         <div className="mx-auto max-w-2xl px-4">
-          <h2 className="font-display text-2xl font-bold sm:text-3xl">
-            Un projet, une question ?
-          </h2>
-          <p className="mt-3 text-white/75">
-            Explorez notre catalogue ou contactez-nous : notre équipe se fera un plaisir de vous orienter.
-          </p>
-          <div className="mt-6">
-            <ExternalCatalogCTA />
-          </div>
+          <Reveal>
+            <h2 className="font-display text-2xl font-bold sm:text-3xl">
+              Un projet, une question ?
+            </h2>
+            <p className="mt-3 text-white/75">
+              Explorez notre catalogue ou contactez-nous : notre équipe se fera un plaisir de vous orienter.
+            </p>
+            <div className="mt-6">
+              <ExternalCatalogCTA />
+            </div>
+          </Reveal>
         </div>
       </section>
     </SiteLayout>
