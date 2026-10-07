@@ -120,42 +120,6 @@ function CataloguePage() {
         </div>
       </section>
 
-      {/* Grille des catégories (navigation rapide) */}
-      <section className="bg-secondary/40 py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="mb-8 text-center font-display text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-            Nos 8 catégories
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-            {CATEGORIES.map((c) => {
-              const Icon = c.icon;
-              const count = productCounts[c.slug] ?? 0;
-              return (
-                <a
-                  key={c.slug}
-                  href={`#${c.slug}`}
-                  className="group flex items-center gap-3 rounded-xl border border-border bg-white p-4 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg"
-                >
-                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-accent/20">
-                    <Icon className="h-5 w-5" strokeWidth={1.75} />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-display text-sm font-bold text-primary">
-                      {c.title}
-                    </p>
-                    <p className="truncate text-[11px] text-muted-foreground">
-                      {c.brands.length} marques
-                    </p>
-                  </div>
-                  <span className="ml-auto inline-flex shrink-0 items-center rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">
-                    {count} article{count > 1 ? "s" : ""}
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-start gap-8">

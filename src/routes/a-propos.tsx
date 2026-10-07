@@ -8,6 +8,7 @@ import { InstitutionalClients } from "@/components/about/InstitutionalClients";
 
 import { Commitments } from "@/components/home/Commitments";
 import { Stats } from "@/components/home/Stats";
+import { Reveal } from "@/components/shared/Reveal";
 import { SITE, LOCATIONS } from "@/lib/site";
 
 export const Route = createFileRoute("/a-propos")({
