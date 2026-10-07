@@ -40,8 +40,10 @@ export function Founder() {
             <p className="text-xs uppercase tracking-wider text-primary">{FOUNDER_TITLE}</p>
           </div>
         </div>
+        </Reveal>
 
         {/* --- Texte + citation --- */}
+        <Reveal delay={150}>
         <div>
           <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-primary">
             Le fondateur
