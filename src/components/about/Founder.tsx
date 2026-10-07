@@ -21,6 +21,7 @@ export function Founder() {
     <section className="bg-background py-20 sm:py-24">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[420px_1fr] lg:gap-16 lg:px-8">
         {/* --- Photo du fondateur --- */}
+        <Reveal>
         <div className="relative mx-auto w-full max-w-md lg:mx-0">
           {/* Cadre décoratif or, décalé derrière la photo */}
           <div
