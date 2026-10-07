@@ -125,8 +125,10 @@ Détails : ${form.message}`;
               </li>
             </ul>
           </article>
+          </Reveal>
         </div>
 
+        <Reveal>
         <div className="mt-10 rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-8">
           <h3 className="font-display text-xl font-bold text-primary">
             Formuler votre demande
