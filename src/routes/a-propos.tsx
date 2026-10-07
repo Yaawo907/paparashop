@@ -37,17 +37,19 @@ function AboutPage() {
     <SiteLayout>
       <section className="bg-primary py-20 text-white sm:py-24">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-accent">
-            Qui sommes-nous
-          </p>
-          <h1 className="font-display text-4xl font-bold sm:text-5xl md:text-6xl text-balance">
-            {years}+ ans au service de{" "}
-            <span className="text-accent">l'image professionnelle</span> en Afrique de l'Ouest
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg">
-            Fondé en {SITE.foundedYear} au Bénin, PaparaShop est aujourd'hui présent dans
-            {" "}{LOCATIONS.length} pays : Bénin, Burkina Faso et Togo.
-          </p>
+          <Reveal>
+            <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-accent">
+              Qui sommes-nous
+            </p>
+            <h1 className="font-display text-4xl font-bold sm:text-5xl md:text-6xl text-balance">
+              {years}+ ans au service de{" "}
+              <span className="text-accent">l'image professionnelle</span> en Afrique de l'Ouest
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg">
+              Fondé en {SITE.foundedYear} au Bénin, PaparaShop est aujourd'hui présent dans
+              {" "}{LOCATIONS.length} pays : Bénin, Burkina Faso et Togo.
+            </p>
+          </Reveal>
         </div>
       </section>
 
