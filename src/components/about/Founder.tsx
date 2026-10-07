@@ -86,6 +86,7 @@ export function Founder() {
         </div>
       </div>
       </Reveal>
+      </div>
     </section>
     </section>
   );
