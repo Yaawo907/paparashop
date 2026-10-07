@@ -5,6 +5,7 @@ import { Specialties } from "@/components/home/Specialties";
 import { Commitments } from "@/components/home/Commitments";
 import { SavAndSpecialOrder } from "@/components/services/SavAndSpecialOrder";
 import { ExternalCatalogCTA } from "@/components/shared/ExternalCatalogCTA";
+import { Reveal } from "@/components/shared/Reveal";
 
 
 export const Route = createFileRoute("/services")({
