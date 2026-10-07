@@ -1,5 +1,6 @@
 import { ShieldCheck, Award, Truck, Star, Wrench, Lightbulb } from "lucide-react";
 import { SectionTitle } from "@/components/shared/SectionTitle";
+import { Reveal } from "@/components/shared/Reveal";
 import { COMMITMENTS } from "@/lib/site";
 
 const ICONS = [ShieldCheck, Award, Truck, Star, Wrench, Lightbulb];
