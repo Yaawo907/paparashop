@@ -84,9 +84,9 @@ export function Founder() {
               Godomey, Abomey-Calavi — Bénin
           </div>
         </div>
-        </Reveal>
       </div>
-      </div>
+      </Reveal>
+    </section>
     </section>
   );
 }
