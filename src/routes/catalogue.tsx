@@ -88,29 +88,46 @@ function CataloguePage() {
 
   return (
     <SiteLayout>
-      <section className="bg-primary py-20 text-white sm:py-24">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-accent">
+      <section className="hero-dots relative overflow-hidden bg-primary py-20 text-white md:py-32">
+        <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-full max-w-2xl -translate-x-1/2 rounded-full bg-white/5 blur-[120px]" />
+        <div className="relative z-10 mx-auto max-w-5xl px-4 text-center sm:px-6">
+          <p className="mb-6 font-display text-sm font-bold uppercase tracking-[0.3em] text-accent md:text-base">
             Notre catalogue
           </p>
-          <h1 className="font-display text-4xl font-bold sm:text-5xl md:text-6xl text-balance">
-            8 catégories, <span className="text-accent">40+ marques référencées</span>
+          <h1 className="mx-auto max-w-4xl font-display text-5xl font-bold leading-[1.1] tracking-tight text-white sm:text-6xl md:text-7xl">
+            8 catégories,{" "}
+            <span className="relative inline-block text-accent">
+              40+ marques
+              <svg
+                className="absolute -bottom-2 left-0 h-2 w-full text-accent/30"
+                viewBox="0 0 200 8"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path d="M2 6C60 2 140 2 198 6" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+              </svg>
+            </span>{" "}
+            référencées
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg">
-            Seule boutique spécialisée d'Afrique de l'Ouest francophone en EQUIPEMENTIER AUDIOVISUEL professionnel — sourcé en circuit officiel, garanti jusqu'à 2 ans.
+          <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-background/90 md:text-xl">
+            Seule boutique spécialisée d'Afrique de l'Ouest francophone en{" "}
+            <strong className="font-bold uppercase text-white">équipementier audiovisuel</strong>{" "}
+            professionnel — sourcé en circuit officiel, garanti jusqu'à 2 ans.
           </p>
-          <div className="mt-8">
+          <div className="mt-10 flex justify-center">
             <a
               href={LOCATIONS[0]?.whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md bg-accent px-7 py-3 font-display text-sm font-semibold tracking-wide text-primary shadow-lg shadow-accent/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-accent/40"
+              className="group inline-flex items-center gap-3 rounded-lg bg-accent px-8 py-4 font-display text-lg font-bold text-primary-foreground shadow-[0_15px_30px_-5px_rgba(255,215,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-5px_rgba(255,215,0,0.4)]"
             >
-              <MessageCircle className="h-4 w-4" />
+              <MessageCircle className="h-6 w-6 transition-transform group-hover:scale-110" />
               Consulter les prix et commander
             </a>
           </div>
         </div>
+        <div className="absolute bottom-0 right-0 hidden h-32 w-32 border-b-4 border-r-4 border-accent/20 lg:mb-12 lg:mr-12 lg:block" />
+        <div className="absolute left-0 top-0 hidden h-32 w-32 border-l-4 border-t-4 border-accent/20 lg:ml-12 lg:mt-12 lg:block" />
       </section>
 
       {/* Recherche produit */}
