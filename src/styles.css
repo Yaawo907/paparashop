@@ -138,6 +138,16 @@
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
+/* Motif de points technique (en-tête catalogue) */
+.hero-dots::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(245, 245, 245, 0.14) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 /* Apparition en fondu (catalogue) */
 .reveal {
   opacity: 0;
