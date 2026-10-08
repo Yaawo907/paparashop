@@ -119,7 +119,7 @@ function CataloguePage() {
               href={LOCATIONS[0]?.whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 rounded-lg bg-accent px-8 py-4 font-display text-lg font-bold text-primary-foreground shadow-[0_15px_30px_-5px_rgba(255,215,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-5px_rgba(255,215,0,0.4)]"
+              className="group inline-flex items-center gap-3 rounded-lg bg-accent px-8 py-4 font-display text-lg font-bold text-studio-ink shadow-[0_15px_30px_-5px_rgba(255,215,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-5px_rgba(255,215,0,0.4)]"
             >
               <MessageCircle className="h-6 w-6 transition-transform group-hover:scale-110" />
               Consulter les prix et commander
