@@ -4,6 +4,6 @@
 - [x] Verify desktop/mobile appearance and shopping entry flow.
 
 # List thumbnails
-- [ ] Generate 640 px WebP thumbnails for existing list images and future uploads.
-- [ ] Use thumbnails in homepage/catalogue lists without changing product originals.
-- [ ] Verify image dimensions, original preservation and mobile scrolling.
+- [x] Generate 640 px WebP thumbnails for existing list images and future uploads.
+- [x] Use thumbnails in homepage/catalogue lists without changing product originals.
+- [x] Verify image dimensions, original preservation and mobile scrolling.
