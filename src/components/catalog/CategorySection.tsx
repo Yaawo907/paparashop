@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { type Category, getModelName } from "@/lib/catalog";
 import { slugify } from "@/lib/slug";
 import { Reveal } from "@/components/shared/Reveal";
+import { ListImage } from "@/components/shared/ListImage";
 
 export function CategorySection({
   category,
@@ -66,7 +67,7 @@ export function CategorySection({
             >
               {brand.image ? (
                 <div className="aspect-[4/3] w-full overflow-hidden bg-secondary/50">
-                  <img
+                  <ListImage
                     src={brand.image}
                     alt={`${brand.name} — ${category.title}`}
                     loading="lazy"

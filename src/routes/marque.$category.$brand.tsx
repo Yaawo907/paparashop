@@ -6,6 +6,7 @@ import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { formatXOF } from "@/lib/cart";
 import { categoriesQuery, productsQuery } from "@/lib/cms.queries";
 import { slugify } from "@/lib/slug";
+import { ListImage } from "@/components/shared/ListImage";
 
 export const Route = createFileRoute("/marque/$category/$brand")({
   component: BrandPage,
@@ -132,7 +133,7 @@ function BrandPage() {
                     className="block aspect-[4/3] w-full overflow-hidden bg-secondary/50"
                   >
                     {p.image_url ? (
-                      <img
+                      <ListImage
                         src={p.image_url}
                         alt={`${p.name} — ${brand.name}`}
                         loading="lazy"

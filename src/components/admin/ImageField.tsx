@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createListThumbnail } from "@/lib/list-images";
 
 export function ImageField({
   value,
@@ -27,12 +28,23 @@ export function ImageField({
     setUploading(true);
     try {
       const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
-      const path = `${folder}/${crypto.randomUUID()}.${ext}`;
+      const id = crypto.randomUUID();
+      const thumbnail = await createListThumbnail(file);
+      const path = `${folder}/${id}.list-ready.${ext}`;
+      const thumbnailPath = `${folder}/${id}.thumb.webp`;
+      const { error: thumbnailError } = await supabase.storage.from("media").upload(thumbnailPath, thumbnail, {
+        contentType: "image/webp",
+        upsert: false,
+      });
+      if (thumbnailError) throw thumbnailError;
       const { error } = await supabase.storage.from("media").upload(path, file, {
         contentType: file.type,
         upsert: false,
       });
-      if (error) throw error;
+      if (error) {
+        await supabase.storage.from("media").remove([thumbnailPath]);
+        throw error;
+      }
       onChange(`/api/public/media/${path}`);
       toast.success("Image envoyée");
     } catch (e) {
