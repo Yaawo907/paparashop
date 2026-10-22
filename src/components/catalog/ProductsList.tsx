@@ -6,6 +6,7 @@ import { productsQuery } from "@/lib/cms.queries";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { formatXOF } from "@/lib/cart";
 import { Reveal } from "@/components/shared/Reveal";
+import { ListImage } from "@/components/shared/ListImage";
 
 function ProductCard({ product }: { product: CmsProduct }) {
   return (
@@ -16,7 +17,7 @@ function ProductCard({ product }: { product: CmsProduct }) {
         className="block aspect-[4/3] w-full overflow-hidden bg-secondary/50"
       >
         {product.image_url ? (
-          <img
+          <ListImage
             src={product.image_url}
             alt={product.name}
             loading="lazy"

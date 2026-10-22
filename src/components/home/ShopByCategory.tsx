@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { categoriesQuery } from "@/lib/cms.queries";
 import { toCategories } from "@/lib/cms-adapters";
+import { ListImage } from "@/components/shared/ListImage";
 
 export function ShopByCategory() {
   const { data } = useSuspenseQuery(categoriesQuery);
@@ -33,7 +34,7 @@ export function ShopByCategory() {
               >
                 <div className="aspect-square w-full overflow-hidden bg-secondary/50">
                   {cover ? (
-                    <img
+                    <ListImage
                       src={cover}
                       alt={c.title}
                       loading="lazy"

@@ -7,6 +7,7 @@ import { productsQuery } from "@/lib/cms.queries";
 import { toFeatured } from "@/lib/cms-adapters";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { formatXOF } from "@/lib/cart";
+import { ListImage } from "@/components/shared/ListImage";
 
 export function Accessories() {
   const { data: products } = useSuspenseQuery(productsQuery);
@@ -29,7 +30,7 @@ export function Accessories() {
             >
               {item.image ? (
                 <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                  <img
+                  <ListImage
                     src={item.image}
                     alt={item.name}
                     loading="lazy"
