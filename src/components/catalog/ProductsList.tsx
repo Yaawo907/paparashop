@@ -83,19 +83,21 @@ export function ProductsList({ showIntro = true }: { showIntro?: boolean }) {
   return (
     <section className="bg-background py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {showIntro ? (
-          <div className="mb-10 text-center">
+        <div className="mb-10 text-center">
+          {showIntro ? (
             <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-primary">
               Notre sélection
             </p>
-            <h2 className="font-display text-3xl font-bold sm:text-4xl">Nos produits</h2>
-            <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-primary" />
+          ) : null}
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">Nos produits</h2>
+          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-primary" />
+          {showIntro ? (
             <p className="mt-4 text-sm text-muted-foreground">
               {products.length} article{products.length > 1 ? "s" : ""} disponible
               {products.length > 1 ? "s" : ""} — prix et stock mis à jour en continu.
             </p>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
 
         {products.length === 0 ? (
           <p className="text-center text-sm text-muted-foreground">
