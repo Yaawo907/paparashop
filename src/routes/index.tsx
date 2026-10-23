@@ -66,7 +66,7 @@ function Index() {
   return (
     <SiteLayout studio>
       <HeroCarousel />
-      <ProductsList />
+      <ProductsList showIntro={false} />
       <Accessories />
 
       <section className="gradient-hero py-16 text-center text-white">

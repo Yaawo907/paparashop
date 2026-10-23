@@ -77,23 +77,25 @@ function ProductCard({ product }: { product: CmsProduct }) {
   );
 }
 
-export function ProductsList() {
+export function ProductsList({ showIntro = true }: { showIntro?: boolean }) {
   const { data: products } = useSuspenseQuery(productsQuery);
 
   return (
     <section className="bg-background py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center">
-          <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-            Notre sélection
-          </p>
-          <h2 className="font-display text-3xl font-bold sm:text-4xl">Nos produits</h2>
-          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-primary" />
-          <p className="mt-4 text-sm text-muted-foreground">
-            {products.length} article{products.length > 1 ? "s" : ""} disponible
-            {products.length > 1 ? "s" : ""} — prix et stock mis à jour en continu.
-          </p>
-        </div>
+        {showIntro ? (
+          <div className="mb-10 text-center">
+            <p className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+              Notre sélection
+            </p>
+            <h2 className="font-display text-3xl font-bold sm:text-4xl">Nos produits</h2>
+            <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-primary" />
+            <p className="mt-4 text-sm text-muted-foreground">
+              {products.length} article{products.length > 1 ? "s" : ""} disponible
+              {products.length > 1 ? "s" : ""} — prix et stock mis à jour en continu.
+            </p>
+          </div>
+        ) : null}
 
         {products.length === 0 ? (
           <p className="text-center text-sm text-muted-foreground">
