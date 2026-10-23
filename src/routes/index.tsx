@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { HeroCarousel } from "@/components/home/HeroCarousel";
-import { ShopByCategory } from "@/components/home/ShopByCategory";
 import { ProductsList } from "@/components/catalog/ProductsList";
 import { Accessories } from "@/components/home/Accessories";
 import { Stats } from "@/components/home/Stats";
@@ -67,7 +66,6 @@ function Index() {
   return (
     <SiteLayout studio>
       <HeroCarousel />
-      <ShopByCategory />
       <ProductsList />
       <Accessories />
 
